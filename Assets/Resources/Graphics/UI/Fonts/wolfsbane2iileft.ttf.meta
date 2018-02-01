@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 633926275a7263d4baeeb2d91aad5abf
+timeCreated: 1517423058
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Wolf's Bane II Leftalic
+  fontNames:
+  - Wolf's Bane II Leftalic
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
