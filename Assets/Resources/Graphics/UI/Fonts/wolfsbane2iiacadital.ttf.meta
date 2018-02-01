@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: eca9f558909d0c24882a26d944b638c3
+timeCreated: 1517423059
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Wolf's Bane II Academy Italic
+  fontNames:
+  - Wolf's Bane II Academy Italic
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

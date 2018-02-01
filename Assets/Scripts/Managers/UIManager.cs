@@ -100,6 +100,18 @@ class UIManager
     }
 
     /// <summary>
+    /// Used for button referencing
+    /// </summary>
+    public MainMenuControllerScript MainMenuControl
+    { get; set; }
+
+    /// <summary>
+    /// Used for button referencing
+    /// </summary>
+    public PreLevelMenuControllerScript PreLevelMenuControl
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

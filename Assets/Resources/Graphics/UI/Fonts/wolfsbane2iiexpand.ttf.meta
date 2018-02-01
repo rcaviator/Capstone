@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: a90cb3f7a465a7c4285a657386a8d9d9
+timeCreated: 1517423058
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Wolf's Bane II Expanded
+  fontNames:
+  - Wolf's Bane II Expanded
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -15,13 +15,13 @@ public enum Scenes
     None,
 
     //test scenes
-    TestLevel,
+    LevelEditor,
 
     //main menu scenes
     MainMenu,
 
     //game scenes
-
+    Tutorial, PreLevel, GameLevel, LevelComplete, Defeat, Victory,
 }
 
 /// <summary>
@@ -33,10 +33,10 @@ public enum PlayerSceneLocations
     None,
 
     //test levels
-    TestLevel,
+    LevelEditor,
 
     //all other scenes
-
+    MainMenu, Tutorial, PreLevel, GameLevel, LevelComplete, Defeat, Victory,
 }
 
 /// <summary>
@@ -73,8 +73,14 @@ class MySceneManager
         //initialize the scene dictionary
         sceneDict = new Dictionary<Scenes, string>()
         {
+            { Scenes.LevelEditor, Constants.SCENE_NAME_LEVELEDITOR },
             { Scenes.MainMenu, Constants.SCENE_NAME_MAINMENU },
-
+            { Scenes.Tutorial, Constants.SCENE_NAME_TUTORIAL },
+            { Scenes.PreLevel, Constants.SCENE_NAME_PRELEVEL },
+            { Scenes.GameLevel, Constants.SCENE_NAME_GAMELEVEL },
+            { Scenes.LevelComplete, Constants.SCENE_NAME_LEVELCOMPLETE },
+            { Scenes.Defeat, Constants.SCENE_NAME_DEFEAT },
+            { Scenes.Victory, Constants.SCENE_NAME_VICTORY},
         };
 
         //initialize the soundtrack dictionary
@@ -189,7 +195,7 @@ class MySceneManager
     /// <param name="scene">the unloaded scene</param>
     void OnLevelUnloaded(Scene scene)
     {
-        PreviousScene = sceneDict.Keys.First(t => sceneDict[t] == scene.name);
+        PreviousScene = sceneDict.Keys.First(x => sceneDict[x] == scene.name);
     }
 
     #endregion

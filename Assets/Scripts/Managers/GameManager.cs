@@ -45,6 +45,12 @@ class GameManager
     }
 
     /// <summary>
+    /// The camera the player stays within
+    /// </summary>
+    public CameraControllerScript PlayerCamera
+    { get; set; }
+
+    /// <summary>
     /// The accessor for the player
     /// </summary>
     public GameObject Player

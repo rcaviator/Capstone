@@ -1,5 +1,4 @@
-﻿using System;
-//using System;
+﻿//using System;
 using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
@@ -14,11 +13,10 @@ public enum PlayerAction
     //default
     None,
 
-    //game functions
-    Interact, PauseGame,
-
     //character functions
-
+    Interact, PauseGame, ViewInventory,
+    MoveHorizontal, MoveVertical,
+    FirePrimary, FireSecondary,
 }
 
 /// <summary>
@@ -109,14 +107,14 @@ class InputManager
             wasdSettings = new Dictionary<PlayerAction, CustomInput>()
             {
                 //leave PlayerAction.None out
-                //{ PlayerAction.PauseGame, new CustomInput(KeyCode.Escape) },
-                //{ PlayerAction.ViewInventory, new CustomInput(KeyCode.B) },
-                //{ PlayerAction.MoveHorizontal, new CustomInput("HorizontalWASD", InputType.Axis) },
-                //{ PlayerAction.MoveVertical, new CustomInput("VerticalWASD", InputType.Axis) },
+                { PlayerAction.PauseGame, new CustomInput(KeyCode.Escape) },
+                { PlayerAction.ViewInventory, new CustomInput(KeyCode.B) },
+                { PlayerAction.MoveHorizontal, new CustomInput("HorizontalWASD", InputType.Axis) },
+                { PlayerAction.MoveVertical, new CustomInput("VerticalWASD", InputType.Axis) },
                 //{ PlayerAction.Jump, new CustomInput(KeyCode.Space) },
-                //{ PlayerAction.Interact, new CustomInput(KeyCode.F) },
-                //{ PlayerAction.FirePrimary, new CustomInput("0", InputType.MouseButton) },
-                //{ PlayerAction.FireSecondary, new CustomInput("1", InputType.MouseButton) },
+                { PlayerAction.Interact, new CustomInput(KeyCode.E) },
+                { PlayerAction.FirePrimary, new CustomInput("0", InputType.MouseButton) },
+                { PlayerAction.FireSecondary, new CustomInput("1", InputType.MouseButton) },
             };
 
             ijklSettings = new Dictionary<PlayerAction, CustomInput>()
@@ -152,14 +150,14 @@ class InputManager
             wasdKeyStrings = new Dictionary<PlayerAction, string>()
             {
                 //leave PlayerAction.None out
-                //{ PlayerAction.PauseGame, "Escape" },
-                //{ PlayerAction.ViewInventory, "B" },
-                //{ PlayerAction.MoveHorizontal, "A and D" },
-                //{ PlayerAction.MoveVertical, "W and S" },
+                { PlayerAction.PauseGame, "Escape" },
+                { PlayerAction.ViewInventory, "B" },
+                { PlayerAction.MoveHorizontal, "A and D" },
+                { PlayerAction.MoveVertical, "W and S" },
                 //{ PlayerAction.Jump, "Spacebar" },
-                //{ PlayerAction.Interact, "F" },
-                //{ PlayerAction.FirePrimary, "Left mouse button" },
-                //{ PlayerAction.FireSecondary, "Right mouse button" },
+                { PlayerAction.Interact, "E" },
+                { PlayerAction.FirePrimary, "Left mouse button" },
+                { PlayerAction.FireSecondary, "Right mouse button" },
             };
 
             ijklKeyStrings = new Dictionary<PlayerAction, string>()
