@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 222227213112633268}
   - component: {fileID: 114317896407608124}
   - component: {fileID: 114279368544275634}
-  - component: {fileID: 114604158958656506}
+  - component: {fileID: 114908212729212880}
   m_Layer: 5
   m_Name: CancelButton
   m_TagString: Untagged
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 222204945691785680}
   - component: {fileID: 114957366110571928}
   - component: {fileID: 114658303120797972}
-  - component: {fileID: 114384731399112080}
+  - component: {fileID: 114619732957797768}
   m_Layer: 5
   m_Name: AcceptButton
   m_TagString: Untagged
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 222075994144468044}
   - component: {fileID: 114886198345375832}
   - component: {fileID: 114608072397829194}
-  - component: {fileID: 114127291416792986}
+  - component: {fileID: 114585499697210626}
   m_Layer: 5
   m_Name: DefaultsButton
   m_TagString: Untagged
@@ -187,20 +187,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &114127291416792986
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1846140013277596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 0
 --- !u!114 &114157467602090938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -267,7 +253,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114604158958656506}
+      - m_Target: {fileID: 114908212729212880}
         m_MethodName: OnMainMenuChange
         m_Mode: 1
         m_Arguments:
@@ -307,20 +293,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114384731399112080
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1495105088568576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 1
 --- !u!114 &114413694346087568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -387,20 +359,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Cancel
---- !u!114 &114604158958656506
+--- !u!114 &114585499697210626
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1217937314848468}
+  m_GameObject: {fileID: 1846140013277596}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
   goToScene: 0
-  mainMenuToGoTo: 1
+  mainMenuToGoTo: 0
 --- !u!114 &114608072397829194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -442,6 +414,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114619732957797768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1495105088568576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  mainMenuToGoTo: 1
 --- !u!114 &114628860180638062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -514,7 +500,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114384731399112080}
+      - m_Target: {fileID: 114619732957797768}
         m_MethodName: OnMainMenuChange
         m_Mode: 1
         m_Arguments:
@@ -587,6 +573,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114908212729212880
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1217937314848468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  mainMenuToGoTo: 1
 --- !u!114 &114946040530012512
 MonoBehaviour:
   m_ObjectHideFlags: 1

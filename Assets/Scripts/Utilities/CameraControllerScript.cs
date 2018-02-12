@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraControllerScript : PauseableObject
 {
+    float horizontalSpeed = 0f;
+    
 
 	// Use this for initialization
 	protected override void Awake ()
@@ -18,13 +20,17 @@ public class CameraControllerScript : PauseableObject
 	void Update ()
     {
         //movement test
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            rBody.velocity = new Vector2(rBody.velocity.x + 10 * Time.deltaTime, 0f);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            rBody.velocity = new Vector2(rBody.velocity.x - 10 * Time.deltaTime, 0f);
-        }
+        //if (Input.GetKey(KeyCode.RightArrow))
+        //{
+        //    rBody.velocity = new Vector2(rBody.velocity.x + 10 * Time.deltaTime, 0f);
+        //}
+        //else if (Input.GetKey(KeyCode.LeftArrow))
+        //{
+        //    rBody.velocity = new Vector2(rBody.velocity.x - 10 * Time.deltaTime, 0f);
+        //}
+
+        //transform.position = new Vector3(Constants.CAMERA_SPEED * Time.deltaTime, )
+        horizontalSpeed = Mathf.Clamp(horizontalSpeed + Constants.CAMERA_SPEED * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
+        rBody.velocity = new Vector2(horizontalSpeed, 0f);
 	}
 }

@@ -19,17 +19,29 @@ public static class Constants
     //settings constants
 
 
+    //game play constants
+    public const float CAMERA_SPEED = 10f;
+
     #endregion
 
     #region Player Constants
 
     public const float PLAYER_STARTING_HEALTH = 100f;
+    public const float PLAYER_SCREEN_MOVEMENT_SPEED = 50f;
+    public const float PLAYER_HORIZONTAL_ACCELERATION = 10f;
+    public const float PLAYER_MAX_HORIZONTAL_SPEED = 100f;
+    public const float PLAYER_VERTICAL_ACCELERATION = 10f;
+    public const float PLAYER_MAX_VERTICAL_SPEED = 25f;
+    public const float PLAYER_BASIC_BULLET_DAMAGE = 10f;
+    public const float PLAYER_BASIC_BULLET_ATTACK_LIFETIME = 0.15f;
+    public const float PLAYER_BASIC_BULLET_SPEED = 75f;
+    public const float PLAYER_BASIC_BULLET_COOLDOWN_TIMER = 0.05f;
 
     #endregion
 
     #region Enemy Constants
 
-
+    public const float ENEMY_TEMP_BLIMP_HEALTH = 100f;
 
     #endregion
 

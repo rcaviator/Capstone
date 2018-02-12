@@ -53,13 +53,43 @@ class GameManager
     /// <summary>
     /// The accessor for the player
     /// </summary>
-    public GameObject Player
+    public PlayerScript Player
+    { get; set; }
+
+    /// <summary>
+    /// The target reticle of the player
+    /// </summary>
+    public TargetReticle Reticle
+    { get; set; }
+
+    /// <summary>
+    /// The game score
+    /// </summary>
+    public int Score
     { get; set; }
     
     /// <summary>
     /// The list of all pauseable game objects
     /// </summary>
     public List<PauseableObject> PauseableObjects
+    { get; set; }
+
+    /// <summary>
+    /// The distance slider at the top of the screen in the level
+    /// </summary>
+    public ProgressSliderScript ProgressSlider
+    { get; set; }
+
+    /// <summary>
+    /// Reference to the starting trigger
+    /// </summary>
+    public StartLevelTriggerScript StartTrigger
+    { get; set; }
+
+    /// <summary>
+    /// Reference to the ending trigger
+    /// </summary>
+    public EndLevelTriggerScript EndTrigger
     { get; set; }
 
     /// <summary>

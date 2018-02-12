@@ -14,13 +14,17 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField]
     Scenes goToScene;
 
-    //main menu to change to if applicable. leave on None if n/a
-    [SerializeField]
-    MainMenus mainMenuToGoTo;
+    ////main menu to change to if applicable. leave on None if n/a
+    //[SerializeField]
+    //MainMenus mainMenuToGoTo;
 
-    //prelevel menu to change to if applicable. leave on None if n/a
-    [SerializeField]
-    PreLevelMenus preLevelMenuToGoTo;
+    ////prelevel menu to change to if applicable. leave on None if n/a
+    //[SerializeField]
+    //PreLevelMenus preLevelMenuToGoTo;
+
+    ////pause menu to change to if applicable. leave on None if n/a
+    //[SerializeField]
+    //PauseMenuPanel pauseMenuToGoTo;
 
     //animated button fields
     bool increaseScale = false;
@@ -29,7 +33,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     float scaleRate = 1f;
 
     // Update is called once per frame
-    void Update ()
+    protected virtual void Update ()
     {
         //icrease the button in an animation effect when true. shrink back when false
         if (increaseScale)
@@ -94,16 +98,16 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
 
 
-    public void OnMainMenuChange()
-    {
-        UIManager.Instance.MainMenuControl.ChangeMenu(mainMenuToGoTo);
-    }
+    //public void OnMainMenuChange()
+    //{
+    //    UIManager.Instance.MainMenuControl.ChangeMenu(mainMenuToGoTo);
+    //}
 
 
-    public void OnPreLevelMenuChange()
-    {
-        UIManager.Instance.PreLevelMenuControl.ChangeMenu(preLevelMenuToGoTo);
-    }
+    //public void OnPreLevelMenuChange()
+    //{
+    //    UIManager.Instance.PreLevelMenuControl.ChangeMenu(preLevelMenuToGoTo);
+    //}
 
     #endregion
 
