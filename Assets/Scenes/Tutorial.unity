@@ -316,12 +316,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 298926939}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f6097bda9c594040a59db68abbf2183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
   goToScene: 2
-  mainMenuToGoTo: 0
 --- !u!1 &334877135
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,12 +671,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1181452926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f6097bda9c594040a59db68abbf2183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
   goToScene: 4
-  mainMenuToGoTo: 0
 --- !u!114 &1181452929
 MonoBehaviour:
   m_ObjectHideFlags: 0

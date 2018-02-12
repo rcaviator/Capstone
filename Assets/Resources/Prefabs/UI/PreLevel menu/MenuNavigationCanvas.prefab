@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 222639224584785592}
   - component: {fileID: 114208621223801422}
   - component: {fileID: 114366872711479454}
-  - component: {fileID: 114193993064285350}
+  - component: {fileID: 114155468627599462}
   m_Layer: 5
   m_Name: WeatherAndMapButton
   m_TagString: Untagged
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 222168127724381554}
   - component: {fileID: 114902218649294688}
   - component: {fileID: 114496199917503252}
-  - component: {fileID: 114101506271063348}
+  - component: {fileID: 114438595445853980}
   m_Layer: 5
   m_Name: OverviewButton
   m_TagString: Untagged
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 222136280797232586}
   - component: {fileID: 114040083198775134}
   - component: {fileID: 114656821474587278}
-  - component: {fileID: 114735262321421398}
+  - component: {fileID: 114931830312915306}
   m_Layer: 5
   m_Name: ShopButton
   m_TagString: Untagged
@@ -181,22 +181,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114101506271063348
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1511127750840344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 0
-  preLevelMenuToGoTo: 1
---- !u!114 &114193993064285350
+--- !u!114 &114155468627599462
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -204,12 +189,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1286185714834948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
   goToScene: 0
-  mainMenuToGoTo: 0
   preLevelMenuToGoTo: 3
 --- !u!114 &114208621223801422
 MonoBehaviour:
@@ -347,7 +331,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114193993064285350}
+      - m_Target: {fileID: 114155468627599462}
         m_MethodName: OnPreLevelMenuChange
         m_Mode: 1
         m_Arguments:
@@ -393,6 +377,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Overview
+--- !u!114 &114438595445853980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1511127750840344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  preLevelMenuToGoTo: 1
 --- !u!114 &114496199917503252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -432,7 +430,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114101506271063348}
+      - m_Target: {fileID: 114438595445853980}
         m_MethodName: OnPreLevelMenuChange
         m_Mode: 1
         m_Arguments:
@@ -517,7 +515,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114735262321421398}
+      - m_Target: {fileID: 114931830312915306}
         m_MethodName: OnPreLevelMenuChange
         m_Mode: 1
         m_Arguments:
@@ -530,21 +528,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114735262321421398
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1895067544828780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 0
-  preLevelMenuToGoTo: 2
 --- !u!114 &114852590132453234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -599,6 +582,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114931830312915306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1895067544828780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  preLevelMenuToGoTo: 2
 --- !u!222 &222136280797232586
 CanvasRenderer:
   m_ObjectHideFlags: 1

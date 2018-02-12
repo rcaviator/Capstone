@@ -52,8 +52,9 @@ public class PreLevelMenuControllerScript : MonoBehaviour
             uiDict[PreLevelMenus.Overview].SetActive(true);
         }
 
-        //create the navigation menu canvas
-        Instantiate(Resources.Load<GameObject>("Prefabs/UI/PreLevel menu/MenuNavigationCanvas"), Vector3.zero, Quaternion.identity);
+        //create the navigation menu canvas and set camera
+        GameObject nav = Instantiate(Resources.Load<GameObject>("Prefabs/UI/PreLevel menu/MenuNavigationCanvas"), Vector3.zero, Quaternion.identity);
+        nav.GetComponent<Canvas>().worldCamera = Camera.main;
     }
 
     /// <summary>

@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 222236324499487180}
   - component: {fileID: 114523052093274148}
   - component: {fileID: 114808182333823474}
-  - component: {fileID: 114832010663458838}
+  - component: {fileID: 114807221470617168}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 222593286649239526}
   - component: {fileID: 114593034181667706}
   - component: {fileID: 114792311557458966}
-  - component: {fileID: 114723362790002902}
+  - component: {fileID: 114860520480617698}
   m_Layer: 5
   m_Name: NewGameButton
   m_TagString: Untagged
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 222023090069870074}
   - component: {fileID: 114521403383282054}
   - component: {fileID: 114711028308933828}
-  - component: {fileID: 114753416855904628}
+  - component: {fileID: 114956534980550776}
   m_Layer: 5
   m_Name: CreditsButton
   m_TagString: Untagged
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 222788253515254928}
   - component: {fileID: 114134662177937918}
   - component: {fileID: 114423292017341730}
-  - component: {fileID: 114866973899508840}
+  - component: {fileID: 114808765529116224}
   m_Layer: 5
   m_Name: ContinueGameButton
   m_TagString: Untagged
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 222393085668307582}
   - component: {fileID: 114723006079136564}
   - component: {fileID: 114293275837000354}
-  - component: {fileID: 114263399941816150}
+  - component: {fileID: 114804640024110192}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 222648919824988874}
   - component: {fileID: 114905661259374760}
   - component: {fileID: 114225277254369670}
-  - component: {fileID: 114781141729641764}
+  - component: {fileID: 114440654080870374}
   m_Layer: 5
   m_Name: LevelCreatorButton
   m_TagString: Untagged
@@ -509,23 +509,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114905661259374760}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114440654080870374}
+        m_MethodName: OnChangeSceneClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114263399941816150
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1749487330655908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 0
 --- !u!114 &114293275837000354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -565,7 +562,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114263399941816150}
+      - m_Target: {fileID: 114804640024110192}
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -678,17 +675,17 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114134662177937918}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
+      - m_Target: {fileID: 114808765529116224}
+        m_MethodName: OnChangeSceneClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -696,6 +693,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114440654080870374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849879896642578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 1
+  mainMenuToGoTo: 0
 --- !u!114 &114521403383282054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -782,7 +793,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Title
+  m_Text: Ace Messenger
 --- !u!114 &114541093653902982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -975,7 +986,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114753416855904628}
+      - m_Target: {fileID: 114956534980550776}
         m_MethodName: OnMainMenuChange
         m_Mode: 1
         m_Arguments:
@@ -1069,48 +1080,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114723362790002902
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1158003244526750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 3
-  mainMenuToGoTo: 0
---- !u!114 &114753416855904628
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1315413938970696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 3
---- !u!114 &114781141729641764
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1849879896642578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 1
-  mainMenuToGoTo: 0
 --- !u!114 &114792311557458966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1150,7 +1119,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114723362790002902}
+      - m_Target: {fileID: 114860520480617698}
         m_MethodName: OnChangeSceneClick
         m_Mode: 1
         m_Arguments:
@@ -1163,6 +1132,34 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114804640024110192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1749487330655908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  mainMenuToGoTo: 0
+--- !u!114 &114807221470617168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107338669659856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  mainMenuToGoTo: 2
 --- !u!114 &114808182333823474
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1202,7 +1199,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114832010663458838}
+      - m_Target: {fileID: 114807221470617168}
         m_MethodName: OnMainMenuChange
         m_Mode: 1
         m_Arguments:
@@ -1215,21 +1212,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114832010663458838
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1107338669659856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonSound: 0
-  goToScene: 0
-  mainMenuToGoTo: 2
---- !u!114 &114866973899508840
+--- !u!114 &114808765529116224
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1237,11 +1220,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1529114796548040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
-  goToScene: 0
+  goToScene: 5
+  mainMenuToGoTo: 0
+--- !u!114 &114860520480617698
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1158003244526750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 3
   mainMenuToGoTo: 0
 --- !u!114 &114884473723437088
 MonoBehaviour:
@@ -1303,6 +1300,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114956534980550776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1315413938970696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSound: 0
+  goToScene: 0
+  mainMenuToGoTo: 3
 --- !u!222 &222004313369759532
 CanvasRenderer:
   m_ObjectHideFlags: 1

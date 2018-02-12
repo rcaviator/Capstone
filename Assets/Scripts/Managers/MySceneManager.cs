@@ -186,7 +186,11 @@ class MySceneManager
             AudioManager.Instance.StopMusic();
         }
 
-
+        //temporary score reset
+        if (CurrentScene == Scenes.MainMenu)
+        {
+            GameManager.Instance.Score = 0;
+        }
     }
 
     /// <summary>
