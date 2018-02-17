@@ -16,6 +16,13 @@ public static class Constants
     public const string SCENE_NAME_DEFEAT = "Defeat";
     public const string SCENE_NAME_VICTORY = "Victory";
 
+    //level editor constants
+    public const float LEVEL_EDITOR_SPACING = 1f;
+    public const int LEVEL_EDITOR_GRID_SIZE_X = 10;//20
+    public const int LEVEL_EDITOR_GRID_SIZE_Y = 5;//10
+    public const int LEVEL_EDITOR_GRID_OFFSET_X = 0;//10
+    public const int LEVEL_EDITOR_GRID_OFFSET_Y = 0;//5
+
     //settings constants
 
 
