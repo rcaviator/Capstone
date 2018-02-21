@@ -8,6 +8,16 @@ public class CustomGrid : MonoBehaviour
 {
     LineRenderer gridLines;
 
+    //create the grid drawing points
+    List<Vector3> tempGrid = new List<Vector3>();
+    List<Vector3> gridDrawPoints = new List<Vector3>();
+
+    ////set out of bounds points
+    //List<Vector3> leftSideYPoints = new List<Vector3>();
+    //List<Vector3> rightSideYPoints = new List<Vector3>();
+    //List<Vector3> topSideXPoints = new List<Vector3>();
+    //List<Vector3> bottomSideXPoints = new List<Vector3>();
+    //Vector3 topRightPoint = new Vector3();
 
     //private void Awake ()
     //{
@@ -63,30 +73,58 @@ public class CustomGrid : MonoBehaviour
 
         #region Draw Grid
 
-        //create the grid drawing points
-        List<Vector3> gridDrawPoints = new List<Vector3>();
+        float drawX = 0;
+        float drawY = 0;
+        for (int dp = 0; dp < ((Constants.LEVEL_EDITOR_GRID_SIZE_X + 1) * (Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1)); dp++)
+        {
+            tempGrid.Add(new Vector3(drawX, drawY, 0));
+
+            drawY += Constants.LEVEL_EDITOR_SPACING;
+
+            if (drawY >= ((Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1) * Constants.LEVEL_EDITOR_SPACING))
+            {
+                drawY = 0;
+                drawX += Constants.LEVEL_EDITOR_SPACING;
+            }
+        }
+
+        //set offset
+        for (int p = 0; p < tempGrid.Count; p++)
+        {
+            Vector3 temp = tempGrid[p];
+            temp.x -= Constants.LEVEL_EDITOR_GRID_OFFSET_X;
+            temp.y -= Constants.LEVEL_EDITOR_GRID_OFFSET_Y;
+            tempGrid[p] = temp;
+        }
+
+        //poulate left side y points
+        //for (int ly = 0; ly < Constants.LEVEL_EDITOR_GRID_SIZE_Y; ly++)
+        //{
+        //    leftSideYPoints.Add(new Vector3(GridPoints[ly].x, GridPoints[ly].y, 0));
+        //}
+
+        ////populate right side y points
+        //for (int ry = GridPoints.Count - Constants.LEVEL_EDITOR_GRID_SIZE_Y; ry < GridPoints.Count; ry++)
+        //{
+        //    rightSideYPoints.Add(new Vector3(GridPoints[ry].x + Constants.LEVEL_EDITOR_SPACING, GridPoints[ry].y, 0));
+        //}
+
+        ////populate bottom side x points
+        //for (int bx = 0; bx < Constants.LEVEL_EDITOR_GRID_SIZE_Y; bx += Constants.LEVEL_EDITOR_GRID_SIZE_Y)
+        //{
+        //    bottomSideXPoints.Add(new Vector3(GridPoints[bx].x, GridPoints[bx].y, 0));
+        //}
+
+        ////populate top side x points
+        //for (int tx = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1; tx < Constants.LEVEL_EDITOR_GRID_SIZE_X * Constants.LEVEL_EDITOR_GRID_SIZE_Y; tx += Constants.LEVEL_EDITOR_GRID_SIZE_Y)
+        //{
+        //    topSideXPoints.Add(new Vector3(GridPoints[tx].x, GridPoints[tx].y + Constants.LEVEL_EDITOR_SPACING, 0));
+        //}
+
+        ////get corner point
+        //topRightPoint = new Vector3(rightSideYPoints.Last().x, topSideXPoints.Last().y, 0);
 
         #region X Axis
-        
-        //set out of bounds points
-        List<Vector3> outBoundPointsX = new List<Vector3>();
-        List<Vector3> outBoundPointsY = new List<Vector3>();
-        Vector3 outBoundPointXY = new Vector3();
-
-        //populate outboundpoints x
-        for (int bx = GridPoints.Count - Constants.LEVEL_EDITOR_GRID_SIZE_Y; bx < GridPoints.Count; bx++)
-        {
-            outBoundPointsX.Add(new Vector3(GridPoints[bx].x + Constants.LEVEL_EDITOR_SPACING, GridPoints[bx].y, 0));
-        }
-
-        //populate outboundpoints y
-        for (int by = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1; by < Constants.LEVEL_EDITOR_GRID_SIZE_X * Constants.LEVEL_EDITOR_GRID_SIZE_Y; by += Constants.LEVEL_EDITOR_GRID_SIZE_Y)
-        {
-            outBoundPointsY.Add(new Vector3(GridPoints[by].x, GridPoints[by].y + Constants.LEVEL_EDITOR_SPACING, 0));
-        }
-        
-        //get corner point
-        outBoundPointXY = new Vector3(outBoundPointsX.Last().x, outBoundPointsY.Last().y, 0);
 
         //handle x axis populating
         bool xClimb = true;
@@ -94,10 +132,10 @@ public class CustomGrid : MonoBehaviour
         int xIndexer = 0;
 
         //start at and add the first vertix point to the list. then loop through until x has reached the end
-        while (x < Constants.LEVEL_EDITOR_GRID_SIZE_X)
+        while (x <= Constants.LEVEL_EDITOR_GRID_SIZE_X)
         {
             //add point
-            gridDrawPoints.Add(new Vector3(GridPoints[xIndexer].x - Constants.LEVEL_EDITOR_SPACING / 2, GridPoints[xIndexer].y - Constants.LEVEL_EDITOR_SPACING / 2, 0));
+            gridDrawPoints.Add(new Vector3(tempGrid[xIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[xIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
 
             //calculate what the index of the next point is to be
             //do we need to climb?
@@ -106,12 +144,12 @@ public class CustomGrid : MonoBehaviour
                 //do we climb up or down?
                 if (xUp)
                 {
-                    xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1;
+                    xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y;//-1
                     xUp = false;
                 }
                 else
                 {
-                    xIndexer -= Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1;
+                    xIndexer -= Constants.LEVEL_EDITOR_GRID_SIZE_Y;//-1
                     xUp = true;
                 }
 
@@ -128,12 +166,12 @@ public class CustomGrid : MonoBehaviour
                 x++;
 
                 //if this was the last point, break. xIndexer is used as the starting index for y populating
-                if (x == Constants.LEVEL_EDITOR_GRID_SIZE_X)
+                if (x == Constants.LEVEL_EDITOR_GRID_SIZE_X + 1)
                 {
                     break;
                 }
 
-                xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y;
+                xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1;
             }
         }
 
@@ -147,14 +185,14 @@ public class CustomGrid : MonoBehaviour
         int yIndexer = xIndexer;
 
         //are we on the top or bottom of the grid after x popluating?
-        if (GridPoints[yIndexer].y == 0 - Constants.LEVEL_EDITOR_GRID_OFFSET_Y)
+        if (tempGrid[yIndexer].y == 0 - Constants.LEVEL_EDITOR_GRID_OFFSET_Y)
         {
             //moving from bottom to top variables
             int leftClimber = 0;
-            int rightClimber = GridPoints.Count - Constants.LEVEL_EDITOR_GRID_SIZE_Y;
+            int rightClimber = tempGrid.Count - (Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1);
 
             //calculate the next point before adding it to the list. then loop through until the end of y
-            while (y < Constants.LEVEL_EDITOR_GRID_SIZE_Y)
+            while (y <= Constants.LEVEL_EDITOR_GRID_SIZE_Y)
             {
                 //do we jump over?
                 if (jumpOver)
@@ -204,21 +242,21 @@ public class CustomGrid : MonoBehaviour
                 }
 
                 //index protection
-                if (y == Constants.LEVEL_EDITOR_GRID_SIZE_Y)
+                if (y == Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1)
                 {
                     break;
                 }
 
                 //add point
-                gridDrawPoints.Add(new Vector3(GridPoints[yIndexer].x - Constants.LEVEL_EDITOR_SPACING / 2, GridPoints[yIndexer].y - Constants.LEVEL_EDITOR_SPACING / 2, 0));
+                gridDrawPoints.Add(new Vector3(tempGrid[yIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[yIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
             }
         }
         else
         {
             //moving from top to bottom
-            y = Constants.LEVEL_EDITOR_GRID_SIZE_Y;
-            int leftDecender = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1;
-            int rightDecender = GridPoints.Count - 1;
+            y = Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1;
+            int leftDecender = Constants.LEVEL_EDITOR_GRID_SIZE_Y;
+            int rightDecender = tempGrid.Count - 1;
 
             //calculate the next point before adding it to the list. then loop through until the end of y
             while (y > 0)
@@ -277,7 +315,7 @@ public class CustomGrid : MonoBehaviour
                 }
 
                 //add point
-                gridDrawPoints.Add(new Vector3(GridPoints[yIndexer].x - Constants.LEVEL_EDITOR_SPACING / 2, GridPoints[yIndexer].y - Constants.LEVEL_EDITOR_SPACING / 2, 0));
+                gridDrawPoints.Add(new Vector3(tempGrid[yIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[yIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
             }
 
         }
@@ -316,11 +354,34 @@ public class CustomGrid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //main grid
         Gizmos.color = Color.yellow;
-
         foreach (Vector3 point in GridPoints)
         {
             Gizmos.DrawSphere(point, 0.1f);
         }
+
+        //foreach (Vector3 point in tempGrid)
+        //{
+        //    Gizmos.DrawSphere(point, 0.1f);
+        //}
+
+        //top row extra
+        //Gizmos.color = Color.red;
+        //foreach (Vector3 point in topSideXPoints)
+        //{
+        //    Gizmos.DrawSphere(point, 0.1f);
+        //}
+
+        ////right row extra
+        //Gizmos.color = Color.green;
+        //foreach (Vector3 point in rightSideYPoints)
+        //{
+        //    Gizmos.DrawSphere(point, 0.1f);
+        //}
+
+        ////corner point
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawSphere(topRightPoint, 0.1f);
     }
 }

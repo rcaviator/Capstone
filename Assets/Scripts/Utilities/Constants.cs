@@ -18,10 +18,12 @@ public static class Constants
 
     //level editor constants
     public const float LEVEL_EDITOR_SPACING = 1f;
-    public const int LEVEL_EDITOR_GRID_SIZE_X = 10;//20
-    public const int LEVEL_EDITOR_GRID_SIZE_Y = 5;//10
-    public const int LEVEL_EDITOR_GRID_OFFSET_X = 0;//10
-    public const int LEVEL_EDITOR_GRID_OFFSET_Y = 0;//5
+    public const int LEVEL_EDITOR_GRID_SIZE_X = 20;//20
+    public const int LEVEL_EDITOR_GRID_SIZE_Y = 10;//10
+    public const int LEVEL_EDITOR_GRID_OFFSET_X = 10;//10
+    public const int LEVEL_EDITOR_GRID_OFFSET_Y = 5;//5
+    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_X = LEVEL_EDITOR_SPACING / 2;
+    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Y = LEVEL_EDITOR_SPACING / 2;
 
     //settings constants
 
