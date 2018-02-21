@@ -49,8 +49,9 @@ public class LevelEditorControllerScript : MonoBehaviour
     {
         clickPoint.z = 0f;
         Vector3 finalPosition = grid.GetNearestPointOnGrid(clickPoint);
-        GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = finalPosition;
-
-        //GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position = nearPoint;
+        if (finalPosition != Vector3.forward)
+        {
+            GameObject.CreatePrimitive(PrimitiveType.Cube).transform.position = finalPosition;
+        }
     }
 }

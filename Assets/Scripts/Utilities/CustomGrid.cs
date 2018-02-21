@@ -12,13 +12,6 @@ public class CustomGrid : MonoBehaviour
     List<Vector3> tempGrid = new List<Vector3>();
     List<Vector3> gridDrawPoints = new List<Vector3>();
 
-    ////set out of bounds points
-    //List<Vector3> leftSideYPoints = new List<Vector3>();
-    //List<Vector3> rightSideYPoints = new List<Vector3>();
-    //List<Vector3> topSideXPoints = new List<Vector3>();
-    //List<Vector3> bottomSideXPoints = new List<Vector3>();
-    //Vector3 topRightPoint = new Vector3();
-
     //private void Awake ()
     //{
     //    if (gridLines)
@@ -96,33 +89,6 @@ public class CustomGrid : MonoBehaviour
             temp.y -= Constants.LEVEL_EDITOR_GRID_OFFSET_Y;
             tempGrid[p] = temp;
         }
-
-        //poulate left side y points
-        //for (int ly = 0; ly < Constants.LEVEL_EDITOR_GRID_SIZE_Y; ly++)
-        //{
-        //    leftSideYPoints.Add(new Vector3(GridPoints[ly].x, GridPoints[ly].y, 0));
-        //}
-
-        ////populate right side y points
-        //for (int ry = GridPoints.Count - Constants.LEVEL_EDITOR_GRID_SIZE_Y; ry < GridPoints.Count; ry++)
-        //{
-        //    rightSideYPoints.Add(new Vector3(GridPoints[ry].x + Constants.LEVEL_EDITOR_SPACING, GridPoints[ry].y, 0));
-        //}
-
-        ////populate bottom side x points
-        //for (int bx = 0; bx < Constants.LEVEL_EDITOR_GRID_SIZE_Y; bx += Constants.LEVEL_EDITOR_GRID_SIZE_Y)
-        //{
-        //    bottomSideXPoints.Add(new Vector3(GridPoints[bx].x, GridPoints[bx].y, 0));
-        //}
-
-        ////populate top side x points
-        //for (int tx = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1; tx < Constants.LEVEL_EDITOR_GRID_SIZE_X * Constants.LEVEL_EDITOR_GRID_SIZE_Y; tx += Constants.LEVEL_EDITOR_GRID_SIZE_Y)
-        //{
-        //    topSideXPoints.Add(new Vector3(GridPoints[tx].x, GridPoints[tx].y + Constants.LEVEL_EDITOR_SPACING, 0));
-        //}
-
-        ////get corner point
-        //topRightPoint = new Vector3(rightSideYPoints.Last().x, topSideXPoints.Last().y, 0);
 
         #region X Axis
 
@@ -335,20 +301,38 @@ public class CustomGrid : MonoBehaviour
     public List<Vector3> GridPoints
     { get; set; }
 
-
+    /// <summary>
+    /// Gets the nearest point in the gird as a Vector3.
+    /// Returns Vector3.forward (0,0,1) if passed position is too far out of the grid.
+    /// </summary>
+    /// <param name="position">The position to get nearest grid point</param>
+    /// <returns>The position of the nearest grid point</returns>
     public Vector3 GetNearestPointOnGrid(Vector3 position)
     {
-        position -= transform.position;
-
+        //round the x and y of the position to test
         int xCount = Mathf.RoundToInt(position.x / Constants.LEVEL_EDITOR_SPACING);
         int yCount = Mathf.RoundToInt(position.y / Constants.LEVEL_EDITOR_SPACING);
-        int zCount = Mathf.RoundToInt(position.z / Constants.LEVEL_EDITOR_SPACING);
+        //int zCount = Mathf.RoundToInt(position.z / Constants.LEVEL_EDITOR_SPACING);
 
-        Vector3 result = new Vector3(xCount * Constants.LEVEL_EDITOR_SPACING, yCount * Constants.LEVEL_EDITOR_SPACING, zCount * Constants.LEVEL_EDITOR_SPACING);
+        //get the grid point matching the rounded point and return that value
+        Vector3 testLocation = new Vector3(xCount * Constants.LEVEL_EDITOR_SPACING, yCount * Constants.LEVEL_EDITOR_SPACING, 0);
 
-        result += transform.position;
+        //set index
+        int index = 0;
 
-        return result;
+        //is the test location vector in the grid
+        if (GridPoints.Contains(testLocation))
+        {
+            //set index
+            index = GridPoints.FindIndex(a => a == testLocation);
+        }
+        else
+        {
+            return Vector3.forward;
+        }
+
+        //return the vector in the grid
+        return GridPoints[index];
     }
 
 
@@ -360,28 +344,5 @@ public class CustomGrid : MonoBehaviour
         {
             Gizmos.DrawSphere(point, 0.1f);
         }
-
-        //foreach (Vector3 point in tempGrid)
-        //{
-        //    Gizmos.DrawSphere(point, 0.1f);
-        //}
-
-        //top row extra
-        //Gizmos.color = Color.red;
-        //foreach (Vector3 point in topSideXPoints)
-        //{
-        //    Gizmos.DrawSphere(point, 0.1f);
-        //}
-
-        ////right row extra
-        //Gizmos.color = Color.green;
-        //foreach (Vector3 point in rightSideYPoints)
-        //{
-        //    Gizmos.DrawSphere(point, 0.1f);
-        //}
-
-        ////corner point
-        //Gizmos.color = Color.blue;
-        //Gizmos.DrawSphere(topRightPoint, 0.1f);
     }
 }

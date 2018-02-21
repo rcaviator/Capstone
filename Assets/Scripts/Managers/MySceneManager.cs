@@ -129,6 +129,10 @@ class MySceneManager
     public Scenes PreviousScene
     { get; set; }
 
+
+    public bool EditorScene
+    { get; set; }
+
     #endregion
 
     #region Public Methods
@@ -186,6 +190,13 @@ class MySceneManager
             AudioManager.Instance.StopMusic();
         }
 
+        //set the editor status if the scene is the level editor
+        if (CurrentScene == Scenes.LevelEditor)
+        {
+            EditorScene = true;
+            Debug.Log("level editor scene");
+        }
+
         //temporary score reset
         if (CurrentScene == Scenes.MainMenu)
         {
@@ -200,6 +211,12 @@ class MySceneManager
     void OnLevelUnloaded(Scene scene)
     {
         PreviousScene = sceneDict.Keys.First(x => sceneDict[x] == scene.name);
+
+        if (PreviousScene == Scenes.LevelEditor)
+        {
+            EditorScene = false;
+            Debug.Log("left the editor scene");
+        }
     }
 
     #endregion
