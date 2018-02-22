@@ -46,10 +46,21 @@ public enum GameSoundEffect
 
     
     //player
+    PlayerAirplaneEngine,
 
-    
+    //weapons
+    GunFire1, GunFire2, GunFire3, RocketFire1, RocketFire2,
+
+    //impacts
+    BulletGlassImpact, BulletMetalImpact1, BulletMetalImpact2, BulletMetalImpact3,
+    BulletMetalImpact4, BulletMetalImpact5, BulletStoneImpact1, BulletStoneImpact2,
+    BulletStoneImpact3, BulletWoodImpact1, BulletWoodImpact2,
+
+    //explosions
+    Blast1, Blast2, Blast3, Blast4, Blast5, Blast6,
+
     //enemies
-
+    EnemyBomberEngine,
 
     //npcs
 
@@ -116,8 +127,30 @@ class AudioManager
         gameSoundEffectsDict = new Dictionary<GameSoundEffect, AudioClip>()
         {
             //leave GameSoundEffect.None out
-            //{ GameSoundEffect. , Resources.Load<AudioClip>("Audio/Effects/")},
-            
+            { GameSoundEffect.Blast1 , Resources.Load<AudioClip>("Audio/Effects/Blast1")},
+            { GameSoundEffect.Blast2 , Resources.Load<AudioClip>("Audio/Effects/Blast2")},
+            { GameSoundEffect.Blast3 , Resources.Load<AudioClip>("Audio/Effects/Blast3")},
+            { GameSoundEffect.Blast4 , Resources.Load<AudioClip>("Audio/Effects/Blast4")},
+            { GameSoundEffect.Blast5 , Resources.Load<AudioClip>("Audio/Effects/Blast5")},
+            { GameSoundEffect.Blast6 , Resources.Load<AudioClip>("Audio/Effects/Blast6")},
+            { GameSoundEffect.BulletGlassImpact , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_glass22_01")},
+            { GameSoundEffect.BulletMetalImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal02_22")},
+            { GameSoundEffect.BulletMetalImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal03_22")},
+            { GameSoundEffect.BulletMetalImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal04_22")},
+            { GameSoundEffect.BulletMetalImpact4 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal05_22")},
+            { GameSoundEffect.BulletMetalImpact5 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal06_me_22")},
+            { GameSoundEffect.BulletStoneImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone01_22")},
+            { GameSoundEffect.BulletStoneImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone02_22")},
+            { GameSoundEffect.BulletStoneImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone22_02")},
+            { GameSoundEffect.BulletWoodImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_01")},
+            { GameSoundEffect.BulletWoodImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_02")},
+            { GameSoundEffect.EnemyBomberEngine, Resources.Load<AudioClip>("Audio/Effects/Bomber sound")},
+            { GameSoundEffect.GunFire1, Resources.Load<AudioClip>("Audio/Effects/gun_fixedgun22_07e")},
+            { GameSoundEffect.GunFire2, Resources.Load<AudioClip>("Audio/Effects/gun_assault_rifle_withbullet22_01")},
+            { GameSoundEffect.GunFire3 , Resources.Load<AudioClip>("Audio/Effects/gun_uzi_withbullet22_01d")},
+            { GameSoundEffect.PlayerAirplaneEngine, Resources.Load<AudioClip>("Audio/Effects/Airplane sound")},
+            { GameSoundEffect.RocketFire1, Resources.Load<AudioClip>("Audio/Effects/gun_rocketlauncher22")},
+            { GameSoundEffect.RocketFire2, Resources.Load<AudioClip>("Audio/Effects/gun_hybrid_rocket01b_22")},
         };
 
         //create audio game object
@@ -299,6 +332,23 @@ class AudioManager
         else
         {
             Debug.Log("AudioListener is already unpaused.");
+        }
+    }
+
+    /// <summary>
+    /// Gets a game sound effect audio clip
+    /// </summary>
+    /// <param name="effect">the clip to get</param>
+    /// <returns>the audio clip</returns>
+    public AudioClip GetAudioClip(GameSoundEffect effect)
+    {
+        if (gameSoundEffectsDict.ContainsKey(effect))
+        {
+            return gameSoundEffectsDict[effect];
+        }
+        else
+        {
+            return null;
         }
     }
 

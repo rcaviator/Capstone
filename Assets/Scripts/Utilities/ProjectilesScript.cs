@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ProjectilesScript : PauseableObject
 {
-
     float bulletLifetime = 0;
     float startTime = 0;
 
@@ -43,6 +42,22 @@ public class ProjectilesScript : PauseableObject
         if (collision.gameObject.tag == "Ground")
         {
             //Instantiate(explosion, transform.position, Quaternion.identity);
+            int rand = Random.Range(0, 2);
+            switch (rand)
+            {
+                case 0:
+                    AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletStoneImpact1);
+                    break;
+                case 1:
+                    AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletStoneImpact2);
+                    break;
+                case 2:
+                    AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletStoneImpact3);
+                    break;
+                default:
+                    break;
+            }
+            
             Destroy(gameObject);
         }
     }

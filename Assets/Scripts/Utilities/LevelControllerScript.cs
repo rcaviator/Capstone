@@ -6,9 +6,24 @@ public class LevelControllerScript : MonoBehaviour
 {
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
-		
+        //temp ground generation code
+        //first airport
+        for (int i = 0; i < 40; i++)
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top"), new Vector3(i - 10, -5, 0), Quaternion.identity);
+        }
+        //main ground
+        for (int i = 40; i < 280; i++)
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(i - 10, -5, 0), Quaternion.identity);
+        }
+        //second airport
+        for (int i = 280; i < 320; i++)
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top"), new Vector3(i - 10, -5, 0), Quaternion.identity);
+        }
 	}
 	
 	// Update is called once per frame

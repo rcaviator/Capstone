@@ -13,9 +13,12 @@ public class PlayerScript : PauseableObject
     #region Fields
 
     //player fields
-    float health = Constants.PLAYER_STARTING_HEALTH;
+    //Health = Constants.PLAYER_STARTING_HEALTH;
     float currentHorizontalSpeed = 0f;
     float currentVerticalSpeed = 0f;
+
+    //audio source
+    AudioSource aSource;
 
     //healthbar
     [SerializeField]
@@ -31,8 +34,20 @@ public class PlayerScript : PauseableObject
     float autoFireTimer = 0f;
     bool canShoot = false;
 
+    //take off and landing timing controls
+    float takeOffGroundRollTime = 2f;
+    float takeOffGroundRollTimer = 0f;
+    float takeOffClimbRate = 1f;
+    float landingHeight = 0f;
+    float landingDecentRate = 0f;
+    //float landingGroundRollTime = 2f;
+    //float landingGroundRollTimer = 0f;
+    float timeUntilLanding = 3f;
+
     //camera clamp fields
     float dist;
+    float width;
+    float height;
     float leftLimitation;
     float rightLimitation;
     float upLimitation;
@@ -55,8 +70,16 @@ public class PlayerScript : PauseableObject
         //resets camera for canvas component
         transform.GetChild(0).GetComponent<Canvas>().worldCamera = Camera.main;
 
+        Health = Constants.PLAYER_STARTING_HEALTH;
+
         normalHealthBar = healthBar.sprite;
         damagedHealthBar = Resources.Load<Sprite>("Graphics/Universals/HealthBarDamagedSprite");
+
+        //set audio source
+        aSource = GetComponent<AudioSource>();
+        aSource.clip = AudioManager.Instance.GetAudioClip(GameSoundEffect.PlayerAirplaneEngine);
+        aSource.Play();
+        aSource.loop = true;
     }
 	
 	// Update is called once per frame
@@ -66,11 +89,13 @@ public class PlayerScript : PauseableObject
         if (!GameManager.Instance.Paused)
         {
             //set clamping fields
+            width = GetComponent<Collider2D>().bounds.size.x;
+            height = GetComponent<Collider2D>().bounds.size.y;
             dist = transform.position.z - GameManager.Instance.PlayerCamera.transform.position.z;
-            leftLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 0f, dist)).x;
-            rightLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(1f, 0f, dist)).x;
-            upLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 1f, dist)).y;
-            downLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 0f, dist)).y;
+            leftLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 0f, dist)).x + (width / 2);
+            rightLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(1f, 0f, dist)).x - (width / 2);
+            upLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 1f, dist)).y - (height / 2);
+            downLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 0f, dist)).y + (height / 2);
 
             //follow the camera's relative position
             rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
@@ -81,8 +106,28 @@ public class PlayerScript : PauseableObject
                 case PlayerState.None:
                     break;
                 case PlayerState.AutoPilotTakeOff:
+                    //ground roll takeoff
+                    if (takeOffGroundRollTimer < takeOffGroundRollTime)
+                    {
+                        takeOffGroundRollTimer += Time.deltaTime;
+                    }
+                    //climb
+                    else
+                    {
+                        rBody.velocity = new Vector2(rBody.velocity.x, rBody.velocity.y + takeOffClimbRate);
+                    }
                     break;
                 case PlayerState.AutoPilotLanding:
+                    //landing
+                    if (transform.position.y > -Constants.LEVEL_EDITOR_GRID_OFFSET_Y + 1)
+                    {
+                        rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, -landingDecentRate);
+                    }
+                    else
+                    {
+                        GameManager.Instance.PlayerCamera.Landed = true;
+                        //Debug.Log("slow down phase");
+                    }
                     break;
                 case PlayerState.Manual:
 
@@ -227,7 +272,7 @@ public class PlayerScript : PauseableObject
             }
 
             //update health bar
-            healthBar.fillAmount = health / Constants.PLAYER_STARTING_HEALTH;
+            healthBar.fillAmount = Health / Constants.PLAYER_STARTING_HEALTH;
 
             //flash health bar if damaged
             if (flashHealthBar)
@@ -249,12 +294,13 @@ public class PlayerScript : PauseableObject
             }
 
             //health control
-            if (health <= 0f)
+            if (Health <= 0f)
             {
-                MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+                MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }
 
-            
+            //engine audio control
+            //aSource.pitch = Mathf.Clamp(, 0f, 2f);
         }
 
         #region Player Clamp Control
@@ -270,10 +316,27 @@ public class PlayerScript : PauseableObject
     public PlayerState State
     { get; set; }
 
+    /// <summary>
+    /// The player health
+    /// </summary>
+    public float Health
+    { get; set; }
+
 
     public bool InputPlayerShoot
     { get; set; }
 
+
+    public void PrepareForLanding()
+    {
+        landingHeight = transform.position.y + Constants.LEVEL_EDITOR_GRID_OFFSET_Y - 1;
+        landingHeight = Mathf.Abs(landingHeight);
+
+        landingDecentRate = landingHeight / timeUntilLanding;
+        //reset velocity for next update
+        rBody.velocity = new Vector2(0, 0);
+        State = PlayerState.AutoPilotLanding;
+    }
 
     private void BasicAttack()
     {
@@ -286,13 +349,21 @@ public class PlayerScript : PauseableObject
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            health -= 20f;
+            Health -= 20f;
             flashHealthBar = true;
         }
         else if (collision.gameObject.tag == "EnemyBullet")
         {
-            health -= 10f;
+            Health -= 10f;
             flashHealthBar = true;
+        }
+
+        if (collision.gameObject.tag == "Ground")
+        {
+            if (State == PlayerState.Manual)
+            {
+                Health -= Constants.GROUND_DAMAGE;
+            }
         }
     }
 }

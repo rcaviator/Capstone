@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EndLevelTriggerScript : MonoBehaviour
 {
+    bool firstPlayerEnter = true;
 
 	// Use this for initialization
 	void Awake ()
@@ -23,8 +24,14 @@ public class EndLevelTriggerScript : MonoBehaviour
 
         if (collision.tag == "Player")
         {
-            //Destroy(GameManager.Instance.Reticle.gameObject);
-            MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+            if (firstPlayerEnter)
+            {
+                firstPlayerEnter = false;
+                //Destroy(GameManager.Instance.Reticle.gameObject);
+                //MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+                //GameManager.Instance.Player.State = PlayerScript.PlayerState.AutoPilotLanding;
+                GameManager.Instance.Player.PrepareForLanding();
+            }
         }
     }
 }

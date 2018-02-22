@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerBasicBulletScript : ProjectilesScript
 {
-    float bulletLifetime = 0;
-    float startTime = 0;
+    //float bulletLifetime = 0;
+    //float startTime = 0;
 
 
     // Use this for initialization
@@ -13,7 +13,7 @@ public class PlayerBasicBulletScript : ProjectilesScript
     {
         base.Awake();
 
-        
+        AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.GunFire1);
     }
 
     /// <summary>
@@ -48,6 +48,59 @@ public class PlayerBasicBulletScript : ProjectilesScript
     {
         base.OnCollisionEnter2D(collision);
 
+        int rand = Random.Range(0, 7);
+        switch (rand)
+        {
+            case 0:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletGlassImpact);
+                break;
+            case 1:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletMetalImpact1);
+                break;
+            case 2:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletMetalImpact2);
+                break;
+            case 3:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletMetalImpact3);
+                break;
+            case 4:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletMetalImpact4);
+                break;
+            case 5:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletMetalImpact5);
+                break;
+            case 6:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletWoodImpact1);
+                break;
+            case 7:
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.BulletWoodImpact2);
+                break;
+            default:
+                break;
+        }
 
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
+        {
+            if (collision.gameObject.GetComponent<Rigidbody2D>() != null)
+            {
+                int rand1 = Random.Range(0, 1);
+                switch (rand1)
+                {
+                    case 0:
+                        GameObject spark = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Bullet_Ricochet_Sparks_1"), transform.position, Quaternion.identity);
+                        spark.GetComponent<BulletRicochetSparksScript>().Initialize(collision.gameObject.GetComponent<Rigidbody2D>().velocity);
+                        break;
+                    case 1:
+                        GameObject spark2 = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Bullet_Ricochet_Sparks_2"), transform.position, Quaternion.identity);
+                        spark2.GetComponent<BulletRicochetSparksScript>().Initialize(collision.gameObject.GetComponent<Rigidbody2D>().velocity);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            Destroy(gameObject);
+        }
+        
     }
 }

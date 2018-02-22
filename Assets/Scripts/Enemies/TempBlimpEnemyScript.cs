@@ -16,6 +16,8 @@ public class TempBlimpEnemyScript : PauseableObject
     float maxHealthBarFlash = 0.2f;
     float healthBarFlash = 0f;
 
+    float slowRocketTimer = Constants.ENEMY_SLOW_ROCKET_COOLDOWN_TIMER;
+
 
     // Use this for initialization
     protected override void Awake ()
@@ -58,8 +60,9 @@ public class TempBlimpEnemyScript : PauseableObject
 
         if (health <= 0f)
         {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/ModerateExplosion"), transform.position, Quaternion.identity);
+            GameManager.Instance.Score += Constants.ENEMY_TEMP_BLIMP_SCORE;
             Destroy(gameObject);
-            GameManager.Instance.Score += 20;
         }
 	}
 
@@ -68,15 +71,32 @@ public class TempBlimpEnemyScript : PauseableObject
     {
         if (collision.gameObject.tag == "Player")
         {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
-            //increase score
-            GameManager.Instance.Score += 20;
+            //GameManager.Instance.Score += Constants.ENEMY_TEMP_BLIMP_SCORE;
         }
         else if (collision.gameObject.tag == "PlayerBullet")
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
             flashHealthBar = true;
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            if (slowRocketTimer >= Constants.ENEMY_SLOW_ROCKET_COOLDOWN_TIMER)
+            {
+                /*GameObject rocket =*/ Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemySlowRocket"), new Vector3(transform.position.x, transform.position.y - 1, 0), Quaternion.identity);
+                //rocket.GetComponent<EnemySlowRocketScript>().
+                slowRocketTimer = 0f;
+            }
+            else
+            {
+                slowRocketTimer += Time.deltaTime;
+            }
         }
     }
 }
