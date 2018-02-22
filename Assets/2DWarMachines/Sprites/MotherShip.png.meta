@@ -1,0 +1,190 @@
+fileFormatVersion: 2
+guid: 1bf1d55b820496d4dada11e1ec72bb50
+labels:
+- Carrier
+- Airplane
+- Machine
+- War
+- Fly
+- Sprite
+- 2D
+- Turret
+timeCreated: 1471432398
+licenseType: Store
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: MotherShip_0
+    21300002: MotherShip_1
+    21300004: MotherShip_2
+    21300006: MotherShip_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: MotherShip_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 402
+        width: 990
+        height: 442
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 217, y: -213}
+        - {x: 247, y: -209}
+        - {x: 296, y: -202}
+        - {x: 358, y: -188}
+        - {x: 392, y: -177}
+        - {x: 424, y: -165}
+        - {x: 436, y: -160}
+        - {x: 470, y: -140}
+        - {x: 494, y: -114}
+        - {x: 495, y: -109}
+        - {x: 495, y: -59}
+        - {x: -113, y: -59}
+        - {x: -113, y: -27}
+        - {x: -115, y: -25}
+        - {x: -191, y: -25}
+        - {x: -139, y: 91}
+        - {x: -137, y: 93}
+        - {x: -107, y: 125}
+        - {x: -107, y: 127}
+        - {x: -109, y: 129}
+        - {x: -191, y: 155}
+        - {x: -193, y: 157}
+        - {x: -221, y: 157}
+        - {x: -220, y: 220}
+        - {x: -223, y: 221}
+        - {x: -228, y: 221}
+        - {x: -248, y: 198}
+        - {x: -259, y: 157}
+        - {x: -259, y: 221}
+        - {x: -267, y: 221}
+        - {x: -288, y: 198}
+        - {x: -313, y: 155}
+        - {x: -313, y: 59}
+        - {x: -318, y: 54}
+        - {x: -332, y: 26}
+        - {x: -343, y: 1}
+        - {x: -371, y: -54}
+        - {x: -376, y: -40}
+        - {x: -398, y: 8}
+        - {x: -409, y: 34}
+        - {x: -424, y: 57}
+        - {x: -438, y: 54}
+        - {x: -483, y: 43}
+        - {x: -490, y: 28}
+        - {x: -489, y: 5}
+        - {x: -493, y: -39}
+        - {x: -495, y: -60}
+        - {x: -495, y: -108}
+        - {x: -486, y: -134}
+        - {x: -476, y: -142}
+        - {x: -458, y: -147}
+        - {x: -446, y: -144}
+        - {x: -433, y: -133}
+        - {x: -420, y: -139}
+        - {x: -398, y: -154}
+        - {x: -374, y: -166}
+        - {x: -336, y: -180}
+        - {x: -307, y: -187}
+        - {x: -263, y: -199}
+        - {x: -229, y: -205}
+        - {x: -183, y: -211}
+        - {x: -167, y: -213}
+        - {x: -149, y: -215}
+        - {x: -129, y: -217}
+        - {x: -105, y: -219}
+        - {x: -77, y: -221}
+        - {x: 127, y: -221}
+        - {x: 155, y: -219}
+        - {x: 179, y: -217}
+    - name: MotherShip_1
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 182
+        width: 104
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 86}
+        - {x: -52, y: 65}
+        - {x: -52, y: -84}
+        - {x: -51, y: -86}
+        - {x: 52, y: -86}
+        - {x: 52, y: 55}
+        - {x: 32, y: 86}
+    - name: MotherShip_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 108
+        width: 254
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: MotherShip_3
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 72
+        width: 82
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: art
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

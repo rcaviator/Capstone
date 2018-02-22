@@ -30,6 +30,8 @@ public static class Constants
 
     //game play constants
     public const float CAMERA_SPEED = 10f;
+    public const float BULLET_RICOCHET_SPARKS_LIFETIME = 0.1f;
+    public const float GROUND_DAMAGE = 5f;
 
     #endregion
 
@@ -37,9 +39,9 @@ public static class Constants
 
     public const float PLAYER_STARTING_HEALTH = 100f;
     public const float PLAYER_SCREEN_MOVEMENT_SPEED = 50f;
-    public const float PLAYER_HORIZONTAL_ACCELERATION = 10f;
+    public const float PLAYER_HORIZONTAL_ACCELERATION = 20f;
     public const float PLAYER_MAX_HORIZONTAL_SPEED = 100f;
-    public const float PLAYER_VERTICAL_ACCELERATION = 10f;
+    public const float PLAYER_VERTICAL_ACCELERATION = 20f;
     public const float PLAYER_MAX_VERTICAL_SPEED = 25f;
     public const float PLAYER_BASIC_BULLET_DAMAGE = 10f;
     public const float PLAYER_BASIC_BULLET_ATTACK_LIFETIME = 0.15f;
@@ -51,6 +53,19 @@ public static class Constants
     #region Enemy Constants
 
     public const float ENEMY_TEMP_BLIMP_HEALTH = 100f;
+    public const int ENEMY_TEMP_BLIMP_SCORE = 20;
+    public const float ENEMY_SLOW_ROCKET_HEALTH = 30f;
+    public const float ENEMY_FAST_ROCKET_HEALTH = 10f;
+    public const float ENEMY_SLOW_ROCKET_COOLDOWN_TIMER = 4f;
+    public const float ENEMY_FAST_ROCKET_COOLDOWN_TIMER = 2f;
+    public const float ENEMY_SLOW_ROCKET_DAMAGE = 30f;
+    public const float ENEMY_FAST_ROCKET_DAMAGE = 10f;
+    public const float ENEMY_SLOW_ROCKET_LIFETIME = 5f;
+    public const float ENEMY_FAST_ROCKET_LIEFTIME = 2f;
+    public const float ENEMY_SLOW_ROCKET_SPEED = 3f;
+    public const float ENEMY_FAST_ROCKET_SPEED = 6f;
+    public const int ENEMY_SLOW_ROCKET_SCORE = 5;
+    public const int ENEMY_FAST_ROCKET_SCORE = 10;
 
     #endregion
 

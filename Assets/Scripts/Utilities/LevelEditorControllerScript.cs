@@ -40,6 +40,11 @@ public class LevelEditorControllerScript : MonoBehaviour
             //}
             PlaceCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
+
+        if (InputManager.Instance.GetButtonDown(PlayerAction.PauseGame))
+        {
+            MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+        }
     }
 
     public List<Vector3> GridPoints
