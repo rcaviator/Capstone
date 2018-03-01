@@ -13,10 +13,10 @@ public enum MusicSoundEffect
     None,
 
     //menus
-    MainMenu,
+    MainMenu, Tutorial, PreLevel, EndLevel, LevelEditor,
 
     //game environment
-
+    GameLevel,
 }
 
 /// <summary>
@@ -109,8 +109,12 @@ class AudioManager
         musicSoundEffectsDict = new Dictionary<MusicSoundEffect, AudioClip>()
         {
             //leave MusicSoundEffect.None out
-            { MusicSoundEffect.MainMenu, Resources.Load<AudioClip>("Audio/Music/") },
-
+            { MusicSoundEffect.MainMenu, Resources.Load<AudioClip>("Audio/Music/Victoria 2 Soundtrack - We Have Independence") },
+            { MusicSoundEffect.GameLevel, Resources.Load<AudioClip>("Audio/Music/Cyberden") },
+            { MusicSoundEffect.Tutorial, Resources.Load<AudioClip>("Audio/Music/") },
+            { MusicSoundEffect.PreLevel, Resources.Load<AudioClip>("Audio/Music/Hearts of Iron IV - Luftwaffe Strikers Again") },
+            { MusicSoundEffect.EndLevel, Resources.Load<AudioClip>("Audio/Music/") },
+            { MusicSoundEffect.LevelEditor, Resources.Load<AudioClip>("Audio/Music/") },
         };
 
         //create and populate the UI dictionary
@@ -179,6 +183,18 @@ class AudioManager
     {
         get { return instance ?? (instance = new AudioManager()); }
     }
+
+    /// <summary>
+    /// The music volume
+    /// </summary>
+    public float MusicVolume
+    { get; set; }
+
+    /// <summary>
+    /// The sound effects volume
+    /// </summary>
+    public float SoundEffectsVolume
+    { get; set; }
 
     #region Background Music
 

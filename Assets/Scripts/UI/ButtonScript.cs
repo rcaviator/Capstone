@@ -14,18 +14,6 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField]
     Scenes goToScene;
 
-    ////main menu to change to if applicable. leave on None if n/a
-    //[SerializeField]
-    //MainMenus mainMenuToGoTo;
-
-    ////prelevel menu to change to if applicable. leave on None if n/a
-    //[SerializeField]
-    //PreLevelMenus preLevelMenuToGoTo;
-
-    ////pause menu to change to if applicable. leave on None if n/a
-    //[SerializeField]
-    //PauseMenuPanel pauseMenuToGoTo;
-
     //animated button fields
     bool increaseScale = false;
     float timer = 0f;

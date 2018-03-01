@@ -118,6 +118,12 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for button referencing
+    /// </summary>
+    public LevelEditorControllerScript LevelEditorController
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

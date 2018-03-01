@@ -119,7 +119,7 @@ public class PlayerScript : PauseableObject
                     break;
                 case PlayerState.AutoPilotLanding:
                     //landing
-                    if (transform.position.y > -Constants.LEVEL_EDITOR_GRID_OFFSET_Y + 1)
+                    if (transform.position.y >= -Constants.LEVEL_EDITOR_GRID_OFFSET_Y + 1f)
                     {
                         rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, -landingDecentRate);
                     }

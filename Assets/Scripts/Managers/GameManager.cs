@@ -45,6 +45,12 @@ class GameManager
     }
 
     /// <summary>
+    /// Are the objects being spawned in the game or level editor scene
+    /// </summary>
+    public bool IsLevelEditor
+    { get; set; }
+
+    /// <summary>
     /// The camera the player stays within
     /// </summary>
     public CameraControllerScript PlayerCamera
