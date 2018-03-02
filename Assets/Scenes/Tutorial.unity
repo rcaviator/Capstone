@@ -989,7 +989,7 @@ MonoBehaviour:
     airport.
 
     Airplane automatically moves left to right, but you can control the airplane''s
-    local potition with WASD.
+    local position with WASD.
 
     Press and hold Left-Click to fire machine gun turret (unlimited ammo).
 
