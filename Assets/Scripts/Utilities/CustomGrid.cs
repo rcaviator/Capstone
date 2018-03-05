@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
 public class CustomGrid : MonoBehaviour
 {
+    //line renderer component
     LineRenderer gridLines;
-
-    //create the grid drawing points
-    List<Vector3> tempGrid = new List<Vector3>();
-    List<Vector3> gridDrawPoints = new List<Vector3>();
 
     //list for game objects
     List<GameObject> gameObjects = new List<GameObject>();
@@ -34,91 +32,77 @@ public class CustomGrid : MonoBehaviour
 
         #region Grid Initialization
 
-        GridPoints = new List<CustomGridCell>();
+        //declare the grid and grid draw points arrays
+        GridPoints = new CustomGridCell[Constants.LEVEL_EDITOR_GRID_SIZE_X, Constants.LEVEL_EDITOR_GRID_SIZE_Y];
+        DrawGridPoints2DArray = new Vector3[Constants.LEVEL_EDITOR_GRID_SIZE_X + 1, Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1];
+        DrawGridPointsPositionList = new List<Vector3>();
 
         //populate the point array
-        float x = 0;
-        float y = 0;
-        for (int p = 0; p < (Constants.LEVEL_EDITOR_GRID_SIZE_X * Constants.LEVEL_EDITOR_GRID_SIZE_Y); p++)
+        int x = 0;
+        int y = 0;
+        for (y = 0; y < Constants.LEVEL_EDITOR_GRID_SIZE_Y; y++)
         {
-            GridPoints.Add(new CustomGridCell(new Vector3(x, y, 0)));
-
-            y += Constants.LEVEL_EDITOR_SPACING;
-
-            if (y >= (Constants.LEVEL_EDITOR_GRID_SIZE_Y * Constants.LEVEL_EDITOR_SPACING))
+            for (x = 0; x < Constants.LEVEL_EDITOR_GRID_SIZE_X; x++)
             {
-                y = 0;
-                x += Constants.LEVEL_EDITOR_SPACING;
+                GridPoints[x, y] = new CustomGridCell(new Vector3(x, y, 0), new Vector2(x, y));
             }
-        }
-
-        //reuse x and y for drawing grid points axis steping. reset them to 0
-        x = 0;
-        y = 0;
-
-        //shift the vertex array over
-        for (int p = 0; p < GridPoints.Count; p++)
-        {
-            Vector3 temp = GridPoints[p].GridLocation;
-            temp.x -= Constants.LEVEL_EDITOR_GRID_OFFSET_X;
-            temp.y -= Constants.LEVEL_EDITOR_GRID_OFFSET_Y;
-            GridPoints[p].GridLocation = temp;
         }
 
         #endregion
 
         #region Draw Grid
 
-        float drawX = 0;
-        float drawY = 0;
-        for (int dp = 0; dp < ((Constants.LEVEL_EDITOR_GRID_SIZE_X + 1) * (Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1)); dp++)
+        //populate the draw grid array only on the sides
+        //bottom row
+        for (int xStep = 0; xStep < DrawGridPoints2DArray.GetLength(0); xStep++)
         {
-            tempGrid.Add(new Vector3(drawX, drawY, 0));
-
-            drawY += Constants.LEVEL_EDITOR_SPACING;
-
-            if (drawY >= ((Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1) * Constants.LEVEL_EDITOR_SPACING))
-            {
-                drawY = 0;
-                drawX += Constants.LEVEL_EDITOR_SPACING;
-            }
+            DrawGridPoints2DArray[xStep, 0] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, 0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+        }
+        //top row
+        for (int xStep = 0; xStep < DrawGridPoints2DArray.GetLength(0); xStep++)
+        {
+            DrawGridPoints2DArray[xStep, DrawGridPoints2DArray.GetLength(1) - 1] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, DrawGridPoints2DArray.GetLength(1) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+        }
+        //left column
+        for (int yStep = 0; yStep < DrawGridPoints2DArray.GetLength(1); yStep++)
+        {
+            DrawGridPoints2DArray[0, yStep] = new Vector3(0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+        }
+        //right column
+        for (int yStep = 0; yStep < DrawGridPoints2DArray.GetLength(1); yStep++)
+        {
+            DrawGridPoints2DArray[DrawGridPoints2DArray.GetLength(0) - 1, yStep] = new Vector3(DrawGridPoints2DArray.GetLength(0) - 1 /*- Constants.LEVEL_EDITOR_GRID_OFFSET_X */- Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep /*- Constants.LEVEL_EDITOR_GRID_OFFSET_Y */- Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
         }
 
-        //set offset
-        for (int p = 0; p < tempGrid.Count; p++)
-        {
-            Vector3 temp = tempGrid[p];
-            temp.x -= Constants.LEVEL_EDITOR_GRID_OFFSET_X;
-            temp.y -= Constants.LEVEL_EDITOR_GRID_OFFSET_Y;
-            tempGrid[p] = temp;
-        }
+        //reset x and y for drawing
+        x = 0;
+        y = 0;
 
         #region X Axis
 
         //handle x axis populating
         bool xClimb = true;
         bool xUp = true;
-        int xIndexer = 0;
 
-        //start at and add the first vertix point to the list. then loop through until x has reached the end
-        while (x <= Constants.LEVEL_EDITOR_GRID_SIZE_X)
+        //start and add the first grid point to the list. then loop through until x has reached the end
+        while (x < DrawGridPoints2DArray.GetLength(0))
         {
             //add point
-            gridDrawPoints.Add(new Vector3(tempGrid[xIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[xIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
+            DrawGridPointsPositionList.Add(DrawGridPoints2DArray[x, y]);
 
-            //calculate what the index of the next point is to be
+            //determine what the coordinate of the next point is to be
             //do we need to climb?
             if (xClimb)
             {
                 //do we climb up or down?
                 if (xUp)
                 {
-                    xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y;//-1
+                    y += DrawGridPoints2DArray.GetLength(1) - 1;
                     xUp = false;
                 }
                 else
                 {
-                    xIndexer -= Constants.LEVEL_EDITOR_GRID_SIZE_Y;//-1
+                    y -= DrawGridPoints2DArray.GetLength(1) - 1;
                     xUp = true;
                 }
 
@@ -133,14 +117,6 @@ public class CustomGrid : MonoBehaviour
 
                 //we have shifted over on x, increment
                 x++;
-
-                //if this was the last point, break. xIndexer is used as the starting index for y populating
-                if (x == Constants.LEVEL_EDITOR_GRID_SIZE_X + 1)
-                {
-                    break;
-                }
-
-                xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1;
             }
         }
 
@@ -148,20 +124,18 @@ public class CustomGrid : MonoBehaviour
 
         #region Y Axis
 
+        bool drawY = true;
         //handle y axis populating
         bool jumpOver = true;
         bool yLeft = true;
-        int yIndexer = xIndexer;
 
         //are we on the top or bottom of the grid after x popluating?
-        if (tempGrid[yIndexer].y == 0 - Constants.LEVEL_EDITOR_GRID_OFFSET_Y)
+        //moving from bottom to top
+        if (y == 0 && drawY)
         {
-            //moving from bottom to top variables
-            int leftClimber = 0;
-            int rightClimber = tempGrid.Count - (Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1);
-
+            Debug.Log("bottom");
             //calculate the next point before adding it to the list. then loop through until the end of y
-            while (y <= Constants.LEVEL_EDITOR_GRID_SIZE_Y)
+            while (y < DrawGridPoints2DArray.GetLength(1))
             {
                 //do we jump over?
                 if (jumpOver)
@@ -169,18 +143,14 @@ public class CustomGrid : MonoBehaviour
                     //do we jump over left or right?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftClimber;
+                        x = 0;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightClimber;
+                        x = DrawGridPoints2DArray.GetLength(0) - 1;
                     }
 
-                    //prepare for next jump
-                    leftClimber++;
-                    rightClimber++;
+                    //prepare for climb up
                     jumpOver = false;
                 }
                 //else climb up
@@ -189,21 +159,16 @@ public class CustomGrid : MonoBehaviour
                     //which side are we climbing?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftClimber;
-
                         //prepare for next jump
                         yLeft = false;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightClimber;
-
                         //prepare for next jump
                         yLeft = true;
                     }
 
+                    //prepare for jump
                     jumpOver = true;
 
                     //increment y since this was a climb jump
@@ -211,24 +176,20 @@ public class CustomGrid : MonoBehaviour
                 }
 
                 //index protection
-                if (y == Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1)
+                if (y == DrawGridPoints2DArray.GetLength(1))
                 {
                     break;
                 }
 
                 //add point
-                gridDrawPoints.Add(new Vector3(tempGrid[yIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[yIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
+                DrawGridPointsPositionList.Add(DrawGridPoints2DArray[x, y]);
             }
         }
-        else
+        //moving from top to bottom
+        else if (drawY)
         {
-            //moving from top to bottom
-            y = Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1;
-            int leftDecender = Constants.LEVEL_EDITOR_GRID_SIZE_Y;
-            int rightDecender = tempGrid.Count - 1;
-
             //calculate the next point before adding it to the list. then loop through until the end of y
-            while (y > 0)
+            while (y >= 0)
             {
                 //do we jump over?
                 if (jumpOver)
@@ -236,64 +197,54 @@ public class CustomGrid : MonoBehaviour
                     //do we jump over left or right?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftDecender;
+                        x = 0;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightDecender;
+                        x = DrawGridPoints2DArray.GetLength(0) - 1;
                     }
 
-                    //prepare for next jump
-                    leftDecender--;
-                    rightDecender--;
+                    //prepare for climb down
                     jumpOver = false;
                 }
-                //else climb up
+                //else climb down
                 else
                 {
-                    //which side are we climbing?
+                    //which side are we climbing down?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftDecender;
-
-                        //prepare for next jump
                         yLeft = false;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightDecender;
-
-                        //prepare for next jump
                         yLeft = true;
                     }
 
+                    //prepare for jump
                     jumpOver = true;
 
                     //decrement y since this was a decending jump
                     y--;
                 }
 
-                //index protection
-                if (y == 0)
+                //bounds check
+                if (y == -1)
                 {
                     break;
                 }
 
                 //add point
-                gridDrawPoints.Add(new Vector3(tempGrid[yIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[yIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
+                DrawGridPointsPositionList.Add(DrawGridPoints2DArray[x, y]);
             }
 
         }
 
         #endregion
 
+        //send draw position vector list to line renderer
         gridLines.loop = false;
-        gridLines.positionCount = gridDrawPoints.Count;
-        gridLines.SetPositions(gridDrawPoints.ToArray());
+        gridLines.positionCount = DrawGridPointsPositionList.Count;
+        gridLines.SetPositions(DrawGridPointsPositionList.ToArray());
 
         #endregion
     }
@@ -301,7 +252,19 @@ public class CustomGrid : MonoBehaviour
     /// <summary>
     /// The List of grid points as grid cells
     /// </summary>
-    public List<CustomGridCell> GridPoints
+    public CustomGridCell[,] GridPoints
+    { get; set; }
+
+    /// <summary>
+    /// The list of vectors for drawing the grid line with Line Renderer
+    /// </summary>
+    private List<Vector3> DrawGridPointsPositionList
+    { get; set; }
+
+    /// <summary>
+    /// The vector array for storing points to be used in DrawGridPointsPositionList
+    /// </summary>
+    private Vector3[,] DrawGridPoints2DArray
     { get; set; }
 
     /// <summary>
@@ -313,31 +276,26 @@ public class CustomGrid : MonoBehaviour
     public CustomGridCell GetGridCellInGrid(Vector3 location)
     {
         //round the x and y of the position to test
-        int xCount = Mathf.RoundToInt(location.x / Constants.LEVEL_EDITOR_SPACING);
-        int yCount = Mathf.RoundToInt(location.y / Constants.LEVEL_EDITOR_SPACING);
-        //int zCount = Mathf.RoundToInt(location.z / Constants.LEVEL_EDITOR_SPACING);
+        int xPosition = Mathf.RoundToInt(location.x);
+        int yPosition = Mathf.RoundToInt(location.y);
+        //int zPosition = Mathf.RoundToInt(location.z / Constants.LEVEL_EDITOR_SPACING);
 
-        //create a test location vector with the rounded values
-        Vector3 testLocation = new Vector3(xCount * Constants.LEVEL_EDITOR_SPACING, yCount * Constants.LEVEL_EDITOR_SPACING, 0);
-
-        //set looping index value
-        int index = 0;
-
-        //is the test location vector in the grid
-        foreach (CustomGridCell cell in GridPoints)
+        //bounds check
+        if (xPosition < 0 || xPosition > GridPoints.GetLength(0) - 1)
         {
-            //if the location is in the grid, return the grid cell
-            if (cell.GridLocation == testLocation)
-            {
-                return GridPoints[index];
-            }
-
-            index++;
+            //Debug.Log("GetGridCellInGrid: Location was outside the grid. Outside x");
+            return null;
+        }
+        //y bounds
+        else if (yPosition < 0 || yPosition > GridPoints.GetLength(1) - 1)
+        {
+            //Debug.Log("GetGridCellInGrid: Location was outside the grid. Outside y");
+            return null;
         }
 
-        //else return null for being outside the grid
-        Debug.Log("GetGridCellInGrid: Location was outside the grid");
-        return null;
+        //in bounds
+        //Debug.Log("In bounds");
+        return GridPoints[xPosition, yPosition];
     }
 
     /// <summary>
@@ -346,28 +304,23 @@ public class CustomGrid : MonoBehaviour
     /// <param name="cellObject">the object to place in the grid</param>
     public void SetGameObjectInGrid(CustomGridCell cell, GameObject cellObject)
     {
-        //if the cell is in the grid
-        if (GridPoints.Contains(cell))
-        {
-            //locate the index of the cell
-            int index = GridPoints.FindIndex(a => a == cell);
+        //get coordinates
+        int x = (int)cell.IndexLocation.x;
+        int y = (int)cell.IndexLocation.y;
 
-            //check if the cell is already occupied
-            if (!GridPoints[index].IsOccupied)
-            {
-                Debug.Log("SetGameObjectInGrid: Open cell at " + GridPoints[index].GridLocation + ". Setting " + cellObject.name);
-                GridPoints[index].CellObject = cellObject;
-            }
-            //do nothing if its already occupied
-            else
-            {
-                Debug.Log("SetGameObjectInGrid: Cell in use at " + GridPoints[index].GridLocation + " with " + GridPoints[index].CellObject.name);
-            }
-        }
-        else
+        //check if the cell is occupied
+        if (!GridPoints[x, y].IsOccupied)
         {
-            Debug.Log("SetGameObjectInGrid: Target cell is outside grid");
+            //set game object in grid and add to list
+            //Debug.Log("SetGameObjectInGrid: Open cell at " + GridPoints[x, y].GridLocation + ". Setting " + cellObject.name);
+            GridPoints[x, y].CellObject = cellObject;
+            gameObjects.Add(GridPoints[x, y].CellObject);
         }
+        //do nothing if its already occupied
+        //else
+        //{
+        //    Debug.Log("SetGameObjectInGrid: Cell in use at " + GridPoints[x, y].GridLocation + " with " + GridPoints[x, y].CellObject.name);
+        //}
     }
 
     /// <summary>
@@ -376,32 +329,74 @@ public class CustomGrid : MonoBehaviour
     /// <param name="cell">the cell to remove a game object from</param>
     public void RemoveGameObjectInGrid(CustomGridCell cell)
     {
-        //if the cell is in the grid
-        if (GridPoints.Contains(cell))
-        {
-            //locate the index of the cell
-            int index = GridPoints.FindIndex(a => a == cell);
+        //get coordinates
+        int x = (int)cell.IndexLocation.x;
+        int y = (int)cell.IndexLocation.y;
 
-            //check if the cell is already open
-            if (GridPoints[index].IsOccupied)
+        //check if there is an object in the cell
+        if (GridPoints[x, y].IsOccupied)
+        {
+            //remove game object from cell and remove from list
+            //Debug.Log("RemoveGameObjectInGrid: Removing game object in cell at " + GridPoints[x, y].GridLocation);
+            gameObjects.Remove(GridPoints[x, y].CellObject);
+            GridPoints[x, y].CellObject = null;
+        }
+        //else
+        //{
+        //    Debug.Log("RemoveGameObjectInGrid: Target cell is already empty at " + GridPoints[index].GridLocation);
+        //}
+    }
+
+
+    public void SaveModule()
+    {
+        //set file path
+        string file = Path.Combine(Application.persistentDataPath, "/Level_1_Module_1.mod");
+
+        //override the file
+        if (File.Exists(file))
+        {
+            File.Delete(file);
+        }
+
+        //open stream
+        using (Stream s = File.OpenWrite(file))
+        {
+            //create writer
+            using (BinaryWriter w = new BinaryWriter(s))
             {
-                Debug.Log("RemoveGameObjectInGrid: Removing game object in cell at " + GridPoints[index].GridLocation);
-                GridPoints[index].CellObject = null;
-            }
-            else
-            {
-                Debug.Log("RemoveGameObjectInGrid: Target cell is already empty at " + GridPoints[index].GridLocation);
+                //write header
+
             }
         }
+    }
+
+
+    public void LoadModule(string modulePath)
+    {
+
     }
 
     //private void OnDrawGizmos()
     //{
     //    //main grid
     //    Gizmos.color = Color.yellow;
-    //    foreach (Vector3 point in GridPoints)
+    //    for (int y = 0; y < GridPoints.GetLength(1); y++)
     //    {
-    //        Gizmos.DrawSphere(point, 0.1f);
+    //        for (int x = 0; x < GridPoints.GetLength(0); x++)
+    //        {
+    //            Gizmos.DrawSphere(GridPoints[x, y].GridLocation, 0.1f);
+    //        }
+    //    }
+
+    //    //draw points grid
+    //    Gizmos.color = Color.red;
+    //    for (int y = 0; y < DrawGridPoints2DArray.GetLength(1); y++)
+    //    {
+    //        for (int x = 0; x < DrawGridPoints2DArray.GetLength(0); x++)
+    //        {
+    //            Gizmos.DrawSphere(DrawGridPoints2DArray[x, y], 0.1f);
+    //        }
     //    }
     //}
 }

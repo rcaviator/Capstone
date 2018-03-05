@@ -14,9 +14,10 @@ public class CustomGridCell
     /// Constructor
     /// </summary>
     /// <param name="location">the cell location in the grid</param>
-    public CustomGridCell(Vector3 location, GameObject cellObject = null)
+    public CustomGridCell(Vector3 location, Vector2 indexLocation, GameObject cellObject = null)
     {
         GridLocation = location;
+        IndexLocation = indexLocation;
         CellObject = cellObject;
         if (CellObject)
         {
@@ -70,5 +71,11 @@ public class CustomGridCell
     /// The grid cell location
     /// </summary>
     public Vector3 GridLocation
+    { get; set; }
+
+    /// <summary>
+    /// Index location
+    /// </summary>
+    public Vector2 IndexLocation
     { get; set; }
 }
