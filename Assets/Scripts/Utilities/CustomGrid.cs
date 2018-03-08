@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+//using System.IO.Directory;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -10,16 +11,29 @@ public class CustomGrid : MonoBehaviour
     //line renderer component
     LineRenderer gridLines;
 
+    //dictionary of game object names and ids
+    Dictionary<string, Constants.ObjectIDs> objectNames;
+
     //list for game objects
     List<GameObject> gameObjects = new List<GameObject>();
 
-    //private void Awake ()
-    //{
-    //    if (gridLines)
-    //    {
-    //        gridLines = GetComponent<LineRenderer>();
-    //    }
-    //}
+    private void Awake()
+    {
+        //get line reneder reference
+        gridLines = GetComponent<LineRenderer>();
+
+        //initialize dictionary
+        objectNames = new Dictionary<string, Constants.ObjectIDs>()
+        {
+            { "Dirt_Block(Clone)", Constants.ObjectIDs.DirtBlock },
+            { "Dirt_Block_Grass(Clone)", Constants.ObjectIDs.DirtBlockGrass },
+            { "Dirt_Block_Sloped(Clone)", Constants.ObjectIDs.DirtBlockSloped },
+            { "Stone_Block(Clone)", Constants.ObjectIDs.StoneBlock },
+            { "Stone_Block_Sloped(Clone)", Constants.ObjectIDs.StoneBlockSloped },
+            { "Stone_Block_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockConcreteTop },
+            { "Stone_Block_Sloped_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockSlopedConcreteTop },
+        };
+    }
 
 
     public void Initialize()
@@ -348,14 +362,21 @@ public class CustomGrid : MonoBehaviour
     }
 
 
-    public void SaveModule()
+    public void SaveModule(int level, int number)
     {
+        //create the folder if it does not exist
+        if (!Directory.Exists(Application.dataPath + "/Modules"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Modules");
+        }
+
         //set file path
-        string file = Path.Combine(Application.persistentDataPath, "/Level_1_Module_1.mod");
+        string file = Application.dataPath + "/Modules" + "/Level_" + level.ToString() + "_Module_" + number.ToString() + ".mod";
 
         //override the file
         if (File.Exists(file))
         {
+            Debug.Log("Deleting " + file);
             File.Delete(file);
         }
 
@@ -365,16 +386,122 @@ public class CustomGrid : MonoBehaviour
             //create writer
             using (BinaryWriter w = new BinaryWriter(s))
             {
+                //Debug.Log("Writing header " + Constants.MODULE_FILE_HEADER + " with " + gameObjects.Count + " objects.");
                 //write header
+                w.Write(Constants.MODULE_FILE_HEADER.ToCharArray());
+                w.Write(gameObjects.Count);
 
+                //Debug.Log("Writing object types and locations");
+                //loop through game object list and save object type and location
+                foreach (GameObject item in gameObjects)
+                {
+                    //determine game object type
+                    w.Write((int)objectNames[item.name]);
+                    //Debug.Log((int)objectNames[item.name]);
+                    
+                    //write game object's location
+                    w.Write((int)item.transform.position.x);
+                    w.Write((int)item.transform.position.y);
+                    //Debug.Log(item.transform.position.x + "x " + item.transform.position.y + "y");
+                }
             }
         }
     }
 
 
-    public void LoadModule(string modulePath)
+    public void LoadModule(string moduleName)
     {
+        //set file path
+        Debug.Log(moduleName);
+        string file = Application.dataPath + "/Modules/" + moduleName;
 
+        //load the module if the file exists
+        if (File.Exists(file))
+        {
+            //prep grid for new module
+            ClearGrid();
+
+            //open stream
+            using (Stream s = File.OpenRead(file))
+            {
+                //create reader
+                using (BinaryReader r = new BinaryReader(s))
+                {
+                    //verify file is of correct format
+                    string head = new string(r.ReadChars(4));
+                    if (!head.Equals(Constants.MODULE_FILE_HEADER))
+                    {
+                        Debug.Log("File not of correct format");
+                        return;
+                    }
+
+                    //get number of game objects
+                    int numberOfGameObjects = r.ReadInt32();
+
+                    //loop through the file and create each game object, add to grid, and move it
+                    for (int i = 0; i < numberOfGameObjects; i++)
+                    {
+                        //get type
+                        int typeInt = r.ReadInt32();
+                        Constants.ObjectIDs type = (Constants.ObjectIDs)typeInt;
+
+                        //get position
+                        int x = r.ReadInt32();
+                        int y = r.ReadInt32();
+
+                        //create object
+                        switch (type)
+                        {
+                            case Constants.ObjectIDs.None:
+                                break;
+                            case Constants.ObjectIDs.DirtBlock:
+                                Debug.Log("Loading Dirt Block");
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
+                                gameObjects.Add(GridPoints[x, y].CellObject);
+                                break;
+                            case Constants.ObjectIDs.DirtBlockGrass:
+                                break;
+                            case Constants.ObjectIDs.DirtBlockSloped:
+                                break;
+                            case Constants.ObjectIDs.StoneBlock:
+                                break;
+                            case Constants.ObjectIDs.StoneBlockSloped:
+                                break;
+                            case Constants.ObjectIDs.StoneBlockConcreteTop:
+                                break;
+                            case Constants.ObjectIDs.StoneBlockSlopedConcreteTop:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            
+        }
+        else
+        {
+            Debug.Log("LoadModule: File does not exist");
+        }
+    }
+
+    /// <summary>
+    /// Clears the grid
+    /// </summary>
+    public void ClearGrid()
+    {
+        for (int y = 0; y < GridPoints.GetLength(1); y++)
+        {
+            for (int x = 0; x < GridPoints.GetLength(0); x++)
+            {
+                //check if there is an object
+                if (GridPoints[x, y].IsOccupied)
+                {
+                    gameObjects.Remove(GridPoints[x, y].CellObject);
+                    GridPoints[x, y].CellObject = null;
+                }
+            }
+        }
     }
 
     //private void OnDrawGizmos()

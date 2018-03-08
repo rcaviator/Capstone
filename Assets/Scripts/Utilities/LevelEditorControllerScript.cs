@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,49 +15,37 @@ public enum LevelEditorMenus
 
 public class LevelEditorControllerScript : MonoBehaviour
 {
-    ////dictionary menus
-    Dictionary<LevelEditorMenus, GameObject> setupMenu;
+    //setup menu panel reference
     [SerializeField]
-    GameObject setupMenuMain;
-    [SerializeField]
-    GameObject setupMenuLoad;
-    [SerializeField]
-    GameObject setupMenuNew;
+    GameObject setupMenu;
 
+    //test object
     [SerializeField]
     GameObject dirt;
 
     Text titleText;
 
+    //the main grid
     CustomGrid grid;
+
+    //the module level apearance
+    int moduleLevel;
+
+    //the module order number
+    int moduleNumber;
+
+    //the module file path and name
+    string fileName;
 
 	// Use this for initialization
 	void Awake ()
     {
         //set game manager's editor level
+        GameManager.Instance.EditorController = this;
         GameManager.Instance.IsLevelEditor = true;
-        //Debug.Log(GameManager.Instance.IsLevelEditor);
 
         //set UImanager referenece
         UIManager.Instance.LevelEditorController = this;
-
-        //load UI elements
-        setupMenu = new Dictionary<LevelEditorMenus, GameObject>()
-        {
-            { LevelEditorMenus.MainSetupMenu, setupMenuMain },
-            { LevelEditorMenus.LoadModule, setupMenuLoad },
-            { LevelEditorMenus.NewModule, setupMenuNew },
-        };
-
-        foreach (KeyValuePair<LevelEditorMenus, GameObject> menu in setupMenu)
-        {
-            menu.Value.SetActive(false);
-        }
-
-        if (setupMenu.ContainsKey(LevelEditorMenus.MainSetupMenu))
-        {
-            setupMenu[LevelEditorMenus.MainSetupMenu].SetActive(true);
-        }
 
         //draw grid
         grid = GetComponent<CustomGrid>();
@@ -69,33 +59,81 @@ public class LevelEditorControllerScript : MonoBehaviour
     private void OnDestroy()
     {
         GameManager.Instance.IsLevelEditor = false;
-        //Debug.Log(GameManager.Instance.IsLevelEditor);
     }
 
 
     // Update is called once per frame
     void Update ()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!setupMenu.activeInHierarchy)
         {
-            PlaceCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (Input.GetMouseButtonDown(0))
+            {
+                PlaceCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                RemoveCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
         }
-        else if (Input.GetMouseButtonDown(1))
-        {
-            RemoveCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }
+        
 
-        if (InputManager.Instance.GetButtonDown(PlayerAction.PauseGame))
-        {
-            MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
-        }
+        //if (InputManager.Instance.GetButtonDown(PlayerAction.PauseGame))
+        //{
+        //    setupMenu.SetActive(true);
+        //}
     }
+
+    /// <summary>
+    /// Is the setup menu open
+    /// </summary>
+    public bool IsSetupMenuOpen
+    { get; set; }
 
     /// <summary>
     /// The game object currently selected for placement
     /// </summary>
     public GameObject SelectedObject
     { get; set; }
+
+
+    public void SetModuleLevelAndNumberOnCreate(int level, int number)
+    {
+        moduleLevel = level;
+        moduleNumber = number;
+        setupMenu.SetActive(false);
+        grid.ClearGrid();
+    }
+
+    public void SetModuleLevelAndNumberOnLoadFile(int level, int number)
+    {
+        moduleLevel = level;
+        moduleNumber = number;
+    }
+
+
+    public void SaveModule()
+    {
+        grid.SaveModule(moduleLevel, moduleNumber);
+    }
+
+
+    public void LoadModule(string fileName)
+    {
+        //set level and number
+        string numbers = new string(fileName.Where(Char.IsDigit).ToArray());
+        moduleLevel = Int32.Parse(numbers[0].ToString());
+        moduleNumber = Int32.Parse(numbers[1].ToString());
+
+        grid.LoadModule(fileName);
+        setupMenu.SetActive(false);
+    }
+
+
+    public void EditorToSetupMenuOnClick()
+    {
+        setupMenu.SetActive(true);
+    }
 
     private void PlaceCubeNear(Vector3 clickPoint)
     {

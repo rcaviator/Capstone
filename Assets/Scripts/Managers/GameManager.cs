@@ -99,6 +99,12 @@ class GameManager
     { get; set; }
 
     /// <summary>
+    /// Reference to the level editor controller script
+    /// </summary>
+    public LevelEditorControllerScript EditorController
+    { get; set; }
+
+    /// <summary>
     /// Is the game paused
     /// </summary>
     public bool Paused

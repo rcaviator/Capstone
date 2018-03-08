@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class LevelEditorButtonScript : ButtonScript
 {
     //setup level editor menu to go to
-    [SerializeField]
-    LevelEditorMenus setupMenuToGoTo;
+    //[SerializeField]
+    //LevelEditorMenus setupMenuToGoTo;
 
 	// Use this for initialization
 	void Start ()
@@ -29,10 +29,6 @@ public class LevelEditorButtonScript : ButtonScript
 
     public void LoadModule()
     {
-        //string path = EditorUtility.OpenFilePanel("Load Module", "", "png");
-        //if (path.Length != 0)
-        //{
-        //    Debug.Log(path);
-        //}
+        
     }
 }

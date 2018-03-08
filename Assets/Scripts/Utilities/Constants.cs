@@ -4,6 +4,29 @@
 /// </summary>
 public static class Constants
 {
+    #region Object IDs
+
+    public enum ObjectIDs
+    {
+        //default
+        None,
+
+        //blocks
+        DirtBlock, DirtBlockGrass, DirtBlockSloped,
+        StoneBlock, StoneBlockSloped, StoneBlockConcreteTop, StoneBlockSlopedConcreteTop,
+
+        //environment
+
+
+        //utilities
+
+
+        //enemies
+
+    };
+
+    #endregion
+
     #region Game Constants
 
     //scenes
@@ -17,13 +40,14 @@ public static class Constants
     public const string SCENE_NAME_VICTORY = "Victory";
 
     //level editor constants
-    public const float LEVEL_EDITOR_SPACING = 1f;
+    public const string MODULE_FILE_HEADER = "MODU";
+    //public const float LEVEL_EDITOR_SPACING = 1f;
     public const int LEVEL_EDITOR_GRID_SIZE_X = 20;//20
     public const int LEVEL_EDITOR_GRID_SIZE_Y = 10;//10
-    public const int LEVEL_EDITOR_GRID_OFFSET_X = 10;//10
-    public const int LEVEL_EDITOR_GRID_OFFSET_Y = 5;//5
-    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_X = LEVEL_EDITOR_SPACING / 2;
-    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Y = LEVEL_EDITOR_SPACING / 2;
+    public const int LEVEL_EDITOR_GRID_OFFSET_X = 10;//10 finish deleting
+    public const int LEVEL_EDITOR_GRID_OFFSET_Y = 5;//5 finish deleting
+    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_X = 0.5f;
+    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Y = 0.5f;
 
     //settings constants
 
