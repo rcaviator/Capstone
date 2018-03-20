@@ -32,6 +32,12 @@ public class CustomGridCell
     { get; private set; }
 
     /// <summary>
+    /// Is the object flipped around the y axis?
+    /// </summary>
+    public bool IsFlipped
+    { get; set; }
+
+    /// <summary>
     /// The game object in the cell
     /// </summary>
     public GameObject CellObject
@@ -52,6 +58,10 @@ public class CustomGridCell
                 IsOccupied = true;
                 //new object
                 referencedObject = MonoBehaviour.Instantiate(cellGameObject, GridLocation, Quaternion.identity);
+                if (IsFlipped)
+                {
+                    referencedObject.transform.Rotate(new Vector3(0, 180, 0));
+                }
             }
             //else null is passed in
             else
@@ -61,6 +71,7 @@ public class CustomGridCell
                 {
                     MonoBehaviour.Destroy(referencedObject);
                 }
+                IsFlipped = false;
                 cellGameObject = null;
                 IsOccupied = false;
             }

@@ -18,13 +18,7 @@ public class LevelEditorControllerScript : MonoBehaviour
     //setup menu panel reference
     [SerializeField]
     GameObject setupMenu;
-
-    //test object
-    [SerializeField]
-    GameObject dirt;
-
-    Text titleText;
-
+    
     //the main grid
     CustomGrid grid;
 
@@ -34,8 +28,8 @@ public class LevelEditorControllerScript : MonoBehaviour
     //the module order number
     int moduleNumber;
 
-    //the module file path and name
-    string fileName;
+    //the object to be placed in the grid
+    GameObject selectedObject;
 
 	// Use this for initialization
 	void Awake ()
@@ -43,9 +37,6 @@ public class LevelEditorControllerScript : MonoBehaviour
         //set game manager's editor level
         GameManager.Instance.EditorController = this;
         GameManager.Instance.IsLevelEditor = true;
-
-        //set UImanager referenece
-        UIManager.Instance.LevelEditorController = this;
 
         //draw grid
         grid = GetComponent<CustomGrid>();
@@ -55,33 +46,35 @@ public class LevelEditorControllerScript : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Reset the game to not be in editor scene
+    /// </summary>
     private void OnDestroy()
     {
         GameManager.Instance.IsLevelEditor = false;
     }
 
-
     // Update is called once per frame
     void Update ()
     {
+        //allow interaction after setup menu is disabled
         if (!setupMenu.activeInHierarchy)
         {
-            if (Input.GetMouseButtonDown(0))
+            //place object if not over ui
+            if (Input.GetMouseButton(0))
             {
-                PlaceCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                Ray ray = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (!Physics.Raycast(ray, out hit, 100f))
+                {
+                    PlaceSelectedObjectAt(GameManager.Instance.PlayerCamera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
+                }
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButton(1))
             {
-                RemoveCubeNear(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                RemoveObjectAt(GameManager.Instance.PlayerCamera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
             }
         }
-        
-
-        //if (InputManager.Instance.GetButtonDown(PlayerAction.PauseGame))
-        //{
-        //    setupMenu.SetActive(true);
-        //}
     }
 
     /// <summary>
@@ -94,8 +87,26 @@ public class LevelEditorControllerScript : MonoBehaviour
     /// The game object currently selected for placement
     /// </summary>
     public GameObject SelectedObject
-    { get; set; }
+    {
+        get
+        {
+            return selectedObject;
+        }
+        set
+        {
+            selectedObject = value;
 
+            //by default do not make the object flipped
+            IsFlipped = false;
+            UIManager.Instance.SelectedObjectImage.transform.rotation = Quaternion.identity;
+        }
+    }
+
+    /// <summary>
+    /// Is the selected object rotated around the y axis?
+    /// </summary>
+    public bool IsFlipped
+    { get; set; }
 
     public void SetModuleLevelAndNumberOnCreate(int level, int number)
     {
@@ -111,6 +122,22 @@ public class LevelEditorControllerScript : MonoBehaviour
         moduleNumber = number;
     }
 
+
+    public void ClearGrid()
+    {
+        grid.ClearGrid();
+    }
+
+    public void FillDirt()
+    {
+        grid.FillDirt();
+    }
+
+    public void FlipObject()
+    {
+        IsFlipped = !IsFlipped;
+        UIManager.Instance.SelectedObjectImage.transform.Rotate(new Vector3(0, 180, 0));
+    }
 
     public void SaveModule()
     {
@@ -135,17 +162,17 @@ public class LevelEditorControllerScript : MonoBehaviour
         setupMenu.SetActive(true);
     }
 
-    private void PlaceCubeNear(Vector3 clickPoint)
+    private void PlaceSelectedObjectAt(Vector3 clickPoint)
     {
         clickPoint.z = 0f;
         CustomGridCell targetCell = grid.GetGridCellInGrid(clickPoint);
         if (targetCell != null)
         {
-            grid.SetGameObjectInGrid(targetCell, dirt);
+            grid.SetGameObjectInGrid(targetCell, SelectedObject, IsFlipped);
         }
     }
 
-    private void RemoveCubeNear(Vector3 clickPoint)
+    private void RemoveObjectAt(Vector3 clickPoint)
     {
         clickPoint.z = 0f;
         CustomGridCell targetCell = grid.GetGridCellInGrid(clickPoint);

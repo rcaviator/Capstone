@@ -11,17 +11,17 @@ public static class Constants
         //default
         None,
 
-        //blocks
+        //environment - blocks
         DirtBlock, DirtBlockGrass, DirtBlockSloped,
         StoneBlock, StoneBlockSloped, StoneBlockConcreteTop, StoneBlockSlopedConcreteTop,
 
-        //environment
-
-
-        //utilities
+        //environment - other
 
 
         //enemies
+        TempBlimpEnemy,
+
+        //utilities
 
     };
 
@@ -42,8 +42,8 @@ public static class Constants
     //level editor constants
     public const string MODULE_FILE_HEADER = "MODU";
     //public const float LEVEL_EDITOR_SPACING = 1f;
-    public const int LEVEL_EDITOR_GRID_SIZE_X = 20;//20
-    public const int LEVEL_EDITOR_GRID_SIZE_Y = 10;//10
+    public const int LEVEL_EDITOR_GRID_SIZE_X = 50;//20
+    public const int LEVEL_EDITOR_GRID_SIZE_Y = 25;//10
     public const int LEVEL_EDITOR_GRID_OFFSET_X = 10;//10 finish deleting
     public const int LEVEL_EDITOR_GRID_OFFSET_Y = 5;//5 finish deleting
     public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_X = 0.5f;

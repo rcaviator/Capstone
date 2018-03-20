@@ -52,6 +52,8 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData pointerData)
     {
         GetComponent<Button>().Select();
+        increaseScale = true;
+        AudioManager.Instance.PlayUISoundEffect(UISoundEffect.MenuButtonFocused);
     }
 
     public void OnPointerExit(PointerEventData pointerData)
@@ -61,13 +63,11 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnSelect(BaseEventData eventData)
     {
-        increaseScale = true;
-        AudioManager.Instance.PlayUISoundEffect(UISoundEffect.MenuButtonFocused);
+        
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        increaseScale = false;
     }
 
     #endregion

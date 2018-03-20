@@ -25,6 +25,7 @@ public class CustomGrid : MonoBehaviour
         //initialize dictionary
         objectNames = new Dictionary<string, Constants.ObjectIDs>()
         {
+            //environment - blocks
             { "Dirt_Block(Clone)", Constants.ObjectIDs.DirtBlock },
             { "Dirt_Block_Grass(Clone)", Constants.ObjectIDs.DirtBlockGrass },
             { "Dirt_Block_Sloped(Clone)", Constants.ObjectIDs.DirtBlockSloped },
@@ -32,6 +33,15 @@ public class CustomGrid : MonoBehaviour
             { "Stone_Block_Sloped(Clone)", Constants.ObjectIDs.StoneBlockSloped },
             { "Stone_Block_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockConcreteTop },
             { "Stone_Block_Sloped_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockSlopedConcreteTop },
+            //environment - other
+
+
+            //enemies
+            { "TempBlimpEnemy(Clone)", Constants.ObjectIDs.TempBlimpEnemy },
+
+            //utilities
+
+
         };
     }
 
@@ -297,18 +307,15 @@ public class CustomGrid : MonoBehaviour
         //bounds check
         if (xPosition < 0 || xPosition > GridPoints.GetLength(0) - 1)
         {
-            //Debug.Log("GetGridCellInGrid: Location was outside the grid. Outside x");
             return null;
         }
         //y bounds
         else if (yPosition < 0 || yPosition > GridPoints.GetLength(1) - 1)
         {
-            //Debug.Log("GetGridCellInGrid: Location was outside the grid. Outside y");
             return null;
         }
 
         //in bounds
-        //Debug.Log("In bounds");
         return GridPoints[xPosition, yPosition];
     }
 
@@ -316,7 +323,7 @@ public class CustomGrid : MonoBehaviour
     /// Sets an object in the grid if the cell is not occupied
     /// </summary>
     /// <param name="cellObject">the object to place in the grid</param>
-    public void SetGameObjectInGrid(CustomGridCell cell, GameObject cellObject)
+    public void SetGameObjectInGrid(CustomGridCell cell, GameObject cellObject, bool flipped)
     {
         //get coordinates
         int x = (int)cell.IndexLocation.x;
@@ -326,15 +333,13 @@ public class CustomGrid : MonoBehaviour
         if (!GridPoints[x, y].IsOccupied)
         {
             //set game object in grid and add to list
-            //Debug.Log("SetGameObjectInGrid: Open cell at " + GridPoints[x, y].GridLocation + ". Setting " + cellObject.name);
+            if (flipped)
+            {
+                GridPoints[x, y].IsFlipped = true;
+            }
             GridPoints[x, y].CellObject = cellObject;
             gameObjects.Add(GridPoints[x, y].CellObject);
         }
-        //do nothing if its already occupied
-        //else
-        //{
-        //    Debug.Log("SetGameObjectInGrid: Cell in use at " + GridPoints[x, y].GridLocation + " with " + GridPoints[x, y].CellObject.name);
-        //}
     }
 
     /// <summary>
@@ -361,6 +366,45 @@ public class CustomGrid : MonoBehaviour
         //}
     }
 
+    /// <summary>
+    /// Fills all the columns under the first found dirt/grass/sloped block with dirt blocks.
+    /// Will not replace existing blocks.
+    /// </summary>
+    public void FillDirt()
+    {
+        bool foundTriggerBlockType = false;
+        for (int x = 0; x < Constants.LEVEL_EDITOR_GRID_SIZE_X; x++)
+        {
+            //reset trigger bool
+            foundTriggerBlockType = false;
+
+            for (int y = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1; y >= 0; y--)
+            {
+                //locate the first instance of a valid block
+                if (GridPoints[x, y].IsOccupied && !foundTriggerBlockType)
+                {
+                    //check for applicable trigger block
+                    if (GridPoints[x, y].CellObject.name == "Dirt_Block(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Dirt_Block_Grass(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Dirt_Block_Sloped(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Stone_Block_Sloped(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Stone_Block_Concrete_Top(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Stone_Block_Sloped_Concrete_Top(Clone)")
+                    {
+                        foundTriggerBlockType = true;
+                        continue;
+                    }
+                }
+
+                //check if any cell under the found trigger block can be filled in
+                if (foundTriggerBlockType && !GridPoints[x, y].IsOccupied)
+                {
+                    GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
+                    gameObjects.Add(GridPoints[x, y].CellObject);
+                }
+            }
+        }
+    }
 
     public void SaveModule(int level, int number)
     {
@@ -386,23 +430,29 @@ public class CustomGrid : MonoBehaviour
             //create writer
             using (BinaryWriter w = new BinaryWriter(s))
             {
-                //Debug.Log("Writing header " + Constants.MODULE_FILE_HEADER + " with " + gameObjects.Count + " objects.");
                 //write header
                 w.Write(Constants.MODULE_FILE_HEADER.ToCharArray());
                 w.Write(gameObjects.Count);
 
-                //Debug.Log("Writing object types and locations");
                 //loop through game object list and save object type and location
                 foreach (GameObject item in gameObjects)
                 {
                     //determine game object type
                     w.Write((int)objectNames[item.name]);
-                    //Debug.Log((int)objectNames[item.name]);
+
+                    //write if the object is flipped
+                    if (item.transform.rotation.eulerAngles.y == 180)
+                    {
+                        w.Write(true);
+                    }
+                    else
+                    {
+                        w.Write(false);
+                    }
                     
                     //write game object's location
                     w.Write((int)item.transform.position.x);
                     w.Write((int)item.transform.position.y);
-                    //Debug.Log(item.transform.position.x + "x " + item.transform.position.y + "y");
                 }
             }
         }
@@ -445,35 +495,61 @@ public class CustomGrid : MonoBehaviour
                         int typeInt = r.ReadInt32();
                         Constants.ObjectIDs type = (Constants.ObjectIDs)typeInt;
 
+                        //check if flipped
+                        bool flipped = r.ReadBoolean();
+
                         //get position
                         int x = r.ReadInt32();
                         int y = r.ReadInt32();
+
+                        //prep cell
+                        GridPoints[x, y].IsFlipped = flipped;
 
                         //create object
                         switch (type)
                         {
                             case Constants.ObjectIDs.None:
                                 break;
+
+                            //environment - blocks
                             case Constants.ObjectIDs.DirtBlock:
-                                Debug.Log("Loading Dirt Block");
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
-                                gameObjects.Add(GridPoints[x, y].CellObject);
                                 break;
                             case Constants.ObjectIDs.DirtBlockGrass:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Grass");
                                 break;
                             case Constants.ObjectIDs.DirtBlockSloped:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped");
                                 break;
                             case Constants.ObjectIDs.StoneBlock:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block");
                                 break;
                             case Constants.ObjectIDs.StoneBlockSloped:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped");
                                 break;
                             case Constants.ObjectIDs.StoneBlockConcreteTop:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top");
                                 break;
                             case Constants.ObjectIDs.StoneBlockSlopedConcreteTop:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped_Concrete_Top");
                                 break;
+
+                            //environment - other
+
+
+                            //enemies
+                            case Constants.ObjectIDs.TempBlimpEnemy:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/TempBlimpEnemy");
+                                break;
+                            //utilities
+
+
                             default:
                                 break;
                         }
+
+                        //add game object to list
+                        gameObjects.Add(GridPoints[x, y].CellObject);
                     }
                 }
             }

@@ -118,9 +118,15 @@ class UIManager
     { get; set; }
 
     /// <summary>
-    /// Used for button referencing
+    /// Used for editor selected image referencing
     /// </summary>
-    public LevelEditorControllerScript LevelEditorController
+    public SelectedObjectImageScript SelectedObjectImage
+    { get; set; }
+
+    /// <summary>
+    /// Used for editor selected text referencing
+    /// </summary>
+    public SelectedObjectTextScript SelectedObjectText
     { get; set; }
 
     /// <summary>

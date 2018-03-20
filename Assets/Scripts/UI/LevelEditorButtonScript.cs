@@ -25,10 +25,4 @@ public class LevelEditorButtonScript : ButtonScript
 
 
 	}
-
-
-    public void LoadModule()
-    {
-        
-    }
 }
