@@ -7,6 +7,7 @@ public class ContentPopulateScript : MonoBehaviour
 {
     GameObject[] enemyPrefabs;
     GameObject[] environmentPrefabs;
+    GameObject[] utilityPrefabs;
     GameObject objectButtonPrefab;
     List<GameObject> prefabs;
 
@@ -16,6 +17,7 @@ public class ContentPopulateScript : MonoBehaviour
         //load prefabs
         enemyPrefabs = Resources.LoadAll<GameObject>("Prefabs/Enemies/");
         environmentPrefabs = Resources.LoadAll<GameObject>("Prefabs/Environment/");
+        utilityPrefabs = Resources.LoadAll<GameObject>("Prefabs/Utility/");
 
         //load button
         objectButtonPrefab = Resources.Load<GameObject>("Prefabs/UI/Level editor/SpawnableObjectButton");
@@ -24,6 +26,7 @@ public class ContentPopulateScript : MonoBehaviour
         prefabs = new List<GameObject>();
         prefabs.AddRange(enemyPrefabs);
         prefabs.AddRange(environmentPrefabs);
+        prefabs.AddRange(utilityPrefabs);
 
         //instantiate each button object, set its parent, and set its game object
         foreach (GameObject item in prefabs)
@@ -36,14 +39,14 @@ public class ContentPopulateScript : MonoBehaviour
             ob.GetComponent<SpawnableObjectButtonScript>().SetGameObject(item);
         }
 
-        //set the ui to the first object
-        foreach (GameObject item in prefabs)
-        {
-            if (item.GetComponent<SpawnableObjectButtonScript>())
-            {
-                item.GetComponent<SpawnableObjectButtonScript>().OnSelectObjectClick();
-                break;
-            }
-        }
+        ////set the ui to the first object
+        //foreach (GameObject item in prefabs)
+        //{
+        //    if (item.GetComponent<SpawnableObjectButtonScript>())
+        //    {
+        //        item.GetComponent<SpawnableObjectButtonScript>().OnSelectObjectClick();
+        //        break;
+        //    }
+        //}
 	}
 }

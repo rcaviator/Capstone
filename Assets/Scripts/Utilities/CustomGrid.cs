@@ -29,18 +29,24 @@ public class CustomGrid : MonoBehaviour
             { "Dirt_Block(Clone)", Constants.ObjectIDs.DirtBlock },
             { "Dirt_Block_Grass(Clone)", Constants.ObjectIDs.DirtBlockGrass },
             { "Dirt_Block_Sloped(Clone)", Constants.ObjectIDs.DirtBlockSloped },
+            { "Dirt_Block_Sloped_Grass(Clone)", Constants.ObjectIDs.DirtBlockSlopedGrass },
             { "Stone_Block(Clone)", Constants.ObjectIDs.StoneBlock },
             { "Stone_Block_Sloped(Clone)", Constants.ObjectIDs.StoneBlockSloped },
             { "Stone_Block_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockConcreteTop },
             { "Stone_Block_Sloped_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockSlopedConcreteTop },
+            
             //environment - other
+            { "HangarClose(Clone)", Constants.ObjectIDs.HangarClose },
+            { "HangarMiddle(Clone)", Constants.ObjectIDs.HangarMiddle },
+            { "HangarFar(Clone)", Constants.ObjectIDs.HangarFar },
+            { "Tower(Clone)", Constants.ObjectIDs.Tower },
 
+            //utilities
+            { "LevelStartPoint(Clone)", Constants.ObjectIDs.LevelStartPoint },
+            { "LevelEndPoint(Clone)", Constants.ObjectIDs.LevelEndPoint },
 
             //enemies
             { "TempBlimpEnemy(Clone)", Constants.ObjectIDs.TempBlimpEnemy },
-
-            //utilities
-
 
         };
     }
@@ -80,22 +86,22 @@ public class CustomGrid : MonoBehaviour
         //bottom row
         for (int xStep = 0; xStep < DrawGridPoints2DArray.GetLength(0); xStep++)
         {
-            DrawGridPoints2DArray[xStep, 0] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, 0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+            DrawGridPoints2DArray[xStep, 0] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, 0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
         }
         //top row
         for (int xStep = 0; xStep < DrawGridPoints2DArray.GetLength(0); xStep++)
         {
-            DrawGridPoints2DArray[xStep, DrawGridPoints2DArray.GetLength(1) - 1] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, DrawGridPoints2DArray.GetLength(1) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+            DrawGridPoints2DArray[xStep, DrawGridPoints2DArray.GetLength(1) - 1] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, DrawGridPoints2DArray.GetLength(1) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
         }
         //left column
         for (int yStep = 0; yStep < DrawGridPoints2DArray.GetLength(1); yStep++)
         {
-            DrawGridPoints2DArray[0, yStep] = new Vector3(0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+            DrawGridPoints2DArray[0, yStep] = new Vector3(0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
         }
         //right column
         for (int yStep = 0; yStep < DrawGridPoints2DArray.GetLength(1); yStep++)
         {
-            DrawGridPoints2DArray[DrawGridPoints2DArray.GetLength(0) - 1, yStep] = new Vector3(DrawGridPoints2DArray.GetLength(0) - 1 /*- Constants.LEVEL_EDITOR_GRID_OFFSET_X */- Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep /*- Constants.LEVEL_EDITOR_GRID_OFFSET_Y */- Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0);
+            DrawGridPoints2DArray[DrawGridPoints2DArray.GetLength(0) - 1, yStep] = new Vector3(DrawGridPoints2DArray.GetLength(0) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
         }
 
         //reset x and y for drawing
@@ -387,6 +393,7 @@ public class CustomGrid : MonoBehaviour
                     if (GridPoints[x, y].CellObject.name == "Dirt_Block(Clone)" ||
                         GridPoints[x, y].CellObject.name == "Dirt_Block_Grass(Clone)" ||
                         GridPoints[x, y].CellObject.name == "Dirt_Block_Sloped(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Dirt_Block_Sloped_Grass(Clone)" ||
                         GridPoints[x, y].CellObject.name == "Stone_Block_Sloped(Clone)" ||
                         GridPoints[x, y].CellObject.name == "Stone_Block_Concrete_Top(Clone)" ||
                         GridPoints[x, y].CellObject.name == "Stone_Block_Sloped_Concrete_Top(Clone)")
@@ -420,7 +427,7 @@ public class CustomGrid : MonoBehaviour
         //override the file
         if (File.Exists(file))
         {
-            Debug.Log("Deleting " + file);
+            //Debug.Log("Deleting " + file);
             File.Delete(file);
         }
 
@@ -462,7 +469,7 @@ public class CustomGrid : MonoBehaviour
     public void LoadModule(string moduleName)
     {
         //set file path
-        Debug.Log(moduleName);
+        //Debug.Log(moduleName);
         string file = Application.dataPath + "/Modules/" + moduleName;
 
         //load the module if the file exists
@@ -521,6 +528,9 @@ public class CustomGrid : MonoBehaviour
                             case Constants.ObjectIDs.DirtBlockSloped:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped");
                                 break;
+                            case Constants.ObjectIDs.DirtBlockSlopedGrass:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped_Grass");
+                                break;
                             case Constants.ObjectIDs.StoneBlock:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block");
                                 break;
@@ -535,21 +545,41 @@ public class CustomGrid : MonoBehaviour
                                 break;
 
                             //environment - other
+                            case Constants.ObjectIDs.HangarClose:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarClose");
+                                break;
+                            case Constants.ObjectIDs.HangarMiddle:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarMiddle");
+                                break;
+                            case Constants.ObjectIDs.HangarFar:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarFar");
+                                break;
+                            case Constants.ObjectIDs.Tower:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Tower");
+                                break;
 
+                            //utilities
+                            case Constants.ObjectIDs.LevelStartPoint:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint");
+                                break;
+                            case Constants.ObjectIDs.LevelEndPoint:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint");
+                                break;
 
                             //enemies
                             case Constants.ObjectIDs.TempBlimpEnemy:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/TempBlimpEnemy");
                                 break;
-                            //utilities
-
 
                             default:
                                 break;
                         }
 
                         //add game object to list
-                        gameObjects.Add(GridPoints[x, y].CellObject);
+                        if (GridPoints[x, y].CellObject)
+                        {
+                            gameObjects.Add(GridPoints[x, y].CellObject);
+                        }
                     }
                 }
             }

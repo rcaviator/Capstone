@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-//using UnityEditor;
 
 public class LevelEditorButtonScript : ButtonScript
 {
-    //setup level editor menu to go to
-    //[SerializeField]
-    //LevelEditorMenus setupMenuToGoTo;
+    [SerializeField]
+    bool firstTime;
+
+    Button button;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
-		//setup the setup menu dictionary
-        
+        //set reference
+        button = GetComponent<Button>();
+        if (firstTime)
+        {
+            button.interactable = false;
+            firstTime = false;
+        }
 	}
 	
 	// Update is called once per frame
@@ -25,4 +30,17 @@ public class LevelEditorButtonScript : ButtonScript
 
 
 	}
+
+    public void MakeInteractable()
+    {
+        button.interactable = true;
+    }
+
+    //private void OnEnable()
+    //{
+    //    if (!firstTime)
+    //    {
+    //        button.interactable = true;
+    //    }
+    //}
 }

@@ -65,7 +65,7 @@ public class LevelEditorControllerScript : MonoBehaviour
             {
                 Ray ray = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (!Physics.Raycast(ray, out hit, 100f))
+                if (!Physics.Raycast(ray, out hit, 50f))
                 {
                     PlaceSelectedObjectAt(GameManager.Instance.PlayerCamera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
                 }
@@ -142,6 +142,11 @@ public class LevelEditorControllerScript : MonoBehaviour
     public void SaveModule()
     {
         grid.SaveModule(moduleLevel, moduleNumber);
+
+        //hack to save begining or ending modules. comment out line above
+        //begining and end modules are lvl 0
+        //grid.SaveModule(0, 0);
+        //grid.SaveModule(0, 1);
     }
 
 
@@ -160,6 +165,11 @@ public class LevelEditorControllerScript : MonoBehaviour
     public void EditorToSetupMenuOnClick()
     {
         setupMenu.SetActive(true);
+    }
+
+    public void CloseSetupMenuOnClick()
+    {
+        setupMenu.SetActive(false);
     }
 
     private void PlaceSelectedObjectAt(Vector3 clickPoint)

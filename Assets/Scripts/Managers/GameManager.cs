@@ -1,6 +1,7 @@
-﻿//using System;
-//using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -26,7 +27,7 @@ class GameManager
     private GameManager()
     {
         // Creates the object that calls GM's Update method
-        Object.DontDestroyOnLoad(new GameObject("gmUpdater", typeof(Updater)));
+        UnityEngine.Object.DontDestroyOnLoad(new GameObject("gmUpdater", typeof(Updater)));
 
         //create the list of pausable objects
         PauseableObjects = new List<PauseableObject>();
@@ -68,6 +69,11 @@ class GameManager
     public TargetReticle Reticle
     { get; set; }
 
+    /// <summary>
+    /// The level number of the game
+    /// </summary>
+    public int Level
+    { get; set; }
     /// <summary>
     /// The game score
     /// </summary>
@@ -191,6 +197,46 @@ class GameManager
     {
         //call ui manager
         UIManager.Instance.Update();
+    }
+
+    #endregion
+
+    #region Game Data Class
+    
+    [Serializable]
+    class GameData
+    {
+        #region Data Fields
+
+        int level;
+        int score;
+
+
+        #endregion
+
+        #region Constructor
+
+        public GameData()
+        {
+
+        }
+
+        #endregion
+
+        #region Properties
+
+
+
+        #endregion
+
+        #region Methods
+
+        public void LoadData()
+        {
+
+        }
+
+        #endregion
     }
 
     #endregion

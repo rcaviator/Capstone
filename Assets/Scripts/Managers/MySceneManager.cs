@@ -59,7 +59,7 @@ class MySceneManager
     Dictionary<Scenes, MusicSoundEffect> soundtrackDict;
 
     //dictionary to hold player starting locations in each game scene
-    Dictionary<PlayerSceneLocations, Vector3> playerLocations;
+    //Dictionary<PlayerSceneLocations, Vector3> playerLocations;
 
     #endregion
 
@@ -93,11 +93,11 @@ class MySceneManager
         };
 
         //initialize the player scene locations dictionary
-        playerLocations = new Dictionary<PlayerSceneLocations, Vector3>()
-        {
-            //leave PlayerSceneLocations.None out
+        //playerLocations = new Dictionary<PlayerSceneLocations, Vector3>()
+        //{
+        //    //leave PlayerSceneLocations.None out
 
-        };
+        //};
 
         //register scene change delegate
         SceneManager.sceneLoaded += OnLevelLoaded;

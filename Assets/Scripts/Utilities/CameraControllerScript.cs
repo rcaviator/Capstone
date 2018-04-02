@@ -8,10 +8,14 @@ public class CameraControllerScript : PauseableObject
     float horizontalSpeed = 0f;
 
     //level editor movement controls
-    bool bDragging = true;
     Vector3 oldPos;
     Vector3 panOrigin;
-    float panSpeed = 50f;
+    bool uiBlocker = false;
+    //level editor clamping controls
+    float leftBounds;
+    float rightBounds;
+    float topBounds;
+    float bottomBounds;
 
     // Use this for initialization
     protected override void Awake ()
@@ -20,6 +24,11 @@ public class CameraControllerScript : PauseableObject
 
         //set reference in game manager
         GameManager.Instance.PlayerCamera = this;
+
+        leftBounds = 0f;
+        bottomBounds = 0f;
+        rightBounds = Constants.LEVEL_EDITOR_GRID_SIZE_X - 1;
+        topBounds = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1;
 	}
 	
 	// Update is called once per frame
@@ -47,45 +56,54 @@ public class CameraControllerScript : PauseableObject
         //editor code
         else if (MySceneManager.Instance.CurrentScene == Scenes.LevelEditor)
         {
-            
-            //pan camera controls
-            if (Input.GetMouseButtonDown(2))
+            //enable pan and zoom if not over UI elements
+            Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (!Physics.Raycast(ray, out hit, 50f))
             {
-                //Get the ScreenVector the mouse clicked
-                bDragging = true;
-                oldPos = transform.position;
-                panOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-            }
-            if (Input.GetMouseButton(2))
-            {
-                //Get the difference between where the mouse clicked and where it moved
-                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition) - panOrigin;
-                //Move the position of the camera to simulate a drag, speed * 10 for screen to worldspace conversion
-                transform.position = oldPos + -pos * panSpeed;
-            }
-            if (Input.GetMouseButtonUp(2))
-            {
-                bDragging = false;
+                //pan camera controls
+                if (Input.GetMouseButtonDown(2) && !uiBlocker)
+                {
+                    //Get the ScreenVector the mouse clicked
+                    oldPos = new Vector3(transform.position.x, transform.position.y, 0);//transform.position;
+                    panOrigin = GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
+                    panOrigin.z = 0f;
+                    uiBlocker = true;
+                }
+                if (Input.GetMouseButton(2) && uiBlocker)
+                {
+                    //Get the difference between where the mouse clicked and where it moved
+                    Vector3 pos = GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition) - panOrigin;
+                    pos.z = 0f;
+                    //Move the position of the camera to simulate a drag, speed * 3.5f for x and 2f for y for screen to worldspace conversion
+                    transform.position = new Vector3(oldPos.x - pos.x * GetComponent<Camera>().orthographicSize * 3.5f, oldPos.y - pos.y * GetComponent<Camera>().orthographicSize * 2f, transform.position.z);//oldPos - pos;// * panSpeed;
+                }
+                if (Input.GetMouseButtonUp(2))
+                {
+                    uiBlocker = false;
+                }
+
+                //scrolling controls
+                if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+                {
+                    //zoom in
+                    if (GetComponent<Camera>().orthographicSize > 1f)
+                    {
+                        GetComponent<Camera>().orthographicSize--;
+                    }
+                }
+                else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+                {
+                    //zoom out
+                    if (GetComponent<Camera>().orthographicSize < 30f)
+                    {
+                        GetComponent<Camera>().orthographicSize++;
+                    }
+                }
             }
 
-            //scrolling controls
-            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
-            {
-                //zoom in
-                if (GetComponent<Camera>().orthographicSize > 1f)
-                {
-                    GetComponent<Camera>().orthographicSize--;
-                }
-            }
-            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
-            {
-                //zoom out
-                if (GetComponent<Camera>().orthographicSize < 30f)
-                {
-                    GetComponent<Camera>().orthographicSize++;
-                }
-            }
-            
+            //camera clamping control
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBounds, rightBounds), Mathf.Clamp(transform.position.y, bottomBounds, topBounds), transform.position.z);
         }
 	}
 

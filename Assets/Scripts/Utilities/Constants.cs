@@ -12,17 +12,17 @@ public static class Constants
         None,
 
         //environment - blocks
-        DirtBlock, DirtBlockGrass, DirtBlockSloped,
+        DirtBlock, DirtBlockGrass, DirtBlockSloped, DirtBlockSlopedGrass,
         StoneBlock, StoneBlockSloped, StoneBlockConcreteTop, StoneBlockSlopedConcreteTop,
 
         //environment - other
-
+        HangarClose, HangarMiddle, HangarFar, Tower,
 
         //enemies
         TempBlimpEnemy,
 
         //utilities
-
+        LevelStartPoint, LevelEndPoint,
     };
 
     #endregion
@@ -48,11 +48,13 @@ public static class Constants
     public const int LEVEL_EDITOR_GRID_OFFSET_Y = 5;//5 finish deleting
     public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_X = 0.5f;
     public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Y = 0.5f;
+    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Z = 0f;//10f;
 
     //settings constants
 
 
-    //game play constants
+    //game level constants
+    public const int MODULE_LENGTH = LEVEL_EDITOR_GRID_SIZE_X;
     public const float CAMERA_SPEED = 10f;
     public const float BULLET_RICOCHET_SPARKS_LIFETIME = 0.1f;
     public const float GROUND_DAMAGE = 5f;

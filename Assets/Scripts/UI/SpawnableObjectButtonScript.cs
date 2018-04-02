@@ -38,6 +38,13 @@ public class SpawnableObjectButtonScript : MonoBehaviour
         //set selected game object and update the ui
         GameManager.Instance.EditorController.SelectedObject = storedGameObject;
         UIManager.Instance.SelectedObjectText.ChangeText(objectText.text);
-        UIManager.Instance.SelectedObjectImage.ChangeImage(objectImage.sprite);
+        if (objectImage)
+        {
+            UIManager.Instance.SelectedObjectImage.ChangeImage(objectImage.sprite);
+        }
+        else
+        {
+            UIManager.Instance.SelectedObjectImage.ChangeImage(null);
+        }
     }
 }
