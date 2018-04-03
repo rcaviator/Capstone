@@ -130,6 +130,12 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for editor slected module referencing
+    /// </summary>
+    public SelectedModuleTextScript SelectedModuleText
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

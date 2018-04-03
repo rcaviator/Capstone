@@ -2,20 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 
 public class EditorGetModulesScript : MonoBehaviour
 {
+    //list of all modules
     List<GameObject> files = new List<GameObject>();
 
+    //button prefab reference
     GameObject moduleButton;
 
-	// Use this for initialization
-	void Start()
-    {
-        
-	}
+    //boolean to show hidden modules
+    bool showHiddenModules = true;
 
+	// Use this for initialization
+	//void Start()
+ //   {
+        
+	//}
+
+    /// <summary>
+    /// Refreshes the list after creating any new modules in the level editor at run time.
+    /// </summary>
     private void OnEnable()
     {
         foreach (GameObject ob in files)
@@ -26,6 +34,9 @@ public class EditorGetModulesScript : MonoBehaviour
         Initialize();
     }
 
+    /// <summary>
+    /// Initialize gets all the .mod files and sets each one as a button for a scroll view content panel.
+    /// </summary>
     private void Initialize()
     {
         //set prefab reference
@@ -39,7 +50,16 @@ public class EditorGetModulesScript : MonoBehaviour
         //create each save file button
         foreach (FileInfo f in info)
         {
-            //Debug.Log(f.FullName);
+            //check if module is a hidden module
+            if (f.Name == "Level_00_Module_00.mod" || f.Name == "Level_00_Module_01.mod")
+            {
+                if (!showHiddenModules)
+                {
+                    Debug.Log("found hidden module");
+                    continue;
+                }
+            }
+            
             GameObject b = Instantiate(moduleButton);
             b.transform.SetParent(null);
             b.transform.SetParent(gameObject.transform);

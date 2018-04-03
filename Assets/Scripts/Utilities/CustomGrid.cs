@@ -422,7 +422,7 @@ public class CustomGrid : MonoBehaviour
         }
 
         //set file path
-        string file = Application.dataPath + "/Modules" + "/Level_" + level.ToString() + "_Module_" + number.ToString() + ".mod";
+        string file = Application.dataPath + "/Modules" + "/Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
 
         //override the file
         if (File.Exists(file))

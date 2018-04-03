@@ -9,27 +9,11 @@ public class LevelControllerScript : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
     {
-        ////temp ground generation code
-        ////first airport
-        //for (int i = 0; i < 40; i++)
-        //{
-        //    Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top"), new Vector3(i - 10, -5, 0), Quaternion.identity);
-        //}
-        ////main ground
-        //for (int i = 40; i < 280; i++)
-        //{
-        //    Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(i - 10, -5, 0), Quaternion.identity);
-        //}
-        ////second airport
-        //for (int i = 280; i < 320; i++)
-        //{
-        //    Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top"), new Vector3(i - 10, -5, 0), Quaternion.identity);
-        //}
-
         //initialize level generation
         //get level info
         int currentLevel = GameManager.Instance.Level;
 
+        //game object to hold module objects and positioning
         GameObject moduleParent;
 
         //load first module, starting airport
@@ -38,6 +22,7 @@ public class LevelControllerScript : MonoBehaviour
         {
             Debug.Log("First module error, returning to main menu.");
             MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+            return;
         }
         moduleParent.transform.position = Vector3.zero;
 
@@ -50,6 +35,7 @@ public class LevelControllerScript : MonoBehaviour
             {
                 Debug.Log("Module " + i + " error, returning to main menu.");
                 MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+                return;
             }
             moduleParent.transform.position = new Vector3(modulePlacement, 0, 0);
             modulePlacement += Constants.MODULE_LENGTH;
@@ -61,6 +47,7 @@ public class LevelControllerScript : MonoBehaviour
         {
             Debug.Log("Last module error, returning to main menu.");
             MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+            return;
         }
         moduleParent.transform.position = new Vector3(modulePlacement, 0, 0);
 
@@ -87,7 +74,7 @@ public class LevelControllerScript : MonoBehaviour
     {
         //create the parent module object for all loaded game objects to parent from.
         //parent is returned for easy transform positioning
-        GameObject moduleParent = new GameObject("Module Parent. Level: " + level + " Number: " + number);
+        GameObject moduleParent = new GameObject("Module Parent. Level: " + level.ToString() + " Number: " + number.ToString());
         moduleParent.transform.position = Vector3.zero;
 
         //create file string
@@ -97,9 +84,9 @@ public class LevelControllerScript : MonoBehaviour
         if (!Directory.Exists(Application.dataPath + "/Modules"))
         {
             //set file path
-            file = Application.dataPath + "/Modules" + "/Level_" + level.ToString() + "_Module_" + number.ToString() + ".mod";
+            file = Application.dataPath + "/Modules" + "/Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
 
-            //check if it exists
+            //check if file exists
             if (!File.Exists(file))
             {
                 Debug.Log("Module file does not exist in directory: " + level + " " + number);
@@ -116,7 +103,112 @@ public class LevelControllerScript : MonoBehaviour
         //procede if module exists
         using (Stream s = File.OpenRead(file))
         {
+            //create reader
+            using (BinaryReader r = new BinaryReader(s))
+            {
+                //verify file is of correct format
+                string head = new string(r.ReadChars(4));
+                if (!head.Equals(Constants.MODULE_FILE_HEADER))
+                {
+                    Debug.Log("File not of correct format in reading module for level generation.");
+                    return null;
+                }
 
+                //get number of game objects
+                int numberOfGameObjects = r.ReadInt32();
+
+                //loop through the file and create each game object, add to grid, and move it
+                for (int i = 0; i < numberOfGameObjects; i++)
+                {
+                    //get type
+                    int typeInt = r.ReadInt32();
+                    Constants.ObjectIDs type = (Constants.ObjectIDs)typeInt;
+
+                    //check if flipped
+                    bool flipped = r.ReadBoolean();
+
+                    //get position
+                    int x = r.ReadInt32();
+                    int y = r.ReadInt32();
+
+                    //create spawn game object reference
+                    GameObject spawnObject = new GameObject();
+
+                    //create object
+                    switch (type)
+                    {
+                        case Constants.ObjectIDs.None:
+                            break;
+
+                        //environment - blocks
+                        case Constants.ObjectIDs.DirtBlock:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.DirtBlockGrass:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Grass"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.DirtBlockSloped:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.DirtBlockSlopedGrass:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped_Grass"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.StoneBlock:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.StoneBlockSloped:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.StoneBlockConcreteTop:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.StoneBlockSlopedConcreteTop:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped_Concrete_Top"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+
+                        //environment - other
+                        case Constants.ObjectIDs.HangarClose:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/HangarClose"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.HangarMiddle:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/HangarMiddle"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.HangarFar:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/HangarFar"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.Tower:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Tower"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+
+                        //utilities
+                        case Constants.ObjectIDs.LevelStartPoint:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.LevelEndPoint:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+
+                        //enemies
+                        case Constants.ObjectIDs.TempBlimpEnemy:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/TempBlimpEnemy"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+
+                        default:
+                            Debug.Log("Invalid object being loaded");
+                            break;
+                    }
+
+                    //set object properties
+                    if (flipped)
+                    {
+                        spawnObject.transform.Rotate(new Vector3(0, 180, 0));
+                    }
+
+                    //set parent
+                    spawnObject.transform.SetParent(null);
+                    spawnObject.transform.SetParent(moduleParent.transform);
+                }
+            }
         }
 
         return moduleParent;

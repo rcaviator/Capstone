@@ -114,6 +114,9 @@ public class LevelEditorControllerScript : MonoBehaviour
         moduleNumber = number;
         setupMenu.SetActive(false);
         grid.ClearGrid();
+
+        //set module text reference
+        UIManager.Instance.SelectedModuleText.ChangeText("Level: " + moduleLevel.ToString() + " Module: " + moduleNumber.ToString());
     }
 
     public void SetModuleLevelAndNumberOnLoadFile(int level, int number)
@@ -154,8 +157,11 @@ public class LevelEditorControllerScript : MonoBehaviour
     {
         //set level and number
         string numbers = new string(fileName.Where(Char.IsDigit).ToArray());
-        moduleLevel = Int32.Parse(numbers[0].ToString());
-        moduleNumber = Int32.Parse(numbers[1].ToString());
+        moduleLevel = Int32.Parse(numbers[0].ToString() + numbers[1].ToString());
+        moduleNumber = Int32.Parse(numbers[2].ToString() + numbers[3].ToString());
+
+        //set module text reference
+        UIManager.Instance.SelectedModuleText.ChangeText("Level: " + moduleLevel.ToString() + " Module: " + moduleNumber.ToString());
 
         grid.LoadModule(fileName);
         setupMenu.SetActive(false);

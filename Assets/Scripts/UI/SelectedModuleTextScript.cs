@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectedObjectTextScript : MonoBehaviour
+public class SelectedModuleTextScript : MonoBehaviour
 {
     //the text reference to display
-    Text objectText;
+    Text moduleText;
 
 	// Use this for initialization
 	void Awake ()
     {
         //set references
-        objectText = GetComponent<Text>();
-        UIManager.Instance.SelectedObjectText = this;
+        moduleText = GetComponent<Text>();
+        UIManager.Instance.SelectedModuleText = this;
 	}
-
+	
     /// <summary>
     /// Changes the UI text
     /// </summary>
     /// <param name="newText">the text to change to</param>
-    public void ChangeText(string newText)
+	public void ChangeText(string newText)
     {
-        objectText.text = newText;
+        moduleText.text = newText;
     }
 }
