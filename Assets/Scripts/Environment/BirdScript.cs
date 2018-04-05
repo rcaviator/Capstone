@@ -55,7 +55,7 @@ public class BirdScript : PauseableObject
     {
         if (collision.gameObject.tag == "Player")
         {
-            GameManager.Instance.Player.Health -= Constants.BIRD_DAMAGE;
+            //GameManager.Instance.Player.Health -= Constants.BIRD_DAMAGE;
             //AudioManager sound
             Destroy(gameObject);
         }

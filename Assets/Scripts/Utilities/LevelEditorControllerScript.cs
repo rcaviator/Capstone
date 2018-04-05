@@ -150,6 +150,9 @@ public class LevelEditorControllerScript : MonoBehaviour
         //begining and end modules are lvl 0
         //grid.SaveModule(0, 0);
         //grid.SaveModule(0, 1);
+
+        //show save notification
+        UIManager.Instance.SaveNotification.ShowNotification();
     }
 
 

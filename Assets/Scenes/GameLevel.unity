@@ -398,7 +398,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 0}
+  m_SizeDelta: {x: 150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &265870456
 MonoBehaviour:
@@ -419,7 +419,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: edc31c2d66b85994f8943606ccdb3105, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c4d0d2866dfde164c9f08e800a3b562a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1625,10 +1625,6 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 498214215}
-    - target: {fileID: 1380777481060058, guid: 94bdec453b245b74897f572f6dedff7e, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 94bdec453b245b74897f572f6dedff7e, type: 2}
   m_IsPrefabParent: 0

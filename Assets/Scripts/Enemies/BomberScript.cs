@@ -17,6 +17,9 @@ public class BomberScript : PauseableObject
     float maxHealthBarFlash = 0.2f;
     float healthBarFlash = 0f;
 
+    //fast rocket cool down timer
+    float fastRocketTimer = Constants.ENEMY_FAST_ROCKET_COOLDOWN_TIMER;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -82,11 +85,23 @@ public class BomberScript : PauseableObject
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-
+            if (collision.gameObject.tag == "Player")
+            {
+                //fire fast rocket if ready
+                if (fastRocketTimer >= Constants.ENEMY_FAST_ROCKET_COOLDOWN_TIMER)
+                {
+                    Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemyFastRocket"), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+                    fastRocketTimer = 0f;
+                }
+                else
+                {
+                    fastRocketTimer += Time.deltaTime;
+                }
+            }
         }
     }
 }

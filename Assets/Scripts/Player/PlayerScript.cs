@@ -44,6 +44,11 @@ public class PlayerScript : PauseableObject
     //float landingGroundRollTimer = 0f;
     float timeUntilLanding = 3f;
 
+    //pitching variables
+    float pitchAngle = 0f;
+    GameObject childCanvas;
+    Quaternion childQuaternion;
+
     //camera clamp fields
     float dist;
     float width;
@@ -67,11 +72,19 @@ public class PlayerScript : PauseableObject
         //set state
         State = PlayerState.AutoPilotTakeOff;
 
-        //resets camera for canvas component
-        transform.GetChild(0).GetComponent<Canvas>().worldCamera = Camera.main;
+        //get child reference
+        childCanvas = transform.GetChild(0).gameObject;
 
+        //resets camera for canvas component
+        childCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        //set child quaterion
+        childQuaternion = transform.rotation;
+
+        //set health
         Health = Constants.PLAYER_STARTING_HEALTH;
 
+        //set healthbars
         normalHealthBar = healthBar.sprite;
         damagedHealthBar = Resources.Load<Sprite>("Graphics/Universals/HealthBarDamagedSprite");
 
@@ -303,8 +316,28 @@ public class PlayerScript : PauseableObject
             //aSource.pitch = Mathf.Clamp(, 0f, 2f);
         }
 
+        #region Player Pitch Control
+
+        pitchAngle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
+        pitchAngle = Mathf.Clamp(rBody.velocity.y, Constants.PLAYER_PITCH_DOWN_MAX, Constants.PLAYER_PITCH_UP_MAX);
+        transform.rotation = Quaternion.AngleAxis(pitchAngle, Vector3.forward);
+        childCanvas.transform.rotation = childQuaternion;
+
+        #endregion
+
         #region Player Clamp Control
 
+        //test for out of bounds and reseting the velocity
+        if (transform.position.x < leftLimitation || transform.position.x > rightLimitation)
+        {
+            currentHorizontalSpeed = 0f;
+        }
+        if (transform.position.y < downLimitation || transform.position.y > upLimitation)
+        {
+            currentVerticalSpeed = 0f;
+        }
+
+        //clamp player to screen
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftLimitation, rightLimitation), Mathf.Clamp(transform.position.y, downLimitation, upLimitation));
 
         #endregion
@@ -355,6 +388,11 @@ public class PlayerScript : PauseableObject
         else if (collision.gameObject.tag == "EnemyBullet")
         {
             Health -= 10f;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.tag == "Environment")
+        {
+            Health -= Constants.BIRD_DAMAGE;
             flashHealthBar = true;
         }
 

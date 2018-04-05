@@ -14,6 +14,9 @@ public class LevelControllerScript : MonoBehaviour
         int currentLevel = GameManager.Instance.Level;
         //testing purposes
         currentLevel = 1;
+        //GameManager.Instance.ErrorMessage = "Error in loading module first module. Reinstall the game or contact the developer to fix this.";
+        //MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
+        //return;
 
         //game object to hold module objects and positioning
         GameObject moduleParent;
@@ -23,6 +26,7 @@ public class LevelControllerScript : MonoBehaviour
         if (!moduleParent)
         {
             Debug.Log("First module error, returning to main menu.");
+            GameManager.Instance.ErrorMessage = "Error in loading first module. Reinstall the game or contact the developer to fix this.";
             MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
             return;
         }
@@ -36,6 +40,7 @@ public class LevelControllerScript : MonoBehaviour
             if (!moduleParent)
             {
                 Debug.Log("Module " + i + " error, returning to main menu.");
+                GameManager.Instance.ErrorMessage = "Error in loading module " + i + ". Reinstall the game or contact the developer to fix this.";
                 MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
                 return;
             }
@@ -48,6 +53,7 @@ public class LevelControllerScript : MonoBehaviour
         if (!moduleParent)
         {
             Debug.Log("Last module error, returning to main menu.");
+            GameManager.Instance.ErrorMessage = "Error in loading last module. Reinstall the game or contact the developer to fix this.";
             MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
             return;
         }

@@ -111,6 +111,12 @@ class GameManager
     { get; set; }
 
     /// <summary>
+    /// Used for displaying an error message in the main menu
+    /// </summary>
+    public string ErrorMessage
+    { get; set; }
+
+    /// <summary>
     /// Is the game paused
     /// </summary>
     public bool Paused

@@ -55,7 +55,7 @@ public class CustomGrid : MonoBehaviour
             { "MotherShip(Clone)", Constants.ObjectIDs.MotherShip },
             { "Zepplin(Clone)", Constants.ObjectIDs.Zepplin },
             { "Tank(Clone)", Constants.ObjectIDs.Tank },
-            { "Soldier", Constants.ObjectIDs.Soldier },
+            { "Soldier(Clone)", Constants.ObjectIDs.Soldier },
             { "Jeep(Clone)", Constants.ObjectIDs.Jeep },
             { "Bomber(Clone)", Constants.ObjectIDs.Bomber },
 

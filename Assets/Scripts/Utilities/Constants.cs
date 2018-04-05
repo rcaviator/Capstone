@@ -40,7 +40,7 @@ public static class Constants
     #region Game Constants
 
     //global
-    public const bool IS_DEVELOPER_BUILD = true;
+    public const bool IS_DEVELOPER_BUILD = false;
 
     //scenes
     public const string SCENE_NAME_LEVELEDITOR = "LevelEditor";
@@ -85,6 +85,8 @@ public static class Constants
     public const float PLAYER_MAX_VERTICAL_SPEED = 25f;
     public const float PLAYER_TAKEOFF_RATE = 5f;
     public const float PLAYER_TAKEOFF_GROUND_ROLL_TIMER = 2f;
+    public const float PLAYER_PITCH_UP_MAX = 60f;
+    public const float PLAYER_PITCH_DOWN_MAX = -60f;
     
     //basic attack bullet
     public const float PLAYER_BASIC_BULLET_DAMAGE = 10f;
@@ -99,7 +101,7 @@ public static class Constants
     //bird
     public const float BIRD_HEALTH = 1f;
     public const float BIRD_SPEED = 4f;
-    public const float BIRD_LIFETIME = 10f;
+    public const float BIRD_LIFETIME = 20f;
     public const float BIRD_DAMAGE = 5f;
 
     //weather hazard 1

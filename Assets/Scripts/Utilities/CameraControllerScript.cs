@@ -37,19 +37,22 @@ public class CameraControllerScript : PauseableObject
         //game code
         if (MySceneManager.Instance.CurrentScene == Scenes.GameLevel)
         {
-            if (!Landed)
+            if (!GameManager.Instance.Paused)
             {
-                horizontalSpeed = Mathf.Clamp(horizontalSpeed + Constants.CAMERA_SPEED * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
-                rBody.velocity = new Vector2(horizontalSpeed, 0f);
-            }
-            else
-            {
-                horizontalSpeed = Mathf.Clamp(horizontalSpeed - Constants.CAMERA_SPEED * 0.25f * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
-                rBody.velocity = new Vector2(horizontalSpeed, 0f);
-
-                if (rBody.velocity.x <= 0f)
+                if (!Landed)
                 {
-                    MySceneManager.Instance.ChangeScene(Scenes.LevelComplete);
+                    horizontalSpeed = Mathf.Clamp(horizontalSpeed + Constants.CAMERA_SPEED * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
+                    rBody.velocity = new Vector2(horizontalSpeed, 0f);
+                }
+                else
+                {
+                    horizontalSpeed = Mathf.Clamp(horizontalSpeed - Constants.CAMERA_SPEED * 0.25f * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
+                    rBody.velocity = new Vector2(horizontalSpeed, 0f);
+
+                    if (rBody.velocity.x <= 0f)
+                    {
+                        MySceneManager.Instance.ChangeScene(Scenes.LevelComplete);
+                    }
                 }
             }
         }

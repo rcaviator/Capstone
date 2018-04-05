@@ -136,6 +136,12 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for editor saved notification referencing
+    /// </summary>
+    public ModuleSavedNotificationScript SaveNotification
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet
