@@ -34,7 +34,7 @@ public class EnemySlowRocketScript : ProjectilesScript
             //health
             if (health <= 0)
             {
-                Instantiate(Resources.Load<GameObject>("Prefabs/Environment/ModerateExplosion"), transform.position, Quaternion.identity);
+                Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
                 GameManager.Instance.Score += Constants.ENEMY_SLOW_ROCKET_SCORE;
                 Destroy(gameObject);
             }
@@ -56,7 +56,7 @@ public class EnemySlowRocketScript : ProjectilesScript
         if (collision.gameObject.tag == "Player")
         {
             GameManager.Instance.Player.Health -= Constants.ENEMY_SLOW_ROCKET_DAMAGE;
-            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         else if (collision.gameObject.tag == "PlayerBullet")

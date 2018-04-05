@@ -12,6 +12,8 @@ public class LevelControllerScript : MonoBehaviour
         //initialize level generation
         //get level info
         int currentLevel = GameManager.Instance.Level;
+        //testing purposes
+        currentLevel = 1;
 
         //game object to hold module objects and positioning
         GameObject moduleParent;
@@ -28,7 +30,7 @@ public class LevelControllerScript : MonoBehaviour
 
         //load level modules
         int modulePlacement = Constants.MODULE_LENGTH;
-        for (int i = 1; i < 19; i++)
+        for (int i = 1; i < 9; i++)//19 -> 9
         {
             moduleParent = LoadModule(currentLevel, i);
             if (!moduleParent)
@@ -52,7 +54,7 @@ public class LevelControllerScript : MonoBehaviour
         moduleParent.transform.position = new Vector3(modulePlacement, 0, 0);
 
         //level loaded, enable player
-        GameManager.Instance.Player.gameObject.SetActive(true);
+        //GameManager.Instance.Player.gameObject.SetActive(true);
 	}
 	
 	// Update is called once per frame
@@ -81,10 +83,10 @@ public class LevelControllerScript : MonoBehaviour
         string file;
 
         //set application path
-        if (!Directory.Exists(Application.dataPath + "/Modules"))
+        if (Directory.Exists(Application.dataPath + "/Modules/"))
         {
             //set file path
-            file = Application.dataPath + "/Modules" + "/Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
+            file = Application.dataPath + "/Modules/" + "Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
 
             //check if file exists
             if (!File.Exists(file))
@@ -132,7 +134,7 @@ public class LevelControllerScript : MonoBehaviour
                     int y = r.ReadInt32();
 
                     //create spawn game object reference
-                    GameObject spawnObject = new GameObject();
+                    GameObject spawnObject = null;// = new GameObject();
 
                     //create object
                     switch (type)
@@ -195,6 +197,7 @@ public class LevelControllerScript : MonoBehaviour
 
                         default:
                             Debug.Log("Invalid object being loaded");
+                            spawnObject = new GameObject("Invalid object loaded");
                             break;
                     }
 

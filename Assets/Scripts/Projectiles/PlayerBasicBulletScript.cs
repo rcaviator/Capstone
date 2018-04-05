@@ -87,11 +87,11 @@ public class PlayerBasicBulletScript : ProjectilesScript
                 switch (rand1)
                 {
                     case 0:
-                        GameObject spark = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Bullet_Ricochet_Sparks_1"), transform.position, Quaternion.identity);
+                        GameObject spark = Instantiate(Resources.Load<GameObject>("Prefabs/Effects/Bullet_Ricochet_Sparks_1"), transform.position, Quaternion.identity);
                         spark.GetComponent<BulletRicochetSparksScript>().Initialize(collision.gameObject.GetComponent<Rigidbody2D>().velocity);
                         break;
                     case 1:
-                        GameObject spark2 = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Bullet_Ricochet_Sparks_2"), transform.position, Quaternion.identity);
+                        GameObject spark2 = Instantiate(Resources.Load<GameObject>("Prefabs/Effects/Bullet_Ricochet_Sparks_2"), transform.position, Quaternion.identity);
                         spark2.GetComponent<BulletRicochetSparksScript>().Initialize(collision.gameObject.GetComponent<Rigidbody2D>().velocity);
                         break;
                     default:

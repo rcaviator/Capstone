@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ContentPopulateScript : MonoBehaviour
 {
@@ -26,7 +25,12 @@ public class ContentPopulateScript : MonoBehaviour
         prefabs = new List<GameObject>();
         prefabs.AddRange(enemyPrefabs);
         prefabs.AddRange(environmentPrefabs);
-        prefabs.AddRange(utilityPrefabs);
+        
+        //hide these for release
+        if (Constants.IS_DEVELOPER_BUILD)
+        {
+            prefabs.AddRange(utilityPrefabs);
+        }
 
         //instantiate each button object, set its parent, and set its game object
         foreach (GameObject item in prefabs)
@@ -38,15 +42,5 @@ public class ContentPopulateScript : MonoBehaviour
             ob.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             ob.GetComponent<SpawnableObjectButtonScript>().SetGameObject(item);
         }
-
-        ////set the ui to the first object
-        //foreach (GameObject item in prefabs)
-        //{
-        //    if (item.GetComponent<SpawnableObjectButtonScript>())
-        //    {
-        //        item.GetComponent<SpawnableObjectButtonScript>().OnSelectObjectClick();
-        //        break;
-        //    }
-        //}
 	}
 }

@@ -13,13 +13,7 @@ public class EditorGetModulesScript : MonoBehaviour
     GameObject moduleButton;
 
     //boolean to show hidden modules
-    bool showHiddenModules = true;
-
-	// Use this for initialization
-	//void Start()
- //   {
-        
-	//}
+    bool showHiddenModules = Constants.IS_DEVELOPER_BUILD;
 
     /// <summary>
     /// Refreshes the list after creating any new modules in the level editor at run time.

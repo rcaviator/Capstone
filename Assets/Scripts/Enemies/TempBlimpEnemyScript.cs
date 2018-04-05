@@ -60,7 +60,7 @@ public class TempBlimpEnemyScript : PauseableObject
 
         if (health <= 0f)
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             GameManager.Instance.Score += Constants.ENEMY_TEMP_BLIMP_SCORE;
             Destroy(gameObject);
         }
@@ -71,7 +71,7 @@ public class TempBlimpEnemyScript : PauseableObject
     {
         if (collision.gameObject.tag == "Player")
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
             //GameManager.Instance.Score += Constants.ENEMY_TEMP_BLIMP_SCORE;
         }

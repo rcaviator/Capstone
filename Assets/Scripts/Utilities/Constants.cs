@@ -11,23 +11,34 @@ public static class Constants
         //default
         None,
 
+        //utilities
+        LevelStartPoint, LevelEndPoint,
+        UnusedUtility1, UnusedUtility2,
+
         //environment - blocks
         DirtBlock, DirtBlockGrass, DirtBlockSloped, DirtBlockSlopedGrass,
         StoneBlock, StoneBlockSloped, StoneBlockConcreteTop, StoneBlockSlopedConcreteTop,
+        UnusedBlock1, UnusedBlock2, UnusedBlock3, UnusedBlock4, UnusedBlock5, UnusedBlock6,
 
-        //environment - other
-        HangarClose, HangarMiddle, HangarFar, Tower,
+        //environment - buildings and weather
+        HangarClose, HangarMiddle, HangarFar, Tower, WeatherHazard1, WeatherHazard2, WeatherHazard3,
+        UnusedOther1, UnusedOther2, UnusedOther3, UnusedOther4, UnusedOther5, UnusedOther6,
+
+        //allies
+        AlliedTurret1, AlliedTurret2, WingMan1, WingMan2, UnusedAlly1, UnusedAlly2,
 
         //enemies
-        TempBlimpEnemy,
+        MainBoss, TempBlimpEnemy,
 
-        //utilities
-        LevelStartPoint, LevelEndPoint,
+        //new additions
     };
 
     #endregion
 
     #region Game Constants
+
+    //global
+    public const bool IS_DEVELOPER_BUILD = true;
 
     //scenes
     public const string SCENE_NAME_LEVELEDITOR = "LevelEditor";
@@ -40,8 +51,8 @@ public static class Constants
     public const string SCENE_NAME_VICTORY = "Victory";
 
     //level editor constants
+    public const int NUMBER_OF_MODULES = 9;
     public const string MODULE_FILE_HEADER = "MODU";
-    //public const float LEVEL_EDITOR_SPACING = 1f;
     public const int LEVEL_EDITOR_GRID_SIZE_X = 50;//20
     public const int LEVEL_EDITOR_GRID_SIZE_Y = 25;//10
     public const int LEVEL_EDITOR_GRID_OFFSET_X = 10;//10 finish deleting
@@ -57,7 +68,7 @@ public static class Constants
     public const int MODULE_LENGTH = LEVEL_EDITOR_GRID_SIZE_X;
     public const float CAMERA_SPEED = 10f;
     public const float BULLET_RICOCHET_SPARKS_LIFETIME = 0.1f;
-    public const float GROUND_DAMAGE = 5f;
+    public const float GROUND_DAMAGE = 5f;//delete this
 
     #endregion
 
@@ -69,6 +80,8 @@ public static class Constants
     public const float PLAYER_MAX_HORIZONTAL_SPEED = 100f;
     public const float PLAYER_VERTICAL_ACCELERATION = 20f;
     public const float PLAYER_MAX_VERTICAL_SPEED = 25f;
+    public const float PLAYER_TAKEOFF_RATE = 5f;
+    public const float PLAYER_TAKEOFF_GROUND_ROLL_TIMER = 2f;
     public const float PLAYER_BASIC_BULLET_DAMAGE = 10f;
     public const float PLAYER_BASIC_BULLET_ATTACK_LIFETIME = 0.15f;
     public const float PLAYER_BASIC_BULLET_SPEED = 75f;

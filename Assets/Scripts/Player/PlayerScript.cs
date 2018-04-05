@@ -35,9 +35,9 @@ public class PlayerScript : PauseableObject
     bool canShoot = false;
 
     //take off and landing timing controls
-    float takeOffGroundRollTime = 2f;
+    float takeOffGroundRollTime = Constants.PLAYER_TAKEOFF_GROUND_ROLL_TIMER;
     float takeOffGroundRollTimer = 0f;
-    float takeOffClimbRate = 1f;
+    float takeOffClimbRate = Constants.PLAYER_TAKEOFF_RATE;
     float landingHeight = 0f;
     float landingDecentRate = 0f;
     //float landingGroundRollTime = 2f;
@@ -119,7 +119,7 @@ public class PlayerScript : PauseableObject
                     break;
                 case PlayerState.AutoPilotLanding:
                     //landing
-                    if (transform.position.y >= -Constants.LEVEL_EDITOR_GRID_OFFSET_Y + 1f)
+                    if (transform.position.y > 4f)
                     {
                         rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, -landingDecentRate);
                     }
@@ -362,7 +362,9 @@ public class PlayerScript : PauseableObject
         {
             if (State == PlayerState.Manual)
             {
-                Health -= Constants.GROUND_DAMAGE;
+                //Health -= Constants.GROUND_DAMAGE;
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
+                MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }
         }
     }
