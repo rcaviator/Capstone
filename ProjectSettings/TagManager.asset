@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - PlayerBullet
   - EnemyBullet
+  - WeatherHazard
+  - Environment
   layers:
   - Default
   - TransparentFX
@@ -24,8 +26,8 @@ TagManager:
   - PlayerProjectile
   - EnemyProjectile
   - Ground
-  - 
-  - 
+  - WeatherHazard
+  - Environment
   - 
   - 
   - 

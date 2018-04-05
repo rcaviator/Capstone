@@ -16,7 +16,10 @@ public class TargetReticle : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        thisPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(thisPosition.x, thisPosition.y, 0f);
+        if (!GameManager.Instance.Paused)
+        {
+            thisPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = new Vector3(thisPosition.x, thisPosition.y, 0f);
+        }
 	}
 }

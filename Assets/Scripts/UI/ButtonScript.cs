@@ -14,18 +14,6 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField]
     Scenes goToScene;
 
-    ////main menu to change to if applicable. leave on None if n/a
-    //[SerializeField]
-    //MainMenus mainMenuToGoTo;
-
-    ////prelevel menu to change to if applicable. leave on None if n/a
-    //[SerializeField]
-    //PreLevelMenus preLevelMenuToGoTo;
-
-    ////pause menu to change to if applicable. leave on None if n/a
-    //[SerializeField]
-    //PauseMenuPanel pauseMenuToGoTo;
-
     //animated button fields
     bool increaseScale = false;
     float timer = 0f;
@@ -61,9 +49,18 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     #region Handler Methods
 
+    void OnDisable()
+    {
+        increaseScale = false;
+        timer = 0;
+        GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, GetComponent<RectTransform>().localScale.z);
+    }
+
     public void OnPointerEnter(PointerEventData pointerData)
     {
         GetComponent<Button>().Select();
+        increaseScale = true;
+        AudioManager.Instance.PlayUISoundEffect(UISoundEffect.MenuButtonFocused);
     }
 
     public void OnPointerExit(PointerEventData pointerData)
@@ -73,13 +70,12 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnSelect(BaseEventData eventData)
     {
-        increaseScale = true;
-        AudioManager.Instance.PlayUISoundEffect(UISoundEffect.MenuButtonFocused);
+        
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        increaseScale = false;
+
     }
 
     #endregion

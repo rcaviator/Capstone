@@ -1,24 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+//using System.IO.Directory;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
 public class CustomGrid : MonoBehaviour
 {
+    //line renderer component
     LineRenderer gridLines;
 
-    //create the grid drawing points
-    List<Vector3> tempGrid = new List<Vector3>();
-    List<Vector3> gridDrawPoints = new List<Vector3>();
+    //dictionary of game object names and ids
+    Dictionary<string, Constants.ObjectIDs> objectNames;
 
-    //private void Awake ()
-    //{
-    //    if (gridLines)
-    //    {
-    //        gridLines = GetComponent<LineRenderer>();
-    //    }
-    //}
+    //list for game objects
+    List<GameObject> gameObjects = new List<GameObject>();
+
+    private void Awake()
+    {
+        //get line reneder reference
+        gridLines = GetComponent<LineRenderer>();
+
+        //initialize dictionary
+        objectNames = new Dictionary<string, Constants.ObjectIDs>()
+        {
+            //utilities
+            { "LevelStartPoint(Clone)", Constants.ObjectIDs.LevelStartPoint },
+            { "LevelEndPoint(Clone)", Constants.ObjectIDs.LevelEndPoint },
+
+            //environment - blocks
+            { "Dirt_Block(Clone)", Constants.ObjectIDs.DirtBlock },
+            { "Dirt_Block_Grass(Clone)", Constants.ObjectIDs.DirtBlockGrass },
+            { "Dirt_Block_Sloped(Clone)", Constants.ObjectIDs.DirtBlockSloped },
+            { "Dirt_Block_Sloped_Grass(Clone)", Constants.ObjectIDs.DirtBlockSlopedGrass },
+            { "Stone_Block(Clone)", Constants.ObjectIDs.StoneBlock },
+            { "Stone_Block_Sloped(Clone)", Constants.ObjectIDs.StoneBlockSloped },
+            { "Stone_Block_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockConcreteTop },
+            { "Stone_Block_Sloped_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockSlopedConcreteTop },
+            
+            //environment - buildings
+            { "HangarClose(Clone)", Constants.ObjectIDs.HangarClose },
+            { "HangarMiddle(Clone)", Constants.ObjectIDs.HangarMiddle },
+            { "HangarFar(Clone)", Constants.ObjectIDs.HangarFar },
+            { "Tower(Clone)", Constants.ObjectIDs.Tower },
+
+            //environment - weather
+            { "WeatherHazard1(Clone)", Constants.ObjectIDs.WeatherHazard1 },
+
+            //environment - other
+            { "Bird(Clone)", Constants.ObjectIDs.Bird },
+
+            //enemies
+            { "MotherShip(Clone)", Constants.ObjectIDs.MotherShip },
+            { "Zepplin(Clone)", Constants.ObjectIDs.Zepplin },
+            { "Tank(Clone)", Constants.ObjectIDs.Tank },
+            { "Soldier(Clone)", Constants.ObjectIDs.Soldier },
+            { "Jeep(Clone)", Constants.ObjectIDs.Jeep },
+            { "Bomber(Clone)", Constants.ObjectIDs.Bomber },
+
+        };
+    }
 
 
     public void Initialize()
@@ -31,91 +73,77 @@ public class CustomGrid : MonoBehaviour
 
         #region Grid Initialization
 
-        GridPoints = new List<Vector3>();
+        //declare the grid and grid draw points arrays
+        GridPoints = new CustomGridCell[Constants.LEVEL_EDITOR_GRID_SIZE_X, Constants.LEVEL_EDITOR_GRID_SIZE_Y];
+        DrawGridPoints2DArray = new Vector3[Constants.LEVEL_EDITOR_GRID_SIZE_X + 1, Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1];
+        DrawGridPointsPositionList = new List<Vector3>();
 
         //populate the point array
-        float x = 0;
-        float y = 0;
-        for (int p = 0; p < (Constants.LEVEL_EDITOR_GRID_SIZE_X * Constants.LEVEL_EDITOR_GRID_SIZE_Y); p++)
+        int x = 0;
+        int y = 0;
+        for (y = 0; y < Constants.LEVEL_EDITOR_GRID_SIZE_Y; y++)
         {
-            GridPoints.Add(new Vector3(x, y, 0));
-
-            y += Constants.LEVEL_EDITOR_SPACING;
-
-            if (y >= (Constants.LEVEL_EDITOR_GRID_SIZE_Y * Constants.LEVEL_EDITOR_SPACING))
+            for (x = 0; x < Constants.LEVEL_EDITOR_GRID_SIZE_X; x++)
             {
-                y = 0;
-                x += Constants.LEVEL_EDITOR_SPACING;
+                GridPoints[x, y] = new CustomGridCell(new Vector3(x, y, 0), new Vector2(x, y));
             }
-        }
-
-        //reuse x and y for drawing grid points axis steping. reset them to 0
-        x = 0;
-        y = 0;
-
-        //shift the vertex array over
-        for (int p = 0; p < GridPoints.Count; p++)
-        {
-            Vector3 temp = GridPoints[p];
-            temp.x -= Constants.LEVEL_EDITOR_GRID_OFFSET_X;
-            temp.y -= Constants.LEVEL_EDITOR_GRID_OFFSET_Y;
-            GridPoints[p] = temp;
         }
 
         #endregion
 
         #region Draw Grid
 
-        float drawX = 0;
-        float drawY = 0;
-        for (int dp = 0; dp < ((Constants.LEVEL_EDITOR_GRID_SIZE_X + 1) * (Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1)); dp++)
+        //populate the draw grid array only on the sides
+        //bottom row
+        for (int xStep = 0; xStep < DrawGridPoints2DArray.GetLength(0); xStep++)
         {
-            tempGrid.Add(new Vector3(drawX, drawY, 0));
-
-            drawY += Constants.LEVEL_EDITOR_SPACING;
-
-            if (drawY >= ((Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1) * Constants.LEVEL_EDITOR_SPACING))
-            {
-                drawY = 0;
-                drawX += Constants.LEVEL_EDITOR_SPACING;
-            }
+            DrawGridPoints2DArray[xStep, 0] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, 0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
+        }
+        //top row
+        for (int xStep = 0; xStep < DrawGridPoints2DArray.GetLength(0); xStep++)
+        {
+            DrawGridPoints2DArray[xStep, DrawGridPoints2DArray.GetLength(1) - 1] = new Vector3(xStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, DrawGridPoints2DArray.GetLength(1) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
+        }
+        //left column
+        for (int yStep = 0; yStep < DrawGridPoints2DArray.GetLength(1); yStep++)
+        {
+            DrawGridPoints2DArray[0, yStep] = new Vector3(0 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
+        }
+        //right column
+        for (int yStep = 0; yStep < DrawGridPoints2DArray.GetLength(1); yStep++)
+        {
+            DrawGridPoints2DArray[DrawGridPoints2DArray.GetLength(0) - 1, yStep] = new Vector3(DrawGridPoints2DArray.GetLength(0) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
         }
 
-        //set offset
-        for (int p = 0; p < tempGrid.Count; p++)
-        {
-            Vector3 temp = tempGrid[p];
-            temp.x -= Constants.LEVEL_EDITOR_GRID_OFFSET_X;
-            temp.y -= Constants.LEVEL_EDITOR_GRID_OFFSET_Y;
-            tempGrid[p] = temp;
-        }
+        //reset x and y for drawing
+        x = 0;
+        y = 0;
 
         #region X Axis
 
         //handle x axis populating
         bool xClimb = true;
         bool xUp = true;
-        int xIndexer = 0;
 
-        //start at and add the first vertix point to the list. then loop through until x has reached the end
-        while (x <= Constants.LEVEL_EDITOR_GRID_SIZE_X)
+        //start and add the first grid point to the list. then loop through until x has reached the end
+        while (x < DrawGridPoints2DArray.GetLength(0))
         {
             //add point
-            gridDrawPoints.Add(new Vector3(tempGrid[xIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[xIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
+            DrawGridPointsPositionList.Add(DrawGridPoints2DArray[x, y]);
 
-            //calculate what the index of the next point is to be
+            //determine what the coordinate of the next point is to be
             //do we need to climb?
             if (xClimb)
             {
                 //do we climb up or down?
                 if (xUp)
                 {
-                    xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y;//-1
+                    y += DrawGridPoints2DArray.GetLength(1) - 1;
                     xUp = false;
                 }
                 else
                 {
-                    xIndexer -= Constants.LEVEL_EDITOR_GRID_SIZE_Y;//-1
+                    y -= DrawGridPoints2DArray.GetLength(1) - 1;
                     xUp = true;
                 }
 
@@ -130,14 +158,6 @@ public class CustomGrid : MonoBehaviour
 
                 //we have shifted over on x, increment
                 x++;
-
-                //if this was the last point, break. xIndexer is used as the starting index for y populating
-                if (x == Constants.LEVEL_EDITOR_GRID_SIZE_X + 1)
-                {
-                    break;
-                }
-
-                xIndexer += Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1;
             }
         }
 
@@ -145,20 +165,18 @@ public class CustomGrid : MonoBehaviour
 
         #region Y Axis
 
+        bool drawY = true;
         //handle y axis populating
         bool jumpOver = true;
         bool yLeft = true;
-        int yIndexer = xIndexer;
 
         //are we on the top or bottom of the grid after x popluating?
-        if (tempGrid[yIndexer].y == 0 - Constants.LEVEL_EDITOR_GRID_OFFSET_Y)
+        //moving from bottom to top
+        if (y == 0 && drawY)
         {
-            //moving from bottom to top variables
-            int leftClimber = 0;
-            int rightClimber = tempGrid.Count - (Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1);
-
+            Debug.Log("bottom");
             //calculate the next point before adding it to the list. then loop through until the end of y
-            while (y <= Constants.LEVEL_EDITOR_GRID_SIZE_Y)
+            while (y < DrawGridPoints2DArray.GetLength(1))
             {
                 //do we jump over?
                 if (jumpOver)
@@ -166,18 +184,14 @@ public class CustomGrid : MonoBehaviour
                     //do we jump over left or right?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftClimber;
+                        x = 0;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightClimber;
+                        x = DrawGridPoints2DArray.GetLength(0) - 1;
                     }
 
-                    //prepare for next jump
-                    leftClimber++;
-                    rightClimber++;
+                    //prepare for climb up
                     jumpOver = false;
                 }
                 //else climb up
@@ -186,21 +200,16 @@ public class CustomGrid : MonoBehaviour
                     //which side are we climbing?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftClimber;
-
                         //prepare for next jump
                         yLeft = false;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightClimber;
-
                         //prepare for next jump
                         yLeft = true;
                     }
 
+                    //prepare for jump
                     jumpOver = true;
 
                     //increment y since this was a climb jump
@@ -208,24 +217,20 @@ public class CustomGrid : MonoBehaviour
                 }
 
                 //index protection
-                if (y == Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1)
+                if (y == DrawGridPoints2DArray.GetLength(1))
                 {
                     break;
                 }
 
                 //add point
-                gridDrawPoints.Add(new Vector3(tempGrid[yIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[yIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
+                DrawGridPointsPositionList.Add(DrawGridPoints2DArray[x, y]);
             }
         }
-        else
+        //moving from top to bottom
+        else if (drawY)
         {
-            //moving from top to bottom
-            y = Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1;
-            int leftDecender = Constants.LEVEL_EDITOR_GRID_SIZE_Y;
-            int rightDecender = tempGrid.Count - 1;
-
             //calculate the next point before adding it to the list. then loop through until the end of y
-            while (y > 0)
+            while (y >= 0)
             {
                 //do we jump over?
                 if (jumpOver)
@@ -233,116 +238,437 @@ public class CustomGrid : MonoBehaviour
                     //do we jump over left or right?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftDecender;
+                        x = 0;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightDecender;
+                        x = DrawGridPoints2DArray.GetLength(0) - 1;
                     }
 
-                    //prepare for next jump
-                    leftDecender--;
-                    rightDecender--;
+                    //prepare for climb down
                     jumpOver = false;
                 }
-                //else climb up
+                //else climb down
                 else
                 {
-                    //which side are we climbing?
+                    //which side are we climbing down?
                     if (yLeft)
                     {
-                        //set yIndexer
-                        yIndexer = leftDecender;
-
-                        //prepare for next jump
                         yLeft = false;
                     }
                     else
                     {
-                        //set yIndexer
-                        yIndexer = rightDecender;
-
-                        //prepare for next jump
                         yLeft = true;
                     }
 
+                    //prepare for jump
                     jumpOver = true;
 
                     //decrement y since this was a decending jump
                     y--;
                 }
 
-                //index protection
-                if (y == 0)
+                //bounds check
+                if (y == -1)
                 {
                     break;
                 }
 
                 //add point
-                gridDrawPoints.Add(new Vector3(tempGrid[yIndexer].x - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, tempGrid[yIndexer].y - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, 0));
+                DrawGridPointsPositionList.Add(DrawGridPoints2DArray[x, y]);
             }
 
         }
 
         #endregion
 
+        //send draw position vector list to line renderer
         gridLines.loop = false;
-        gridLines.positionCount = gridDrawPoints.Count;
-        gridLines.SetPositions(gridDrawPoints.ToArray());
+        gridLines.positionCount = DrawGridPointsPositionList.Count;
+        gridLines.SetPositions(DrawGridPointsPositionList.ToArray());
 
         #endregion
     }
 
     /// <summary>
-    /// The List of grid points as Vector3's
+    /// The List of grid points as grid cells
     /// </summary>
-    public List<Vector3> GridPoints
+    public CustomGridCell[,] GridPoints
+    { get; set; }
+
+    /// <summary>
+    /// The list of vectors for drawing the grid line with Line Renderer
+    /// </summary>
+    private List<Vector3> DrawGridPointsPositionList
+    { get; set; }
+
+    /// <summary>
+    /// The vector array for storing points to be used in DrawGridPointsPositionList
+    /// </summary>
+    private Vector3[,] DrawGridPoints2DArray
     { get; set; }
 
     /// <summary>
     /// Gets the nearest point in the gird as a Vector3.
-    /// Returns Vector3.forward (0,0,1) if passed position is too far out of the grid.
+    /// Returns null if passed position is too far out of the grid.
     /// </summary>
-    /// <param name="position">The position to get nearest grid point</param>
-    /// <returns>The position of the nearest grid point</returns>
-    public Vector3 GetNearestPointOnGrid(Vector3 position)
+    /// <param name="position">The position to get the nearest grid cell</param>
+    /// <returns>The nearest grid cell if not outside the grid</returns>
+    public CustomGridCell GetGridCellInGrid(Vector3 location)
     {
         //round the x and y of the position to test
-        int xCount = Mathf.RoundToInt(position.x / Constants.LEVEL_EDITOR_SPACING);
-        int yCount = Mathf.RoundToInt(position.y / Constants.LEVEL_EDITOR_SPACING);
-        //int zCount = Mathf.RoundToInt(position.z / Constants.LEVEL_EDITOR_SPACING);
+        int xPosition = Mathf.RoundToInt(location.x);
+        int yPosition = Mathf.RoundToInt(location.y);
+        //int zPosition = Mathf.RoundToInt(location.z / Constants.LEVEL_EDITOR_SPACING);
 
-        //get the grid point matching the rounded point and return that value
-        Vector3 testLocation = new Vector3(xCount * Constants.LEVEL_EDITOR_SPACING, yCount * Constants.LEVEL_EDITOR_SPACING, 0);
-
-        //set index
-        int index = 0;
-
-        //is the test location vector in the grid
-        if (GridPoints.Contains(testLocation))
+        //bounds check
+        if (xPosition < 0 || xPosition > GridPoints.GetLength(0) - 1)
         {
-            //set index
-            index = GridPoints.FindIndex(a => a == testLocation);
+            return null;
+        }
+        //y bounds
+        else if (yPosition < 0 || yPosition > GridPoints.GetLength(1) - 1)
+        {
+            return null;
+        }
+
+        //in bounds
+        return GridPoints[xPosition, yPosition];
+    }
+
+    /// <summary>
+    /// Sets an object in the grid if the cell is not occupied
+    /// </summary>
+    /// <param name="cellObject">the object to place in the grid</param>
+    public void SetGameObjectInGrid(CustomGridCell cell, GameObject cellObject, bool flipped)
+    {
+        //get coordinates
+        int x = (int)cell.IndexLocation.x;
+        int y = (int)cell.IndexLocation.y;
+
+        //check if the cell is occupied
+        if (!GridPoints[x, y].IsOccupied)
+        {
+            //set game object in grid and add to list
+            if (flipped)
+            {
+                GridPoints[x, y].IsFlipped = true;
+            }
+            GridPoints[x, y].CellObject = cellObject;
+            gameObjects.Add(GridPoints[x, y].CellObject);
+        }
+    }
+
+    /// <summary>
+    /// Removes a game object from the grid if the cell is occupied
+    /// </summary>
+    /// <param name="cell">the cell to remove a game object from</param>
+    public void RemoveGameObjectInGrid(CustomGridCell cell)
+    {
+        //get coordinates
+        int x = (int)cell.IndexLocation.x;
+        int y = (int)cell.IndexLocation.y;
+
+        //check if there is an object in the cell
+        if (GridPoints[x, y].IsOccupied)
+        {
+            //remove game object from cell and remove from list
+            //Debug.Log("RemoveGameObjectInGrid: Removing game object in cell at " + GridPoints[x, y].GridLocation);
+            gameObjects.Remove(GridPoints[x, y].CellObject);
+            GridPoints[x, y].CellObject = null;
+        }
+        //else
+        //{
+        //    Debug.Log("RemoveGameObjectInGrid: Target cell is already empty at " + GridPoints[index].GridLocation);
+        //}
+    }
+
+    /// <summary>
+    /// Fills all the columns under the first found dirt/grass/sloped block with dirt blocks.
+    /// Will not replace existing blocks.
+    /// </summary>
+    public void FillDirt()
+    {
+        bool foundTriggerBlockType = false;
+        for (int x = 0; x < Constants.LEVEL_EDITOR_GRID_SIZE_X; x++)
+        {
+            //reset trigger bool
+            foundTriggerBlockType = false;
+
+            for (int y = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1; y >= 0; y--)
+            {
+                //locate the first instance of a valid block
+                if (GridPoints[x, y].IsOccupied && !foundTriggerBlockType)
+                {
+                    //check for applicable trigger block
+                    if (GridPoints[x, y].CellObject.name == "Dirt_Block(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Dirt_Block_Grass(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Dirt_Block_Sloped(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Dirt_Block_Sloped_Grass(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Stone_Block_Sloped(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Stone_Block_Concrete_Top(Clone)" ||
+                        GridPoints[x, y].CellObject.name == "Stone_Block_Sloped_Concrete_Top(Clone)")
+                    {
+                        foundTriggerBlockType = true;
+                        continue;
+                    }
+                }
+
+                //check if any cell under the found trigger block can be filled in
+                if (foundTriggerBlockType && !GridPoints[x, y].IsOccupied)
+                {
+                    GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
+                    gameObjects.Add(GridPoints[x, y].CellObject);
+                }
+            }
+        }
+    }
+
+    public void SaveModule(int level, int number)
+    {
+        //create the folder if it does not exist
+        if (!Directory.Exists(Application.dataPath + "/Modules"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Modules");
+        }
+
+        //set file path
+        string file = Application.dataPath + "/Modules" + "/Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
+
+        //override the file
+        if (File.Exists(file))
+        {
+            //Debug.Log("Deleting " + file);
+            File.Delete(file);
+        }
+
+        //open stream
+        using (Stream s = File.OpenWrite(file))
+        {
+            //create writer
+            using (BinaryWriter w = new BinaryWriter(s))
+            {
+                //write header
+                w.Write(Constants.MODULE_FILE_HEADER.ToCharArray());
+                w.Write(gameObjects.Count);
+
+                //loop through game object list and save object type and location
+                foreach (GameObject item in gameObjects)
+                {
+                    //determine game object type
+                    w.Write((int)objectNames[item.name]);
+
+                    //write if the object is flipped
+                    if (item.transform.rotation.eulerAngles.y == 180)
+                    {
+                        w.Write(true);
+                    }
+                    else
+                    {
+                        w.Write(false);
+                    }
+                    
+                    //write game object's location
+                    w.Write((int)item.transform.position.x);
+                    w.Write((int)item.transform.position.y);
+                }
+            }
+        }
+    }
+
+
+    public void LoadModule(string moduleName)
+    {
+        //set file path
+        //Debug.Log(moduleName);
+        string file = Application.dataPath + "/Modules/" + moduleName;
+
+        //load the module if the file exists
+        if (File.Exists(file))
+        {
+            //prep grid for new module
+            ClearGrid();
+
+            //open stream
+            using (Stream s = File.OpenRead(file))
+            {
+                //create reader
+                using (BinaryReader r = new BinaryReader(s))
+                {
+                    //verify file is of correct format
+                    string head = new string(r.ReadChars(4));
+                    if (!head.Equals(Constants.MODULE_FILE_HEADER))
+                    {
+                        Debug.Log("File not of correct format");
+                        return;
+                    }
+
+                    //get number of game objects
+                    int numberOfGameObjects = r.ReadInt32();
+
+                    //loop through the file and create each game object, add to grid, and move it
+                    for (int i = 0; i < numberOfGameObjects; i++)
+                    {
+                        //get type
+                        int typeInt = r.ReadInt32();
+                        Constants.ObjectIDs type = (Constants.ObjectIDs)typeInt;
+
+                        //check if flipped
+                        bool flipped = r.ReadBoolean();
+
+                        //get position
+                        int x = r.ReadInt32();
+                        int y = r.ReadInt32();
+
+                        //prep cell
+                        GridPoints[x, y].IsFlipped = flipped;
+
+                        //create object
+                        switch (type)
+                        {
+                            case Constants.ObjectIDs.None:
+                                break;
+
+                            //utilities
+                            case Constants.ObjectIDs.LevelStartPoint:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint");
+                                break;
+                            case Constants.ObjectIDs.LevelEndPoint:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint");
+                                break;
+
+                            //environment - blocks
+                            case Constants.ObjectIDs.DirtBlock:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
+                                break;
+                            case Constants.ObjectIDs.DirtBlockGrass:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Grass");
+                                break;
+                            case Constants.ObjectIDs.DirtBlockSloped:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped");
+                                break;
+                            case Constants.ObjectIDs.DirtBlockSlopedGrass:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped_Grass");
+                                break;
+                            case Constants.ObjectIDs.StoneBlock:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block");
+                                break;
+                            case Constants.ObjectIDs.StoneBlockSloped:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped");
+                                break;
+                            case Constants.ObjectIDs.StoneBlockConcreteTop:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top");
+                                break;
+                            case Constants.ObjectIDs.StoneBlockSlopedConcreteTop:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped_Concrete_Top");
+                                break;
+
+                            //environment - buildings
+                            case Constants.ObjectIDs.HangarClose:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarClose");
+                                break;
+                            case Constants.ObjectIDs.HangarMiddle:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarMiddle");
+                                break;
+                            case Constants.ObjectIDs.HangarFar:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarFar");
+                                break;
+                            case Constants.ObjectIDs.Tower:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Tower");
+                                break;
+
+                            //environment - weather
+                            case Constants.ObjectIDs.WeatherHazard1:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1");
+                                break;
+
+                            //environment - other
+                            case Constants.ObjectIDs.Bird:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Bird");
+                                break;
+
+                            //allies
+
+
+                            //enemies
+                            case Constants.ObjectIDs.MotherShip:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/MotherShip");
+                                break;
+                            case Constants.ObjectIDs.Zepplin:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Zepplin");
+                                break;
+                            case Constants.ObjectIDs.Tank:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Tank");
+                                break;
+                            case Constants.ObjectIDs.Soldier:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Soldier");
+                                break;
+                            case Constants.ObjectIDs.Jeep:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Jeep");
+                                break;
+                            case Constants.ObjectIDs.Bomber:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Bomber");
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        //add game object to list
+                        if (GridPoints[x, y].CellObject)
+                        {
+                            gameObjects.Add(GridPoints[x, y].CellObject);
+                        }
+                    }
+                }
+            }
+            
         }
         else
         {
-            return Vector3.forward;
+            Debug.Log("LoadModule: File does not exist");
         }
-
-        //return the vector in the grid
-        return GridPoints[index];
     }
 
-
-    private void OnDrawGizmos()
+    /// <summary>
+    /// Clears the grid
+    /// </summary>
+    public void ClearGrid()
     {
-        //main grid
-        Gizmos.color = Color.yellow;
-        foreach (Vector3 point in GridPoints)
+        for (int y = 0; y < GridPoints.GetLength(1); y++)
         {
-            Gizmos.DrawSphere(point, 0.1f);
+            for (int x = 0; x < GridPoints.GetLength(0); x++)
+            {
+                //check if there is an object
+                if (GridPoints[x, y].IsOccupied)
+                {
+                    gameObjects.Remove(GridPoints[x, y].CellObject);
+                    GridPoints[x, y].CellObject = null;
+                }
+            }
         }
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    //main grid
+    //    Gizmos.color = Color.yellow;
+    //    for (int y = 0; y < GridPoints.GetLength(1); y++)
+    //    {
+    //        for (int x = 0; x < GridPoints.GetLength(0); x++)
+    //        {
+    //            Gizmos.DrawSphere(GridPoints[x, y].GridLocation, 0.1f);
+    //        }
+    //    }
+
+    //    //draw points grid
+    //    Gizmos.color = Color.red;
+    //    for (int y = 0; y < DrawGridPoints2DArray.GetLength(1); y++)
+    //    {
+    //        for (int x = 0; x < DrawGridPoints2DArray.GetLength(0); x++)
+    //        {
+    //            Gizmos.DrawSphere(DrawGridPoints2DArray[x, y], 0.1f);
+    //        }
+    //    }
+    //}
 }

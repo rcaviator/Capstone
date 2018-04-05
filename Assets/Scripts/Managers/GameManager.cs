@@ -1,6 +1,7 @@
-﻿//using System;
-//using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 /// <summary>
@@ -26,7 +27,7 @@ class GameManager
     private GameManager()
     {
         // Creates the object that calls GM's Update method
-        Object.DontDestroyOnLoad(new GameObject("gmUpdater", typeof(Updater)));
+        UnityEngine.Object.DontDestroyOnLoad(new GameObject("gmUpdater", typeof(Updater)));
 
         //create the list of pausable objects
         PauseableObjects = new List<PauseableObject>();
@@ -43,6 +44,12 @@ class GameManager
     {
         get { return instance ?? (instance = new GameManager()); }
     }
+
+    /// <summary>
+    /// Are the objects being spawned in the game or level editor scene
+    /// </summary>
+    public bool IsLevelEditor
+    { get; set; }
 
     /// <summary>
     /// The camera the player stays within
@@ -62,6 +69,11 @@ class GameManager
     public TargetReticle Reticle
     { get; set; }
 
+    /// <summary>
+    /// The level number of the game
+    /// </summary>
+    public int Level
+    { get; set; }
     /// <summary>
     /// The game score
     /// </summary>
@@ -90,6 +102,18 @@ class GameManager
     /// Reference to the ending trigger
     /// </summary>
     public EndLevelTriggerScript EndTrigger
+    { get; set; }
+
+    /// <summary>
+    /// Reference to the level editor controller script
+    /// </summary>
+    public LevelEditorControllerScript EditorController
+    { get; set; }
+
+    /// <summary>
+    /// Used for displaying an error message in the main menu
+    /// </summary>
+    public string ErrorMessage
     { get; set; }
 
     /// <summary>
@@ -179,6 +203,46 @@ class GameManager
     {
         //call ui manager
         UIManager.Instance.Update();
+    }
+
+    #endregion
+
+    #region Game Data Class
+    
+    [Serializable]
+    class GameData
+    {
+        #region Data Fields
+
+        int level;
+        int score;
+
+
+        #endregion
+
+        #region Constructor
+
+        public GameData()
+        {
+
+        }
+
+        #endregion
+
+        #region Properties
+
+
+
+        #endregion
+
+        #region Methods
+
+        public void LoadData()
+        {
+
+        }
+
+        #endregion
     }
 
     #endregion

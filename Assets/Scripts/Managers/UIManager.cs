@@ -118,6 +118,30 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for editor selected image referencing
+    /// </summary>
+    public SelectedObjectImageScript SelectedObjectImage
+    { get; set; }
+
+    /// <summary>
+    /// Used for editor selected text referencing
+    /// </summary>
+    public SelectedObjectTextScript SelectedObjectText
+    { get; set; }
+
+    /// <summary>
+    /// Used for editor slected module referencing
+    /// </summary>
+    public SelectedModuleTextScript SelectedModuleText
+    { get; set; }
+
+    /// <summary>
+    /// Used for editor saved notification referencing
+    /// </summary>
+    public ModuleSavedNotificationScript SaveNotification
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

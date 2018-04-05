@@ -59,7 +59,7 @@ class MySceneManager
     Dictionary<Scenes, MusicSoundEffect> soundtrackDict;
 
     //dictionary to hold player starting locations in each game scene
-    Dictionary<PlayerSceneLocations, Vector3> playerLocations;
+    //Dictionary<PlayerSceneLocations, Vector3> playerLocations;
 
     #endregion
 
@@ -88,15 +88,16 @@ class MySceneManager
         {
             //leave Scenes.None out
             { Scenes.MainMenu, MusicSoundEffect.MainMenu },
-
+            { Scenes.GameLevel, MusicSoundEffect.GameLevel },
+            { Scenes.PreLevel, MusicSoundEffect.PreLevel },
         };
 
         //initialize the player scene locations dictionary
-        playerLocations = new Dictionary<PlayerSceneLocations, Vector3>()
-        {
-            //leave PlayerSceneLocations.None out
+        //playerLocations = new Dictionary<PlayerSceneLocations, Vector3>()
+        //{
+        //    //leave PlayerSceneLocations.None out
 
-        };
+        //};
 
         //register scene change delegate
         SceneManager.sceneLoaded += OnLevelLoaded;
@@ -130,8 +131,8 @@ class MySceneManager
     { get; set; }
 
 
-    public bool EditorScene
-    { get; set; }
+    //public bool EditorScene
+    //{ get; set; }
 
     #endregion
 
@@ -191,11 +192,11 @@ class MySceneManager
         }
 
         //set the editor status if the scene is the level editor
-        if (CurrentScene == Scenes.LevelEditor)
-        {
-            EditorScene = true;
-            Debug.Log("level editor scene");
-        }
+        //if (CurrentScene == Scenes.LevelEditor)
+        //{
+        //    GameManager.Instance.IsLevelEditor = true;
+        //    Debug.Log("level editor scene");
+        //}
 
         //temporary score reset
         if (CurrentScene == Scenes.MainMenu)
@@ -212,11 +213,11 @@ class MySceneManager
     {
         PreviousScene = sceneDict.Keys.First(x => sceneDict[x] == scene.name);
 
-        if (PreviousScene == Scenes.LevelEditor)
-        {
-            EditorScene = false;
-            Debug.Log("left the editor scene");
-        }
+        //if (PreviousScene == Scenes.LevelEditor)
+        //{
+        //    GameManager.Instance.IsLevelEditor = false;
+        //    Debug.Log("left the editor scene");
+        //}
     }
 
     #endregion

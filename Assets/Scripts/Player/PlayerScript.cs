@@ -35,14 +35,19 @@ public class PlayerScript : PauseableObject
     bool canShoot = false;
 
     //take off and landing timing controls
-    float takeOffGroundRollTime = 2f;
+    float takeOffGroundRollTime = Constants.PLAYER_TAKEOFF_GROUND_ROLL_TIMER;
     float takeOffGroundRollTimer = 0f;
-    float takeOffClimbRate = 1f;
+    float takeOffClimbRate = Constants.PLAYER_TAKEOFF_RATE;
     float landingHeight = 0f;
     float landingDecentRate = 0f;
     //float landingGroundRollTime = 2f;
     //float landingGroundRollTimer = 0f;
     float timeUntilLanding = 3f;
+
+    //pitching variables
+    float pitchAngle = 0f;
+    GameObject childCanvas;
+    Quaternion childQuaternion;
 
     //camera clamp fields
     float dist;
@@ -67,11 +72,19 @@ public class PlayerScript : PauseableObject
         //set state
         State = PlayerState.AutoPilotTakeOff;
 
-        //resets camera for canvas component
-        transform.GetChild(0).GetComponent<Canvas>().worldCamera = Camera.main;
+        //get child reference
+        childCanvas = transform.GetChild(0).gameObject;
 
+        //resets camera for canvas component
+        childCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        //set child quaterion
+        childQuaternion = transform.rotation;
+
+        //set health
         Health = Constants.PLAYER_STARTING_HEALTH;
 
+        //set healthbars
         normalHealthBar = healthBar.sprite;
         damagedHealthBar = Resources.Load<Sprite>("Graphics/Universals/HealthBarDamagedSprite");
 
@@ -119,7 +132,7 @@ public class PlayerScript : PauseableObject
                     break;
                 case PlayerState.AutoPilotLanding:
                     //landing
-                    if (transform.position.y > -Constants.LEVEL_EDITOR_GRID_OFFSET_Y + 1)
+                    if (transform.position.y > 4f)
                     {
                         rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, -landingDecentRate);
                     }
@@ -303,8 +316,28 @@ public class PlayerScript : PauseableObject
             //aSource.pitch = Mathf.Clamp(, 0f, 2f);
         }
 
+        #region Player Pitch Control
+
+        pitchAngle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
+        pitchAngle = Mathf.Clamp(rBody.velocity.y, Constants.PLAYER_PITCH_DOWN_MAX, Constants.PLAYER_PITCH_UP_MAX);
+        transform.rotation = Quaternion.AngleAxis(pitchAngle, Vector3.forward);
+        childCanvas.transform.rotation = childQuaternion;
+
+        #endregion
+
         #region Player Clamp Control
 
+        //test for out of bounds and reseting the velocity
+        if (transform.position.x < leftLimitation || transform.position.x > rightLimitation)
+        {
+            currentHorizontalSpeed = 0f;
+        }
+        if (transform.position.y < downLimitation || transform.position.y > upLimitation)
+        {
+            currentVerticalSpeed = 0f;
+        }
+
+        //clamp player to screen
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftLimitation, rightLimitation), Mathf.Clamp(transform.position.y, downLimitation, upLimitation));
 
         #endregion
@@ -357,12 +390,19 @@ public class PlayerScript : PauseableObject
             Health -= 10f;
             flashHealthBar = true;
         }
+        else if (collision.gameObject.tag == "Environment")
+        {
+            Health -= Constants.BIRD_DAMAGE;
+            flashHealthBar = true;
+        }
 
         if (collision.gameObject.tag == "Ground")
         {
             if (State == PlayerState.Manual)
             {
-                Health -= Constants.GROUND_DAMAGE;
+                //Health -= Constants.GROUND_DAMAGE;
+                AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
+                MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }
         }
     }
