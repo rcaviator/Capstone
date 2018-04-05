@@ -25,6 +25,10 @@ public class CustomGrid : MonoBehaviour
         //initialize dictionary
         objectNames = new Dictionary<string, Constants.ObjectIDs>()
         {
+            //utilities
+            { "LevelStartPoint(Clone)", Constants.ObjectIDs.LevelStartPoint },
+            { "LevelEndPoint(Clone)", Constants.ObjectIDs.LevelEndPoint },
+
             //environment - blocks
             { "Dirt_Block(Clone)", Constants.ObjectIDs.DirtBlock },
             { "Dirt_Block_Grass(Clone)", Constants.ObjectIDs.DirtBlockGrass },
@@ -35,18 +39,25 @@ public class CustomGrid : MonoBehaviour
             { "Stone_Block_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockConcreteTop },
             { "Stone_Block_Sloped_Concrete_Top(Clone)", Constants.ObjectIDs.StoneBlockSlopedConcreteTop },
             
-            //environment - other
+            //environment - buildings
             { "HangarClose(Clone)", Constants.ObjectIDs.HangarClose },
             { "HangarMiddle(Clone)", Constants.ObjectIDs.HangarMiddle },
             { "HangarFar(Clone)", Constants.ObjectIDs.HangarFar },
             { "Tower(Clone)", Constants.ObjectIDs.Tower },
 
-            //utilities
-            { "LevelStartPoint(Clone)", Constants.ObjectIDs.LevelStartPoint },
-            { "LevelEndPoint(Clone)", Constants.ObjectIDs.LevelEndPoint },
+            //environment - weather
+            { "WeatherHazard1(Clone)", Constants.ObjectIDs.WeatherHazard1 },
+
+            //environment - other
+            { "Bird(Clone)", Constants.ObjectIDs.Bird },
 
             //enemies
-            { "TempBlimpEnemy(Clone)", Constants.ObjectIDs.TempBlimpEnemy },
+            { "MotherShip(Clone)", Constants.ObjectIDs.MotherShip },
+            { "Zepplin(Clone)", Constants.ObjectIDs.Zepplin },
+            { "Tank(Clone)", Constants.ObjectIDs.Tank },
+            { "Soldier", Constants.ObjectIDs.Soldier },
+            { "Jeep(Clone)", Constants.ObjectIDs.Jeep },
+            { "Bomber(Clone)", Constants.ObjectIDs.Bomber },
 
         };
     }
@@ -518,6 +529,14 @@ public class CustomGrid : MonoBehaviour
                             case Constants.ObjectIDs.None:
                                 break;
 
+                            //utilities
+                            case Constants.ObjectIDs.LevelStartPoint:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint");
+                                break;
+                            case Constants.ObjectIDs.LevelEndPoint:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint");
+                                break;
+
                             //environment - blocks
                             case Constants.ObjectIDs.DirtBlock:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
@@ -544,7 +563,7 @@ public class CustomGrid : MonoBehaviour
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped_Concrete_Top");
                                 break;
 
-                            //environment - other
+                            //environment - buildings
                             case Constants.ObjectIDs.HangarClose:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarClose");
                                 break;
@@ -558,17 +577,37 @@ public class CustomGrid : MonoBehaviour
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Tower");
                                 break;
 
-                            //utilities
-                            case Constants.ObjectIDs.LevelStartPoint:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint");
-                                break;
-                            case Constants.ObjectIDs.LevelEndPoint:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint");
+                            //environment - weather
+                            case Constants.ObjectIDs.WeatherHazard1:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1");
                                 break;
 
+                            //environment - other
+                            case Constants.ObjectIDs.Bird:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Bird");
+                                break;
+
+                            //allies
+
+
                             //enemies
-                            case Constants.ObjectIDs.TempBlimpEnemy:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/TempBlimpEnemy");
+                            case Constants.ObjectIDs.MotherShip:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/MotherShip");
+                                break;
+                            case Constants.ObjectIDs.Zepplin:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Zepplin");
+                                break;
+                            case Constants.ObjectIDs.Tank:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Tank");
+                                break;
+                            case Constants.ObjectIDs.Soldier:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Soldier");
+                                break;
+                            case Constants.ObjectIDs.Jeep:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Jeep");
+                                break;
+                            case Constants.ObjectIDs.Bomber:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Bomber");
                                 break;
 
                             default:

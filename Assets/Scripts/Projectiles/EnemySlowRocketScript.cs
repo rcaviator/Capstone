@@ -44,8 +44,6 @@ public class EnemySlowRocketScript : ProjectilesScript
     protected override void Initialize(Vector2 velocity, float bulletTimer)
     {
         base.Initialize(velocity, bulletTimer);
-
-        //transform.LookAt(GameManager.Instance.Player.transform.position);
     }
 
 
