@@ -5,7 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+/// <summary>
+/// enum for the menu buttons in the editor
+/// </summary>
 public enum LevelEditorMenus
 {
     None,
@@ -38,20 +40,9 @@ public class LevelEditorControllerScript : MonoBehaviour
         GameManager.Instance.EditorController = this;
         GameManager.Instance.IsLevelEditor = true;
 
-        //draw grid
+        //create grid
         grid = GetComponent<CustomGrid>();
         grid.Initialize();
-        
-        //set other references
-
-    }
-
-    /// <summary>
-    /// Reset the game to not be in editor scene
-    /// </summary>
-    private void OnDestroy()
-    {
-        GameManager.Instance.IsLevelEditor = false;
     }
 
     // Update is called once per frame
@@ -75,6 +66,14 @@ public class LevelEditorControllerScript : MonoBehaviour
                 RemoveObjectAt(GameManager.Instance.PlayerCamera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition));
             }
         }
+    }
+
+    /// <summary>
+    /// Reset the game to not be in editor scene
+    /// </summary>
+    private void OnDestroy()
+    {
+        GameManager.Instance.IsLevelEditor = false;
     }
 
     /// <summary>
@@ -108,40 +107,68 @@ public class LevelEditorControllerScript : MonoBehaviour
     public bool IsFlipped
     { get; set; }
 
+    /// <summary>
+    /// Sets the level number and module number in the level editor
+    /// for saving reference on new creation.
+    /// </summary>
+    /// <param name="level">The level of this module</param>
+    /// <param name="number">The number of this module's order</param>
     public void SetModuleLevelAndNumberOnCreate(int level, int number)
     {
+        //set level and module numbers
         moduleLevel = level;
         moduleNumber = number;
+
+        //disable the menu
         setupMenu.SetActive(false);
+
+        //prep the grid for new content
         grid.ClearGrid();
 
         //set module text reference
         UIManager.Instance.SelectedModuleText.ChangeText("Level: " + moduleLevel.ToString() + " Module: " + moduleNumber.ToString());
     }
 
+    /// <summary>
+    /// Sets the level number and module number in the level editor
+    /// for saving reference on load file.
+    /// </summary>
+    /// <param name="level">The level of this module</param>
+    /// <param name="number">The number of this module's order</param>
     public void SetModuleLevelAndNumberOnLoadFile(int level, int number)
     {
         moduleLevel = level;
         moduleNumber = number;
     }
 
-
-    public void ClearGrid()
-    {
-        grid.ClearGrid();
-    }
-
-    public void FillDirt()
-    {
-        grid.FillDirt();
-    }
-
+    /// <summary>
+    /// Flips the selected object for mirrored placement.
+    /// </summary>
     public void FlipObject()
     {
         IsFlipped = !IsFlipped;
         UIManager.Instance.SelectedObjectImage.transform.Rotate(new Vector3(0, 180, 0));
     }
 
+    /// <summary>
+    /// Clears the grid in the custom grid object.
+    /// </summary>
+    public void ClearGrid()
+    {
+        grid.ClearGrid();
+    }
+
+    /// <summary>
+    /// Fills dirt blocks in the custom grid object.
+    /// </summary>
+    public void FillDirt()
+    {
+        grid.FillDirt();
+    }
+
+    /// <summary>
+    /// Saves the module in the custom grid object.
+    /// </summary>
     public void SaveModule()
     {
         grid.SaveModule(moduleLevel, moduleNumber);
@@ -150,12 +177,13 @@ public class LevelEditorControllerScript : MonoBehaviour
         //begining and end modules are lvl 0
         //grid.SaveModule(0, 0);
         //grid.SaveModule(0, 1);
-
-        //show save notification
-        UIManager.Instance.SaveNotification.ShowNotification();
     }
 
-
+    /// <summary>
+    /// Loads the module with the provided file string name to the custom grid object.
+    /// Saves the level and module number in the level controller.
+    /// </summary>
+    /// <param name="fileName">The name of the file</param>
     public void LoadModule(string fileName)
     {
         //set level and number
@@ -170,34 +198,57 @@ public class LevelEditorControllerScript : MonoBehaviour
         setupMenu.SetActive(false);
     }
 
-
-    public void EditorToSetupMenuOnClick()
-    {
-        setupMenu.SetActive(true);
-    }
-
-    public void CloseSetupMenuOnClick()
-    {
-        setupMenu.SetActive(false);
-    }
-
+    /// <summary>
+    /// Attempts to place the selected object at the given vector3 click point on the grid.
+    /// </summary>
+    /// <param name="clickPoint">The point on the grid of the mouse click</param>
     private void PlaceSelectedObjectAt(Vector3 clickPoint)
     {
+        //set the z to 0f
         clickPoint.z = 0f;
+
+        //get the target cell from world point location
         CustomGridCell targetCell = grid.GetGridCellInGrid(clickPoint);
-        if (targetCell != null)
+
+        //if the target cell is inside the grid and it's empty, place object
+        if (targetCell != null && !targetCell.IsOccupied)
         {
             grid.SetGameObjectInGrid(targetCell, SelectedObject, IsFlipped);
         }
     }
 
+    /// <summary>
+    /// Attempts to remove an object at the given vector3 click point on the grid.
+    /// </summary>
+    /// <param name="clickPoint">The point on the grid of the mouse click</param>
     private void RemoveObjectAt(Vector3 clickPoint)
     {
+        //set the z to 0f
         clickPoint.z = 0f;
+
+        //get the target cell from world point location
         CustomGridCell targetCell = grid.GetGridCellInGrid(clickPoint);
-        if (targetCell != null)
+
+        //if the target cell is inside the grid and it's occupied, remove object
+        if (targetCell != null && targetCell.IsOccupied)
         {
             grid.RemoveGameObjectInGrid(targetCell);
         }
+    }
+
+    /// <summary>
+    /// Used for the setup button to return to the setup menu.
+    /// </summary>
+    public void EditorToSetupMenuOnClick()
+    {
+        setupMenu.SetActive(true);
+    }
+
+    /// <summary>
+    /// Used for the return to editor button in the setup menu.
+    /// </summary>
+    public void CloseSetupMenuOnClick()
+    {
+        setupMenu.SetActive(false);
     }
 }

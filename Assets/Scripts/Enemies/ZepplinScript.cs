@@ -73,13 +73,13 @@ public class ZepplinScript : PauseableObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //kill self and damage player if player crashed into zeplin
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         //else take damage from player bullet
-        else if (collision.gameObject.tag == "PlayerBullet")
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
             flashHealthBar = true;
@@ -88,7 +88,7 @@ public class ZepplinScript : PauseableObject
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             //fire slow rocket if ready
             if (slowRocketTimer >= Constants.ENEMY_SLOW_ROCKET_COOLDOWN_TIMER)

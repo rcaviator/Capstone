@@ -49,14 +49,18 @@ public class PauseableObject : MonoBehaviour
     {
         if (rBody)
         {
-            //gather references and then disable simulated
-            gravity = rBody.gravityScale;
-            storedVelocity = rBody.velocity;
-            isSimulated = rBody.simulated;
+            //set references only if applicable
+            if (rBody.bodyType != RigidbodyType2D.Static)
+            {
+                //gather references and then disable simulated
+                gravity = rBody.gravityScale;
+                storedVelocity = rBody.velocity;
+                isSimulated = rBody.simulated;
 
-            rBody.gravityScale = 0f;
-            rBody.velocity = Vector2.zero;
-            rBody.simulated = false;
+                rBody.gravityScale = 0f;
+                rBody.velocity = Vector2.zero;
+                rBody.simulated = false;
+            }
         }
 
         if (anim)
@@ -72,10 +76,14 @@ public class PauseableObject : MonoBehaviour
     {
         if (rBody)
         {
-            //enable simulated and then apply references
-            rBody.simulated = isSimulated;
-            rBody.gravityScale = gravity;
-            rBody.velocity = storedVelocity;
+            //apply references only if applicable
+            if (rBody.bodyType != RigidbodyType2D.Static)
+            {
+                //enable simulated and then apply references
+                rBody.simulated = isSimulated;
+                rBody.gravityScale = gravity;
+                rBody.velocity = storedVelocity;
+            }
         }
 
         if (anim)

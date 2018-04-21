@@ -50,13 +50,13 @@ public class EnemyFastRocketScript : ProjectilesScript
     {
         base.OnCollisionEnter2D(collision);
 
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             GameManager.Instance.Player.Health -= Constants.ENEMY_FAST_ROCKET_DAMAGE;
             Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
-        else if (collision.gameObject.tag == "PlayerBullet")
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
         }

@@ -5,20 +5,15 @@ using UnityEngine.UI;
 
 public class PlayerScript : PauseableObject
 {
+    /// <summary>
+    /// The state of the player
+    /// </summary>
     public enum PlayerState
     {
         None, AutoPilotTakeOff, AutoPilotLanding, Manual, Mayday,
     };
 
     #region Fields
-
-    //player fields
-    //Health = Constants.PLAYER_STARTING_HEALTH;
-    float currentHorizontalSpeed = 0f;
-    float currentVerticalSpeed = 0f;
-
-    //audio source
-    AudioSource aSource;
 
     //healthbar
     [SerializeField]
@@ -28,6 +23,19 @@ public class PlayerScript : PauseableObject
     bool flashHealthBar = false;
     float maxHealthBarFlash = 0.2f;
     float healthBarFlash = 0f;
+
+    //audio source
+    AudioSource aSource;
+
+    //player direction booleans, used for better input between update and fixed update
+    bool up;
+    bool down;
+    bool left;
+    bool right;
+
+    //player speed fields
+    float currentHorizontalSpeed = 0f;
+    float currentVerticalSpeed = 0f;
 
     //auto firing controll
     float maxAutoFireTimer = Constants.PLAYER_BASIC_BULLET_COOLDOWN_TIMER;
@@ -110,37 +118,18 @@ public class PlayerScript : PauseableObject
             upLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 1f, dist)).y - (height / 2);
             downLimitation = GameManager.Instance.PlayerCamera.GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0f, 0f, dist)).y + (height / 2);
 
-            //follow the camera's relative position
-            rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
-
+            
             //switch over the player states
             switch (State)
             {
                 case PlayerState.None:
                     break;
+
                 case PlayerState.AutoPilotTakeOff:
-                    //ground roll takeoff
-                    if (takeOffGroundRollTimer < takeOffGroundRollTime)
-                    {
-                        takeOffGroundRollTimer += Time.deltaTime;
-                    }
-                    //climb
-                    else
-                    {
-                        rBody.velocity = new Vector2(rBody.velocity.x, rBody.velocity.y + takeOffClimbRate);
-                    }
+                    //handled in fixed update
                     break;
                 case PlayerState.AutoPilotLanding:
-                    //landing
-                    if (transform.position.y > 4f)
-                    {
-                        rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, -landingDecentRate);
-                    }
-                    else
-                    {
-                        GameManager.Instance.PlayerCamera.Landed = true;
-                        //Debug.Log("slow down phase");
-                    }
+                    //handled in fixed update
                     break;
                 case PlayerState.Manual:
 
@@ -150,27 +139,27 @@ public class PlayerScript : PauseableObject
                     //right
                     if (InputManager.Instance.GetAxisRaw(PlayerAction.MoveHorizontal) > 0f)
                     {
-                        currentHorizontalSpeed = Mathf.Clamp(currentHorizontalSpeed + Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_HORIZONTAL_SPEED, Constants.PLAYER_MAX_HORIZONTAL_SPEED);
-                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                        right = true;
+                        left = false;
                     }
                     //left
                     else if (InputManager.Instance.GetAxisRaw(PlayerAction.MoveHorizontal) < 0f)
                     {
-                        currentHorizontalSpeed = Mathf.Clamp(currentHorizontalSpeed - Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_HORIZONTAL_SPEED, Constants.PLAYER_MAX_HORIZONTAL_SPEED);
-                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                        left = true;
+                        right = false;
                     }
 
                     //up
                     if (InputManager.Instance.GetAxisRaw(PlayerAction.MoveVertical) > 0f)
                     {
-                        currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed + Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_VERTICAL_SPEED, Constants.PLAYER_MAX_VERTICAL_SPEED);
-                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                        up = true;
+                        down = false;
                     }
                     //down
                     else if (InputManager.Instance.GetAxisRaw(PlayerAction.MoveVertical) < 0f)
                     {
-                        currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed - Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_VERTICAL_SPEED, Constants.PLAYER_MAX_VERTICAL_SPEED);
-                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                        down = true;
+                        up = false;
                     }
 
                     #endregion
@@ -180,77 +169,15 @@ public class PlayerScript : PauseableObject
                     //slow down if no controls, horizontal
                     if (InputManager.Instance.GetAxisRaw(PlayerAction.MoveHorizontal) == 0f)
                     {
-                        //set horizontal down to 0
-                        //check if its not 0
-                        if (currentHorizontalSpeed != 0f)
-                        {
-                            //check if its less than 0
-                            if (currentHorizontalSpeed < 0f)
-                            {
-                                //check if we just need to set it to 0
-                                if (currentHorizontalSpeed > -0.1f)
-                                {
-                                    currentHorizontalSpeed = 0f;
-                                }
-                                //add decceleration
-                                else
-                                {
-                                    currentHorizontalSpeed += Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.deltaTime;
-                                }
-                            }
-                            //check if its greater
-                            else if (currentHorizontalSpeed > 0f)
-                            {
-                                //check if we just need to set it to 0
-                                if (currentHorizontalSpeed < 0.1f)
-                                {
-                                    currentHorizontalSpeed = 0f;
-                                }
-                                //add decceleration
-                                else
-                                {
-                                    currentHorizontalSpeed -= Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.deltaTime;
-                                }
-                            }
-                        }
+                        left = false;
+                        right = false;
                     }
 
                     //slow down if no controls, vertical
                     if (InputManager.Instance.GetAxisRaw(PlayerAction.MoveVertical) == 0f)
                     {
-                        //set vertical down to 0
-                        //check if its not 0
-                        if (currentVerticalSpeed != 0f)
-                        {
-                            //check if its less than 0
-                            if (currentVerticalSpeed < 0f)
-                            {
-                                //check if we just need to set it to 0
-                                if (currentVerticalSpeed > -0.1f)
-                                {
-                                    currentVerticalSpeed = 0f;
-                                }
-                                //add decceleration
-                                else
-                                {
-                                    currentVerticalSpeed += Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime;
-                                }
-                            }
-                            //check if its greater
-                            else if (currentVerticalSpeed > 0f)
-                            {
-                                //check if we just need to set it to 0
-                                if (currentVerticalSpeed < 0.1f)
-                                {
-                                    currentVerticalSpeed = 0f;
-                                }
-                                //add decceleration
-                                else
-                                {
-                                    currentVerticalSpeed -= Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime;
-                                }
-                            }
-                        }
+                        up = false;
+                        down = false;
                     }
 
                     #endregion
@@ -278,7 +205,9 @@ public class PlayerScript : PauseableObject
                     #endregion
 
                     break;
+
                 case PlayerState.Mayday:
+
                     break;
                 default:
                     break;
@@ -294,12 +223,10 @@ public class PlayerScript : PauseableObject
 
                 if (healthBarFlash <= maxHealthBarFlash)
                 {
-                    //healthBar.GetComponent<Image>().color = Color.red;
                     healthBar.sprite = damagedHealthBar;
                 }
                 else
                 {
-                    //healthBar.GetComponent<Image>().color = Color.white;
                     healthBar.sprite = normalHealthBar;
                     healthBarFlash = 0f;
                     flashHealthBar = false;
@@ -343,6 +270,161 @@ public class PlayerScript : PauseableObject
         #endregion
     }
 
+
+    private void FixedUpdate()
+    {
+        //only do stuff when the game is not paused
+        if (!GameManager.Instance.Paused)
+        {
+            //follow the camera's relative velocity
+            rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+
+            switch (State)
+            {
+                case PlayerState.None:
+                    break;
+
+                case PlayerState.AutoPilotTakeOff:
+                    //ground roll takeoff
+                    if (takeOffGroundRollTimer < takeOffGroundRollTime)
+                    {
+                        takeOffGroundRollTimer += Time.fixedDeltaTime;
+                    }
+                    //climb
+                    else
+                    {
+                        rBody.velocity = new Vector2(rBody.velocity.x, rBody.velocity.y + takeOffClimbRate);
+                    }
+                    break;
+
+                case PlayerState.AutoPilotLanding:
+                    //landing
+                    if (transform.position.y > 4f)
+                    {
+                        rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, -landingDecentRate);
+                    }
+                    else
+                    {
+                        rBody.velocity = new Vector2(GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, 0f);
+                        GameManager.Instance.PlayerCamera.Landed = true;
+                    }
+                    break;
+
+                case PlayerState.Manual:
+                    //right
+                    if (right)
+                    {
+                        currentHorizontalSpeed = Mathf.Clamp(currentHorizontalSpeed + Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime, -Constants.PLAYER_MAX_HORIZONTAL_SPEED, Constants.PLAYER_MAX_HORIZONTAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    //left
+                    else if (left)
+                    {
+                        currentHorizontalSpeed = Mathf.Clamp(currentHorizontalSpeed - Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime, -Constants.PLAYER_MAX_HORIZONTAL_SPEED, Constants.PLAYER_MAX_HORIZONTAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+
+                    //up
+                    if (up)
+                    {
+                        currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed + Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_VERTICAL_SPEED, Constants.PLAYER_MAX_VERTICAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    //down
+                    else if (down)
+                    {
+                        currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed - Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_VERTICAL_SPEED, Constants.PLAYER_MAX_VERTICAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+
+                    //slow down horizontal if no controls are pressed
+                    if (!left && !right)
+                    {
+                        //set horizontal down to 0
+                        //check if its not 0
+                        if (currentHorizontalSpeed != 0f)
+                        {
+                            //check if its less than 0
+                            if (currentHorizontalSpeed < 0f)
+                            {
+                                //check if we just need to set it to 0
+                                if (currentHorizontalSpeed > -0.1f)
+                                {
+                                    currentHorizontalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentHorizontalSpeed += Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
+                            }
+                            //check if its greater
+                            else if (currentHorizontalSpeed > 0f)
+                            {
+                                //check if we just need to set it to 0
+                                if (currentHorizontalSpeed < 0.1f)
+                                {
+                                    currentHorizontalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentHorizontalSpeed -= Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
+                            }
+                        }
+                    }
+
+                    //slow down vertical if no controls are pressed
+                    if (!up && !down)
+                    {
+                        //set vertical down to 0
+                        //check if its not 0
+                        if (currentVerticalSpeed != 0f)
+                        {
+                            //check if its less than 0
+                            if (currentVerticalSpeed < 0f)
+                            {
+                                //check if we just need to set it to 0
+                                if (currentVerticalSpeed > -0.1f)
+                                {
+                                    currentVerticalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentVerticalSpeed += Constants.PLAYER_VERTICAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
+                            }
+                            //check if its greater
+                            else if (currentVerticalSpeed > 0f)
+                            {
+                                //check if we just need to set it to 0
+                                if (currentVerticalSpeed < 0.1f)
+                                {
+                                    currentVerticalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentVerticalSpeed -= Constants.PLAYER_VERTICAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+
+                case PlayerState.Mayday:
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
     /// <summary>
     /// The state of the player
     /// </summary>
@@ -380,27 +462,27 @@ public class PlayerScript : PauseableObject
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        //player will only take damage in manual state
+        if (State == PlayerState.Manual)
         {
-            Health -= 20f;
-            flashHealthBar = true;
-        }
-        else if (collision.gameObject.tag == "EnemyBullet")
-        {
-            Health -= 10f;
-            flashHealthBar = true;
-        }
-        else if (collision.gameObject.tag == "Environment")
-        {
-            Health -= Constants.BIRD_DAMAGE;
-            flashHealthBar = true;
-        }
-
-        if (collision.gameObject.tag == "Ground")
-        {
-            if (State == PlayerState.Manual)
+            if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Enemy]))
             {
-                //Health -= Constants.GROUND_DAMAGE;
+                Health -= Constants.ENEMY_COLLISION_DAMAGE;
+                flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyBullet]))
+            {
+                Health -= 10f;//change this in constants when enemy bullets are in
+                flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Environment]))
+            {
+                Health -= Constants.BIRD_DAMAGE;
+                flashHealthBar = true;
+            }
+
+            if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
+            {
                 AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
                 MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }

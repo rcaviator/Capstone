@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BirdScript : PauseableObject
 {
-    //trigger boolean
+    //range trigger boolean
     bool isInRange = false;
 
     //timer
@@ -22,44 +22,55 @@ public class BirdScript : PauseableObject
 	// Update is called once per frame
 	void Update ()
     {
-        //range and flight check
-        if (isInRange)
+        //process if not paused
+        if (!GameManager.Instance.Paused)
         {
-            if (timer <= Constants.BIRD_LIFETIME)
-            {
-                if (transform.rotation.eulerAngles.y == 180)
-                {
-                    rBody.velocity = new Vector2(Constants.BIRD_SPEED, 0f);
-                }
-                else
-                {
-                    rBody.velocity = new Vector2(-Constants.BIRD_SPEED, 0f);
-                }
-                
-                timer += Time.deltaTime;
-            }
-            else
+            //health check
+            if (health <= 0)
             {
                 Destroy(gameObject);
             }
         }
-
-        //health check
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
 	}
+
+
+    private void FixedUpdate()
+    {
+        //process if not paused
+        if (!GameManager.Instance.Paused)
+        {
+            //range and flight check
+            if (isInRange)
+            {
+                if (timer <= Constants.BIRD_LIFETIME)
+                {
+                    if (transform.rotation.eulerAngles.y == 180)
+                    {
+                        rBody.velocity = new Vector2(Constants.BIRD_SPEED, 0f);
+                    }
+                    else
+                    {
+                        rBody.velocity = new Vector2(-Constants.BIRD_SPEED, 0f);
+                    }
+
+                    timer += Time.fixedDeltaTime;
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            //GameManager.Instance.Player.Health -= Constants.BIRD_DAMAGE;
             //AudioManager sound
             Destroy(gameObject);
         }
-        else if (collision.gameObject.tag == "PlayerBullet")
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
             Destroy(collision.gameObject);
@@ -68,7 +79,8 @@ public class BirdScript : PauseableObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        //player is in range, start timer and advance
+        if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             isInRange = true;
         }

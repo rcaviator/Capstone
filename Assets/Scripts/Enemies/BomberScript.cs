@@ -69,16 +69,23 @@ public class BomberScript : PauseableObject
         }
     }
 
+
+    private void FixedUpdate()
+    {
+        
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //kill self and damage player if player crashed into bomber
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         //else take damage from player bullet
-        else if (collision.gameObject.tag == "PlayerBullet")
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
             flashHealthBar = true;
@@ -87,20 +94,17 @@ public class BomberScript : PauseableObject
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            if (collision.gameObject.tag == "Player")
+            //fire fast rocket if ready
+            if (fastRocketTimer >= Constants.ENEMY_FAST_ROCKET_COOLDOWN_TIMER)
             {
-                //fire fast rocket if ready
-                if (fastRocketTimer >= Constants.ENEMY_FAST_ROCKET_COOLDOWN_TIMER)
-                {
-                    Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemyFastRocket"), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
-                    fastRocketTimer = 0f;
-                }
-                else
-                {
-                    fastRocketTimer += Time.deltaTime;
-                }
+                Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemyFastRocket"), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+                fastRocketTimer = 0f;
+            }
+            else
+            {
+                fastRocketTimer += Time.deltaTime;
             }
         }
     }

@@ -13,16 +13,15 @@ public class EndLevelTriggerScript : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
-    {
+	//void Update ()
+ //   {
 		
-	}
+	//}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //set player mode and remove applicable objects
-
-        if (collision.tag == "Player")
+        if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             if (firstPlayerEnter)
             {

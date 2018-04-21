@@ -22,19 +22,17 @@ public class PlayerBasicBulletScript : ProjectilesScript
     /// <param name="bulletVelocity">the velocity vector</param>
     public void InitializePlayerBasicProjectile(Vector2 bulletVelocity)
     {
-        ////create new vectory with velocity to the mouse plus camera velocity
-        //Vector2 velocity = GameManager.Instance.Reticle.transform.position - transform.position;
-        //velocity.Normalize();
-        //velocity *= Constants.PLAYER_BASIC_BULLET_ATTACK_LIFETIME;
+        //prep vector
         bulletVelocity.Normalize();
         bulletVelocity *= Constants.PLAYER_BASIC_BULLET_SPEED;
 
+        //initialize the bullet info for the parent
         Initialize(bulletVelocity, Constants.PLAYER_BASIC_BULLET_ATTACK_LIFETIME);
 
+        //set sprite rotation
         float angle = Mathf.Atan2(bulletVelocity.y, bulletVelocity.x) * Mathf.Rad2Deg;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = q;
-        //AudioManager.Instance.PlayGamePlaySoundEffect(GamePlaySoundEffect.EnemyProjectile);
     }
 
     // Update is called once per frame
@@ -79,7 +77,7 @@ public class PlayerBasicBulletScript : ProjectilesScript
                 break;
         }
 
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Enemy]) || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyBullet]))
         {
             if (collision.gameObject.GetComponent<Rigidbody2D>() != null)
             {

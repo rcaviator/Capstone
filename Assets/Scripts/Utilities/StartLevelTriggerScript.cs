@@ -12,20 +12,17 @@ public class StartLevelTriggerScript : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	//void Update () {
 		
-	}
+	//}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //change player mode and set reticle
-
-        if (collision.tag == "Player")
+        if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             GameManager.Instance.Player.State = PlayerScript.PlayerState.Manual;
             Instantiate(Resources.Load<GameObject>("Prefabs/Player/TargetReticle"), Vector3.zero, Quaternion.identity);
         }
-
-        
     }
 }

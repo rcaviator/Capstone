@@ -30,9 +30,38 @@ public class CameraControllerScript : PauseableObject
         rightBounds = Constants.LEVEL_EDITOR_GRID_SIZE_X - 1;
         topBounds = Constants.LEVEL_EDITOR_GRID_SIZE_Y - 1;
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
+    {
+        //non physics-based editor code
+        if (MySceneManager.Instance.CurrentScene == Scenes.LevelEditor)
+        {
+            //scrolling controls
+            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+            {
+                //zoom in
+                if (GetComponent<Camera>().orthographicSize > 1f)
+                {
+                    GetComponent<Camera>().orthographicSize--;
+                }
+            }
+            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+            {
+                //zoom out
+                if (GetComponent<Camera>().orthographicSize < 30f)
+                {
+                    GetComponent<Camera>().orthographicSize++;
+                }
+            }
+
+            //camera clamping control
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBounds, rightBounds), Mathf.Clamp(transform.position.y, bottomBounds, topBounds), transform.position.z);
+        }
+    }
+
+
+    private void FixedUpdate()
     {
         //game code
         if (MySceneManager.Instance.CurrentScene == Scenes.GameLevel)
@@ -41,12 +70,12 @@ public class CameraControllerScript : PauseableObject
             {
                 if (!Landed)
                 {
-                    horizontalSpeed = Mathf.Clamp(horizontalSpeed + Constants.CAMERA_SPEED * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
+                    horizontalSpeed = Mathf.Clamp(horizontalSpeed + Constants.CAMERA_SPEED * Time.fixedDeltaTime, 0f, Constants.CAMERA_SPEED);
                     rBody.velocity = new Vector2(horizontalSpeed, 0f);
                 }
                 else
                 {
-                    horizontalSpeed = Mathf.Clamp(horizontalSpeed - Constants.CAMERA_SPEED * 0.25f * Time.deltaTime, 0f, Constants.CAMERA_SPEED);
+                    horizontalSpeed = Mathf.Clamp(horizontalSpeed - Constants.CAMERA_SPEED * 0.25f * Time.fixedDeltaTime, 0f, Constants.CAMERA_SPEED);
                     rBody.velocity = new Vector2(horizontalSpeed, 0f);
 
                     if (rBody.velocity.x <= 0f)
@@ -85,30 +114,10 @@ public class CameraControllerScript : PauseableObject
                 {
                     uiBlocker = false;
                 }
-
-                //scrolling controls
-                if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
-                {
-                    //zoom in
-                    if (GetComponent<Camera>().orthographicSize > 1f)
-                    {
-                        GetComponent<Camera>().orthographicSize--;
-                    }
-                }
-                else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
-                {
-                    //zoom out
-                    if (GetComponent<Camera>().orthographicSize < 30f)
-                    {
-                        GetComponent<Camera>().orthographicSize++;
-                    }
-                }
             }
 
-            //camera clamping control
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBounds, rightBounds), Mathf.Clamp(transform.position.y, bottomBounds, topBounds), transform.position.z);
         }
-	}
+    }
 
     /// <summary>
     /// Toggles the camera to slow to a halt

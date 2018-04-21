@@ -76,7 +76,7 @@ public class TankScript : PauseableObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //end game if player crashes into tank
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             //Destroy(gameObject);
@@ -84,7 +84,7 @@ public class TankScript : PauseableObject
             MySceneManager.Instance.ChangeScene(Scenes.Defeat);
         }
         //else take damage from player bullet
-        else if (collision.gameObject.tag == "PlayerBullet")
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
             flashHealthBar = true;

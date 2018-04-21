@@ -17,6 +17,9 @@ class GameManager
     //bool for pausing
     bool isPaused;
 
+    //the player's inventory
+    Inventory playerInventory;
+
     #endregion
 
     #region Constructor
@@ -29,8 +32,37 @@ class GameManager
         // Creates the object that calls GM's Update method
         UnityEngine.Object.DontDestroyOnLoad(new GameObject("gmUpdater", typeof(Updater)));
 
+        //create and initialize the tag dictionary
+        GameObjectTags = new Dictionary<Constants.Tags, string>()
+        {
+            //default tags
+            { Constants.Tags.Untagged, "Untagged" },
+            { Constants.Tags.Respawn, "Respawn" },
+            { Constants.Tags.Finish, "Finish" },
+            { Constants.Tags.EditorOnly, "EditorOnly" },
+            { Constants.Tags.MainCamera, "MainCamera" },
+            { Constants.Tags.Player, "Player" },
+            { Constants.Tags.GameController, "GameController" },
+
+            //custom tags
+            { Constants.Tags.Ground, "Ground" },
+            { Constants.Tags.LevelStart, "LevelStart" },
+            { Constants.Tags.LevelEnd, "LevelEnd" },
+            { Constants.Tags.Enemy, "Enemy" },
+            { Constants.Tags.PlayerBullet, "PlayerBullet" },
+            { Constants.Tags.EnemyBullet, "EnemyBullet" },
+            { Constants.Tags.WeatherHazard, "WeatherHazard" },
+            { Constants.Tags.Environment, "Environment" },
+        };
+
         //create the list of pausable objects
         PauseableObjects = new List<PauseableObject>();
+
+        //load game data
+
+
+        //load player inventory
+        PlayerInventory.LoadInventory();
     }
 
     #endregion
@@ -44,6 +76,12 @@ class GameManager
     {
         get { return instance ?? (instance = new GameManager()); }
     }
+
+    /// <summary>
+    /// The game object tags
+    /// </summary>
+    public Dictionary<Constants.Tags, string> GameObjectTags
+    { get; private set; }
 
     /// <summary>
     /// Are the objects being spawned in the game or level editor scene
@@ -115,6 +153,14 @@ class GameManager
     /// </summary>
     public string ErrorMessage
     { get; set; }
+
+    /// <summary>
+    /// The player's inventory
+    /// </summary>
+    public Inventory PlayerInventory
+    {
+        get { return playerInventory ?? (playerInventory = new Inventory(Application.dataPath + "/GameData/" + "InventoryData.dat")); }
+    }
 
     /// <summary>
     /// Is the game paused
@@ -222,10 +268,10 @@ class GameManager
 
         #region Constructor
 
-        public GameData()
-        {
+        //public GameData()
+        //{
 
-        }
+        //}
 
         #endregion
 
@@ -237,10 +283,10 @@ class GameManager
 
         #region Methods
 
-        public void LoadData()
-        {
+        //public void LoadData()
+        //{
 
-        }
+        //}
 
         #endregion
     }

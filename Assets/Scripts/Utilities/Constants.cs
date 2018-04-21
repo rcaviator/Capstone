@@ -1,4 +1,5 @@
 ﻿using System;
+
 /// <summary>
 /// All constants for the whole game
 /// </summary>
@@ -6,6 +7,9 @@ public static class Constants
 {
     #region Object IDs
 
+    /// <summary>
+    /// All object IDs used for saving, loading, and instantiation
+    /// </summary>
     public enum ObjectIDs
     {
         //default
@@ -35,12 +39,37 @@ public static class Constants
 
     };
 
+    /// <summary>
+    /// enum for the type of tag an object is associated with.
+    /// </summary>
+    public enum Tags
+    {
+        //default tags
+        Untagged,
+        Respawn,
+        Finish,
+        EditorOnly,
+        MainCamera,
+        Player,
+        GameController,
+
+        //custom tags
+        Ground,
+        LevelStart,
+        LevelEnd,
+        Enemy,
+        PlayerBullet,
+        EnemyBullet,
+        WeatherHazard,
+        Environment,
+    };
+
     #endregion
 
     #region Game Constants
 
     //global
-    public const bool IS_DEVELOPER_BUILD = false;
+    public const bool IS_DEVELOPER_BUILD = true;
 
     //scenes
     public const string SCENE_NAME_LEVELEDITOR = "LevelEditor";
@@ -55,16 +84,17 @@ public static class Constants
     //level editor constants
     public const int NUMBER_OF_MODULES = 9;
     public const string MODULE_FILE_HEADER = "MODU";
-    public const int LEVEL_EDITOR_GRID_SIZE_X = 50;//20
-    public const int LEVEL_EDITOR_GRID_SIZE_Y = 25;//10
+    public const int LEVEL_EDITOR_GRID_SIZE_X = 50;
+    public const int LEVEL_EDITOR_GRID_SIZE_Y = 25;
     public const int LEVEL_EDITOR_GRID_OFFSET_X = 10;//10 finish deleting
     public const int LEVEL_EDITOR_GRID_OFFSET_Y = 5;//5 finish deleting
     public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_X = 0.5f;
     public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Y = 0.5f;
-    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Z = 0f;//10f;
+    public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Z = 0f;
+    public const int LEVEL_EDITOR_OBJECT_CAP = 15;
 
     //settings constants
-
+    
 
     //game level constants
     public const int MODULE_LENGTH = LEVEL_EDITOR_GRID_SIZE_X;
@@ -122,6 +152,9 @@ public static class Constants
     #endregion
 
     #region Enemy Constants
+
+    //enemy collision damage
+    public const float ENEMY_COLLISION_DAMAGE = 20f;
 
     //enemy rockets
     public const float ENEMY_SLOW_ROCKET_HEALTH = 30f;
