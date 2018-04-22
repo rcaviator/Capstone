@@ -70,6 +70,17 @@ public class Inventory
     #region Methods
 
     /// <summary>
+    /// Resets the inventory for a new game
+    /// </summary>
+    public void ResetInventory()
+    {
+        foreach (KeyValuePair<ItemType, int> item in MainInventory)
+        {
+            MainInventory[item.Key] = 0;
+        }
+    }
+
+    /// <summary>
     /// Adds a quantity onto a selected item into the inventory dictionary.
     /// </summary>
     /// <param name="item">The item to add more to</param>

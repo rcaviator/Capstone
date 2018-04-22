@@ -81,6 +81,18 @@ public static class Constants
     public const string SCENE_NAME_DEFEAT = "Defeat";
     public const string SCENE_NAME_VICTORY = "Victory";
 
+    //game data constants
+    public const string GAME_DATA_FILE_HEADER = "GAME";
+    public const int GAME_DEFAULT_LEVEL = 1;
+    public const int GAME_DEFAULT_SCORE = 0;
+    public const bool GAME_DEFAULT_FINISHED_GAME = false;
+
+    //settings constants
+    public const string AUDIO_SETTINGS_FILE_HEADER = "AUDI";
+    public const float AUDIO_DEFAULT_MUSIC_VOLUME = 1f;
+    public const float AUDIO_DEFAULT_SOUNDEFFECTS_VOLUME = 1f;
+    public const float AUDIO_DEFAULT_UI_VOLUME = 1f;
+
     //level editor constants
     public const int NUMBER_OF_MODULES = 9;
     public const string MODULE_FILE_HEADER = "MODU";
@@ -93,14 +105,36 @@ public static class Constants
     public const float LEVEL_EDITOR_GRID_DRAW_OFFSET_Z = 0f;
     public const int LEVEL_EDITOR_OBJECT_CAP = 15;
 
-    //settings constants
-    
-
     //game level constants
     public const int MODULE_LENGTH = LEVEL_EDITOR_GRID_SIZE_X;
     public const float CAMERA_SPEED = 10f;
     public const float BULLET_RICOCHET_SPARKS_LIFETIME = 0.1f;
     public const float GROUND_DAMAGE = 5f;//delete this
+    public const string STATUS_TAKEOFF_MESSAGE = "TAKING OFF!...";
+    public const string STATUS_GO_MESSAGE = "GO!";
+    public const string STATUS_LEVEL_FINISHED_MESSAGE = "LEVEL FINISHED!!";
+    public const float STATUS_PANEL_TIMER = 2f;
+
+    //airport text
+    public const string AIRPORT_1_NAME = "Ira Sapping";
+    public const string AIRPORT_1_MISSION_BRIEFING = "Briefing 1";
+    //public const Image AIRPORT_1_MAP
+    public const string AIRPORT_1_WEATHER_BRIEFING = "Clear skies, very few clouds at high altitude. Visibility: 10+ miles.";
+
+    public const string AIRPORT_2_NAME = "Dominick Walker";
+    public const string AIRPORT_2_MISSION_BRIEFING = "Briefing 2";
+    //public const Image AIRPORT_1_MAP
+    public const string AIRPORT_2_WEATHER_BRIEFING = "Partly cloudy with some thunderstorms in the area. Visibility 7 miles.";
+
+    public const string AIRPORT_3_NAME = "Amos Raycraft";
+    public const string AIRPORT_3_MISSION_BRIEFING = "Briefing 3";
+    //public const Image AIRPORT_1_MAP
+    public const string AIRPORT_3_WEATHER_BRIEFING = "Mostly cloudy with thunderstorms and down drafts in the area. Visibility 5 miles.";
+
+    public const string AIRPORT_4_NAME = "Morgan Remmington";
+    public const string AIRPORT_4_MISSION_BRIEFING = "Briefing 4";
+    //public const Image AIRPORT_1_MAP
+    public const string AIRPORT_4_WEATHER_BRIEFING = "Mixed weather with overcast and scattered thunderstorms and down drafts. Visibility mixed.";
 
     #endregion
 

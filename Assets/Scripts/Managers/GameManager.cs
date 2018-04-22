@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// GameManger is the main manager for the whole game.
@@ -55,11 +56,21 @@ class GameManager
             { Constants.Tags.Environment, "Environment" },
         };
 
+        //create and initialize the dictionary of airports
+        Airports = new Dictionary<int, Airport>()
+        {
+            { 1, new Airport(Constants.AIRPORT_1_NAME, Constants.AIRPORT_2_NAME, Constants.AIRPORT_1_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_1_WEATHER_BRIEFING) },
+            { 2, new Airport(Constants.AIRPORT_2_NAME, Constants.AIRPORT_3_NAME, Constants.AIRPORT_2_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_2_WEATHER_BRIEFING) },
+            { 3, new Airport(Constants.AIRPORT_3_NAME, Constants.AIRPORT_4_NAME, Constants.AIRPORT_3_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_3_WEATHER_BRIEFING) },
+            { 4, new Airport(Constants.AIRPORT_4_NAME, "Capital City", Constants.AIRPORT_4_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_4_WEATHER_BRIEFING) },
+        };
+
         //create the list of pausable objects
         PauseableObjects = new List<PauseableObject>();
 
-        //load game data
-
+        //set game data file path and load game data
+        GameDataFile = Application.dataPath + "/GameData/" + "GameData.dat";
+        LoadGameData();
 
         //load player inventory
         PlayerInventory.LoadInventory();
@@ -76,6 +87,12 @@ class GameManager
     {
         get { return instance ?? (instance = new GameManager()); }
     }
+
+    /// <summary>
+    /// The main game data file
+    /// </summary>
+    public string GameDataFile
+    { get; private set; }
 
     /// <summary>
     /// The game object tags
@@ -117,12 +134,24 @@ class GameManager
     /// </summary>
     public int Score
     { get; set; }
+
+    /// <summary>
+    /// If the player has beaten the game
+    /// </summary>
+    public bool FinishedGame
+    { get; set; }
     
     /// <summary>
     /// The list of all pauseable game objects
     /// </summary>
     public List<PauseableObject> PauseableObjects
     { get; set; }
+
+    /// <summary>
+    /// The dictionary of airports for pre level scenes
+    /// </summary>
+    public Dictionary<int, Airport> Airports
+    { get; private set; }
 
     /// <summary>
     /// The distance slider at the top of the screen in the level
@@ -209,6 +238,97 @@ class GameManager
     #region Public Methods
 
     /// <summary>
+    /// Loads the game data to set where the player left off.
+    /// </summary>
+    public void LoadGameData()
+    {
+        //load the file if it exists
+        if (File.Exists(GameDataFile))
+        {
+            //open stream
+            using (Stream fs = File.OpenRead(GameDataFile))
+            {
+                //create reader
+                using (BinaryReader br = new BinaryReader(fs))
+                {
+                    //verify the file is the correct format
+                    string head = new string(br.ReadChars(4));
+                    if (!head.Equals(Constants.GAME_DATA_FILE_HEADER))
+                    {
+                        Debug.Log("File not of correct format");
+                        return;
+                    }
+
+                    //set level, must be 1 or higher
+                    Level = br.ReadInt32();
+                    if (Level < Constants.GAME_DEFAULT_LEVEL)
+                    {
+                        Level = Constants.GAME_DEFAULT_LEVEL;
+                    }
+
+                    //set score, must be 0 or higher
+                    Score = br.ReadInt32();
+                    if (Score < Constants.GAME_DEFAULT_SCORE)
+                    {
+                        Score = Constants.GAME_DEFAULT_SCORE;
+                    }
+
+                    //set if finished
+                    FinishedGame = br.ReadBoolean();
+                }
+            }
+        }
+        else
+        {
+            //set default values and save data
+            Level = Constants.GAME_DEFAULT_LEVEL;
+            Score = Constants.GAME_DEFAULT_SCORE;
+            FinishedGame = Constants.GAME_DEFAULT_FINISHED_GAME;
+
+            SaveGameData();
+        }
+    }
+
+    /// <summary>
+    /// Saves the player's progress and score
+    /// </summary>
+    public void SaveGameData()
+    {
+        //create the folder if it does not exist
+        if (!Directory.Exists(Application.dataPath + "/GameData"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/GameData");
+        }
+
+        //override the file
+        if (File.Exists(GameDataFile))
+        {
+            //Debug.Log("Deleting " + file);
+            File.Delete(GameDataFile);
+        }
+
+        //open stream
+        using (Stream fs = File.OpenWrite(GameDataFile))
+        {
+            //create writer
+            using (BinaryWriter bw = new BinaryWriter(fs))
+            {
+                //write header
+                bw.Write(Constants.GAME_DATA_FILE_HEADER.ToCharArray());
+
+                //write the level
+                bw.Write(Level);
+
+                //write the score
+                bw.Write(Score);
+
+                //write if the player has beaten the game
+                bw.Write(FinishedGame);
+            }
+        }
+    }
+
+    /// <summary>
     /// Adds an object that needs to be pauseable to the list
     /// </summary>
     /// <param name="pauseObject">the object to pause</param>
@@ -249,46 +369,6 @@ class GameManager
     {
         //call ui manager
         UIManager.Instance.Update();
-    }
-
-    #endregion
-
-    #region Game Data Class
-    
-    [Serializable]
-    class GameData
-    {
-        #region Data Fields
-
-        int level;
-        int score;
-
-
-        #endregion
-
-        #region Constructor
-
-        //public GameData()
-        //{
-
-        //}
-
-        #endregion
-
-        #region Properties
-
-
-
-        #endregion
-
-        #region Methods
-
-        //public void LoadData()
-        //{
-
-        //}
-
-        #endregion
     }
 
     #endregion

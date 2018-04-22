@@ -99,8 +99,9 @@ public class PlayerScript : PauseableObject
         //set audio source
         aSource = GetComponent<AudioSource>();
         aSource.clip = AudioManager.Instance.GetAudioClip(GameSoundEffect.PlayerAirplaneEngine);
-        aSource.Play();
+        aSource.volume = AudioManager.Instance.SoundEffectsVolume;
         aSource.loop = true;
+        aSource.Play();
     }
 	
 	// Update is called once per frame
@@ -239,35 +240,41 @@ public class PlayerScript : PauseableObject
                 MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }
 
+            #region Player Pitch Control
+
+            pitchAngle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
+            pitchAngle = Mathf.Clamp(rBody.velocity.y, Constants.PLAYER_PITCH_DOWN_MAX, Constants.PLAYER_PITCH_UP_MAX);
+            transform.rotation = Quaternion.AngleAxis(pitchAngle, Vector3.forward);
+            childCanvas.transform.rotation = childQuaternion;
+
+            #endregion
+
+            #region Player Clamp Control
+
+            //test for out of bounds and reseting the velocity
+            if (transform.position.x < leftLimitation || transform.position.x > rightLimitation)
+            {
+                currentHorizontalSpeed = 0f;
+            }
+            if (transform.position.y < downLimitation || transform.position.y > upLimitation)
+            {
+                currentVerticalSpeed = 0f;
+            }
+
+            //clamp player to screen
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftLimitation, rightLimitation), Mathf.Clamp(transform.position.y, downLimitation, upLimitation));
+
+            #endregion
+
             //engine audio control
             //aSource.pitch = Mathf.Clamp(, 0f, 2f);
         }
-
-        #region Player Pitch Control
-
-        pitchAngle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
-        pitchAngle = Mathf.Clamp(rBody.velocity.y, Constants.PLAYER_PITCH_DOWN_MAX, Constants.PLAYER_PITCH_UP_MAX);
-        transform.rotation = Quaternion.AngleAxis(pitchAngle, Vector3.forward);
-        childCanvas.transform.rotation = childQuaternion;
-
-        #endregion
-
-        #region Player Clamp Control
-
-        //test for out of bounds and reseting the velocity
-        if (transform.position.x < leftLimitation || transform.position.x > rightLimitation)
+        else
         {
-            currentHorizontalSpeed = 0f;
-        }
-        if (transform.position.y < downLimitation || transform.position.y > upLimitation)
-        {
-            currentVerticalSpeed = 0f;
+            //set the volume during pause
+            aSource.volume = AudioManager.Instance.SoundEffectsVolume;
         }
 
-        //clamp player to screen
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftLimitation, rightLimitation), Mathf.Clamp(transform.position.y, downLimitation, upLimitation));
-
-        #endregion
     }
 
 

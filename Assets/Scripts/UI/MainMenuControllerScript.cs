@@ -52,6 +52,13 @@ public class MainMenuControllerScript : MonoBehaviour
         {
             uiDict[MainMenus.Main].SetActive(true);
         }
+
+        //show error message if applicable
+        if (GameManager.Instance.ErrorMessage != null)
+        {
+            GameObject error = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Main menu/ErrorMsgCanvas"), Vector3.zero, Quaternion.identity);
+            error.GetComponent<Canvas>().worldCamera = Camera.main;
+        }
 	}
 	
     /// <summary>

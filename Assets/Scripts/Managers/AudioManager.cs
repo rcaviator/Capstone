@@ -1,7 +1,9 @@
-﻿//using System;
+﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
+using System.Linq;
+using System.Text;
+using System.IO;
+//using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 /// <summary>
@@ -75,6 +77,7 @@ public enum GameSoundEffect
 /// <summary>
 /// AudioManager is the singleton that handles all the audio in the game.
 /// </summary>
+[Serializable]
 class AudioManager
 {
     #region Fields
@@ -94,6 +97,18 @@ class AudioManager
     AudioSource musicAudioSource;
     AudioSource uiAudioSource;
     AudioSource gameAudioSource;
+
+    //music volume
+    float musicVolume;
+
+    //sfx volume
+    float sfxVolume;
+
+    //ui volume
+    float uiVolume;
+
+    //file of the audio settings
+    string file;
 
     //reference to currently playing background music
     MusicSoundEffect currentMusic;
@@ -115,16 +130,6 @@ class AudioManager
             { MusicSoundEffect.PreLevel, Resources.Load<AudioClip>("Audio/Music/Hearts of Iron IV - Luftwaffe Strikers Again") },
             { MusicSoundEffect.EndLevel, Resources.Load<AudioClip>("Audio/Music/") },
             { MusicSoundEffect.LevelEditor, Resources.Load<AudioClip>("Audio/Music/") },
-        };
-
-        //create and populate the UI dictionary
-        uiSoundEffectsDict = new Dictionary<UISoundEffect, AudioClip>()
-        {
-            //leave UISoundEffect.None out
-            { UISoundEffect.MenuButtonFocused, Resources.Load<AudioClip>("Audio/UI/") },
-            { UISoundEffect.MenuForward, Resources.Load<AudioClip>("Audio/UI/") },
-            { UISoundEffect.MenuBackward, Resources.Load<AudioClip>("Audio/UI/") },
-            
         };
 
         //create and populate the game play sound effects dictionary
@@ -157,19 +162,35 @@ class AudioManager
             { GameSoundEffect.RocketFire2, Resources.Load<AudioClip>("Audio/Effects/gun_hybrid_rocket01b_22")},
         };
 
+        //create and populate the UI dictionary
+        uiSoundEffectsDict = new Dictionary<UISoundEffect, AudioClip>()
+        {
+            //leave UISoundEffect.None out
+            { UISoundEffect.MenuButtonFocused, Resources.Load<AudioClip>("Audio/UI/") },
+            { UISoundEffect.MenuForward, Resources.Load<AudioClip>("Audio/UI/") },
+            { UISoundEffect.MenuBackward, Resources.Load<AudioClip>("Audio/UI/") },
+
+        };
+
         //create audio game object
         audioController = new GameObject("AudioController");
         GameObject.DontDestroyOnLoad(audioController);
 
         //create audio source references
-        uiAudioSource = audioController.AddComponent<AudioSource>() as AudioSource;
         musicAudioSource = audioController.AddComponent<AudioSource>() as AudioSource;
         gameAudioSource = audioController.AddComponent<AudioSource>() as AudioSource;
+        uiAudioSource = audioController.AddComponent<AudioSource>() as AudioSource;
 
         //set audio sources for ignore pausing
-        uiAudioSource.ignoreListenerPause = true;
         musicAudioSource.ignoreListenerPause = true;
         gameAudioSource.ignoreListenerPause = false;
+        uiAudioSource.ignoreListenerPause = true;
+
+        //set file path for settings
+        file = Application.dataPath + "/GameData/" + "AudioSettings.dat";
+
+        //load audio settings
+        LoadAudioSettings();
     }
 
     #endregion
@@ -188,13 +209,140 @@ class AudioManager
     /// The music volume
     /// </summary>
     public float MusicVolume
-    { get; set; }
+    {
+        get { return musicVolume; }
+        set
+        {
+            musicVolume = value;
+            musicVolume = Mathf.Clamp(musicVolume, 0f, 1f);
+
+            musicAudioSource.volume = musicVolume;
+        }
+    }
 
     /// <summary>
     /// The sound effects volume
     /// </summary>
     public float SoundEffectsVolume
-    { get; set; }
+    {
+        get { return sfxVolume; }
+        set
+        {
+            sfxVolume = value;
+            sfxVolume = Mathf.Clamp(sfxVolume, 0f, 1f);
+
+            gameAudioSource.volume = sfxVolume;
+        }
+    }
+
+    /// <summary>
+    /// The UI volume
+    /// </summary>
+    public float UIVolume
+    {
+        get { return uiVolume; }
+        set
+        {
+            uiVolume = value;
+            uiVolume = Mathf.Clamp(uiVolume, 0f, 1f);
+
+            uiAudioSource.volume = uiVolume;
+        }
+    }
+
+    #endregion
+
+    #region Save and Load audio settings file
+
+    /// <summary>
+    /// Loads the saved audio settings from file
+    /// </summary>
+    public void LoadAudioSettings()
+    {
+        //load the file if it exists
+        if (File.Exists(file))
+        {
+            //open stream
+            using (Stream fs = File.OpenRead(file))
+            {
+                //create reader
+                using (BinaryReader br = new BinaryReader(fs))
+                {
+                    //verify the file is the correct format
+                    string head = new string(br.ReadChars(4));
+                    if (!head.Equals(Constants.AUDIO_SETTINGS_FILE_HEADER))
+                    {
+                        Debug.Log("File not of correct format");
+                        return;
+                    }
+
+                    //get the music volume
+                    MusicVolume = br.ReadSingle();
+
+                    //get the sfx volume
+                    SoundEffectsVolume = br.ReadSingle();
+
+                    //get the ui volume
+                    UIVolume = br.ReadSingle();
+                }
+            }
+        }
+        else
+        {
+            //set the default music volume
+            MusicVolume = Constants.AUDIO_DEFAULT_MUSIC_VOLUME;
+
+            //set the default sfx volume
+            SoundEffectsVolume = Constants.AUDIO_DEFAULT_SOUNDEFFECTS_VOLUME;
+
+            //set the default ui volume
+            UIVolume = Constants.AUDIO_DEFAULT_UI_VOLUME;
+
+            //save data
+            SaveAudioSettings();
+        }
+    }
+
+    /// <summary>
+    /// Saves the audio settings to file
+    /// </summary>
+    public void SaveAudioSettings()
+    {
+        //create the folder if it does not exist
+        if (!Directory.Exists(Application.dataPath + "/GameData"))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/GameData");
+        }
+
+        //override the file
+        if (File.Exists(file))
+        {
+            //Debug.Log("Deleting " + file);
+            File.Delete(file);
+        }
+
+        //open stream
+        using (Stream fs = File.OpenWrite(file))
+        {
+            //create writer
+            using (BinaryWriter bw = new BinaryWriter(fs))
+            {
+                //write header
+                bw.Write(Constants.AUDIO_SETTINGS_FILE_HEADER.ToCharArray());
+
+                //write the music volume
+                bw.Write(MusicVolume);
+
+                //write the sfx volume
+                bw.Write(SoundEffectsVolume);
+
+                //write the ui volume
+                bw.Write(UIVolume);
+            }
+        }
+    }
+
+    #endregion
 
     #region Background Music
 
@@ -367,8 +515,6 @@ class AudioManager
             return null;
         }
     }
-
-    #endregion
 
     #endregion
 }

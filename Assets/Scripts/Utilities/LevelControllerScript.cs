@@ -12,11 +12,6 @@ public class LevelControllerScript : MonoBehaviour
         //initialize level generation
         //get level info
         int currentLevel = GameManager.Instance.Level;
-        //testing purposes
-        currentLevel = 1;
-        //GameManager.Instance.ErrorMessage = "Error in loading module first module. Reinstall the game or contact the developer to fix this.";
-        //MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
-        //return;
 
         //game object to hold module objects and positioning
         GameObject moduleParent;

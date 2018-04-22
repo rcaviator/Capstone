@@ -142,6 +142,12 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for notification referencing to the player
+    /// </summary>
+    public StatusPanelScript StatusPanel
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

@@ -1120,7 +1120,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114860520480617698}
-        m_MethodName: OnChangeSceneClick
+        m_MethodName: CheckNewGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1238,7 +1238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
-  goToScene: 3
+  goToScene: 0
   mainMenuToGoTo: 0
 --- !u!114 &114884473723437088
 MonoBehaviour:
@@ -1450,7 +1450,7 @@ RectTransform:
   m_GameObject: {fileID: 1158003244526750}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99998575, y: 0.99998575, z: 0.99998575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224490926366586508}
   m_Father: {fileID: 224491058892343618}
@@ -1469,7 +1469,7 @@ RectTransform:
   m_GameObject: {fileID: 1107338669659856}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99998575, y: 0.99998575, z: 0.99998575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224172766239928330}
   m_Father: {fileID: 224491058892343618}
@@ -1582,7 +1582,7 @@ RectTransform:
   m_GameObject: {fileID: 1315413938970696}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99998575, y: 0.99998575, z: 0.99998575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224326108634637768}
   m_Father: {fileID: 224491058892343618}
@@ -1753,7 +1753,7 @@ RectTransform:
   m_GameObject: {fileID: 1749487330655908}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99999976, y: 0.99999976, z: 0.99999976}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224619836248797744}
   m_Father: {fileID: 224491058892343618}
