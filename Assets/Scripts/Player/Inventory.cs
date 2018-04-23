@@ -26,7 +26,7 @@ public enum ItemType
     RepairPack,
 
     //upgrades
-    AircraftArmor, FlightEngineer, WingMan,
+    AircraftHull, FlightEngineer, WingMan,
 }
 
 [Serializable]

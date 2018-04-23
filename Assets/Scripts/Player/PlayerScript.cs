@@ -102,6 +102,9 @@ public class PlayerScript : PauseableObject
         aSource.volume = AudioManager.Instance.SoundEffectsVolume;
         aSource.loop = true;
         aSource.Play();
+
+        //-----hack for testing ap bullets-----
+        //GameManager.Instance.PlayerInventory.AddItem(ItemType.APBullets, 10);
     }
 	
 	// Update is called once per frame
@@ -462,9 +465,18 @@ public class PlayerScript : PauseableObject
 
     private void BasicAttack()
     {
-        GameObject attack = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/PlayerBullet"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-        Vector2 vel = (Vector2)GameManager.Instance.Reticle.transform.position - (Vector2)transform.position;
-        attack.GetComponent<PlayerBasicBulletScript>().InitializePlayerBasicProjectile(vel);
+        if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.APBullets) > 0)
+        {
+            GameObject advancedBullet = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/PlayerAdvancedBullet"), transform.position, Quaternion.identity);
+            Vector2 vel = (Vector2)(GameManager.Instance.Reticle.transform.position - transform.position);
+            advancedBullet.GetComponent<PlayerAdvancedBulletScript>().InitializePlayerAdvancedProjectile(vel);
+        }
+        else
+        {
+            GameObject basic = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/PlayerBullet"), transform.position, Quaternion.identity);
+            Vector2 vel = (Vector2)(GameManager.Instance.Reticle.transform.position - transform.position);
+            basic.GetComponent<PlayerBasicBulletScript>().InitializePlayerBasicProjectile(vel);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -472,23 +484,60 @@ public class PlayerScript : PauseableObject
         //player will only take damage in manual state
         if (State == PlayerState.Manual)
         {
-            if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Enemy]))
+            //enemies
+            if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bomber]))
             {
-                Health -= Constants.ENEMY_COLLISION_DAMAGE;
+                Health -= Constants.ENEMY_BOMBER_COLLISION_DAMAGE;
                 flashHealthBar = true;
             }
-            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyBullet]))
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Jeep]))
             {
-                Health -= 10f;//change this in constants when enemy bullets are in
+                Health -= Constants.ENEMY_JEEP_COLLSION_DAMAGE;
                 flashHealthBar = true;
             }
-            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Environment]))
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.MotherShip]))
             {
-                Health -= Constants.BIRD_DAMAGE;
+                //Health -= Constants.BIRD_COLLISION_DAMAGE;
+                //flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Soldier]))
+            {
+                Health -= Constants.ENEMY_SOLDIER_COLLISION_DAMAGE;
                 flashHealthBar = true;
             }
-
-            if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Tank]))
+            {
+                //Health -= Constants.Enemey_T
+                //flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Zepplin]))
+            {
+                Health -= Constants.ENEMY_ZEPPLIN_COLLISION_DAMAGE;
+                flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyFastRocket]))
+            {
+                Health -= Constants.ENEMY_FAST_ROCKET_DAMAGE;
+                flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
+            {
+                Health -= Constants.ENEMY_SLOW_ROCKET_DAMAGE;
+                flashHealthBar = true;
+            }
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.HeavyProjectileShell]))
+            {
+                Health -= Constants.HEAVY_PROJECTILE_SHELL_DAMAGE;
+                flashHealthBar = true;
+            }
+            //environment
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bird]))
+            {
+                Health -= Constants.BIRD_COLLISION_DAMAGE;
+                flashHealthBar = true;
+            }
+            //ground
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
             {
                 AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
                 MySceneManager.Instance.ChangeScene(Scenes.Defeat);

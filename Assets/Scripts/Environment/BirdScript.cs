@@ -67,13 +67,47 @@ public class BirdScript : PauseableObject
     {
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            //AudioManager sound
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
-            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerAdvancedBullet]))
+        {
+            health -= Constants.PLAYER_ADVANCED_BULLET_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.ClusterBomb]))
+        {
+            health -= Constants.CLUSTER_BOMB_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyBeam]))
+        {
+            health -= Constants.ENERGY_BEAM_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
+        {
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))
+        {
+            health -= Constants.SEEKER_MISSILES_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bomber]))
+        {
+            health -= Constants.ENEMY_BOMBER_COLLISION_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.HeavyProjectileShell]))
+        {
+            health -= Constants.HEAVY_PROJECTILE_SHELL_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyFastRocket]))
+        {
+            health -= Constants.ENEMY_FAST_ROCKET_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
+        {
+            health -= Constants.ENEMY_SLOW_ROCKET_DAMAGE;
         }
     }
 

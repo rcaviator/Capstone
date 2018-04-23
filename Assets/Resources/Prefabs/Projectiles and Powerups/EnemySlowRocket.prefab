@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114267240564483034}
   m_Layer: 11
   m_Name: EnemySlowRocket
-  m_TagString: EnemyBullet
+  m_TagString: EnemySlowRocket
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,16 +52,16 @@ Rigidbody2D:
   m_GameObject: {fileID: 1195332917728828}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &61296546124266562
 BoxCollider2D:

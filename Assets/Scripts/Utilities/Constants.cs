@@ -62,6 +62,24 @@ public static class Constants
         EnemyBullet,
         WeatherHazard,
         Environment,
+        Bomber,
+        Jeep,
+        MotherShip,
+        Soldier,
+        Tank,
+        Zepplin,
+        EnemyFastRocket,
+        EnemySlowRocket,
+        Bird,
+        HeavyProjectileShell,
+        WeatherHazard2,
+        WeatherHazard3,
+        ClusterBomb,
+        EnergyBeam,
+        EnergyShield,
+        SeekerMissile,
+        Decoy,
+        PlayerAdvancedBullet,
     };
 
     #endregion
@@ -154,7 +172,7 @@ public static class Constants
     
     //basic attack bullet
     public const float PLAYER_BASIC_BULLET_DAMAGE = 10f;
-    public const float PLAYER_BASIC_BULLET_ATTACK_LIFETIME = 0.15f;
+    public const float PLAYER_BASIC_BULLET_LIFETIME = 0.15f;
     public const float PLAYER_BASIC_BULLET_SPEED = 75f;
     public const float PLAYER_BASIC_BULLET_COOLDOWN_TIMER = 0.05f;
 
@@ -166,16 +184,17 @@ public static class Constants
     public const float BIRD_HEALTH = 1f;
     public const float BIRD_SPEED = 4f;
     public const float BIRD_LIFETIME = 20f;
-    public const float BIRD_DAMAGE = 5f;
+    public const float BIRD_COLLISION_DAMAGE = 5f;
 
     //weather hazard 1
 
 
     //weather hazard 2
-
+    public const float WEATHER_HAZARD_2_LIGHTNING_TIMER = 2f;
+    public const float WEATHER_HAZARD_2_LIGHTING_DAMAGE = 10f;
 
     //weather hazard 3
-
+    public const float WEATHER_HAZARD_3_DOWNDRAFT_FORCE = 1f;
 
     #endregion
 
@@ -188,7 +207,7 @@ public static class Constants
     #region Enemy Constants
 
     //enemy collision damage
-    public const float ENEMY_COLLISION_DAMAGE = 20f;
+    //public const float ENEMY_COLLISION_DAMAGE = 20f;
 
     //enemy rockets
     public const float ENEMY_SLOW_ROCKET_HEALTH = 30f;
@@ -198,18 +217,16 @@ public static class Constants
     public const float ENEMY_SLOW_ROCKET_DAMAGE = 30f;
     public const float ENEMY_FAST_ROCKET_DAMAGE = 10f;
     public const float ENEMY_SLOW_ROCKET_LIFETIME = 5f;
-    public const float ENEMY_FAST_ROCKET_LIEFTIME = 2f;
+    public const float ENEMY_FAST_ROCKET_LIEFTIME = 5f;
     public const float ENEMY_SLOW_ROCKET_SPEED = 3f;
-    public const float ENEMY_FAST_ROCKET_SPEED = 6f;
+    public const float ENEMY_FAST_ROCKET_SPEED = 15f;
     public const int ENEMY_SLOW_ROCKET_SCORE = 5;
     public const int ENEMY_FAST_ROCKET_SCORE = 10;
 
     //zepplin
     public const float ENEMY_ZEPPLIN_HEALTH = 100f;
     public const int ENEMY_ZEPPLIN_SCORE = 20;
-
-    public const float ENEMY_TEMP_BLIMP_HEALTH = 100f;//delete
-    public const int ENEMY_TEMP_BLIMP_SCORE = 20;//delete
+    public const float ENEMY_ZEPPLIN_COLLISION_DAMAGE = 20f;
 
     //mothership
     public const float ENEMY_MOTHERSHIP_HEALTH = 20000f;
@@ -217,10 +234,18 @@ public static class Constants
     //bomber
     public const float ENEMY_BOMBER_HEALTH = 70f;
     public const int ENEMY_BOMBER_SCORE = 30;
+    public const float ENEMY_BOMBER_COLLISION_DAMAGE = 20f;
+    public const float ENEMY_BOMBER_MAX_HORIZONTAL_SPEED = 7f;
+    public const float ENEMY_BOMBER_MAX_VERTICAL_SPEED = 7f;
+    public const float ENEMY_BOMBER_MAX_HORIZONTAL_ACCELERATION = 10f;
+    public const float ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION = 10f;
+    public const float ENEMY_BOMBER_PLAYER_DISTANCE_THRESHOLD = 15f;
+    public const float ENEMY_BOMBER_VERTICAL_SPACING = 3f;
 
     //soldier
     public const float ENEMY_SOLDIER_HEALTH = 1f;
     public const int ENEMY_SOLDIER_SCORE = 1;
+    public const float ENEMY_SOLDIER_COLLISION_DAMAGE = 5f;
 
     //tank
     public const float ENEMY_TANK_HEALTH = 150f;
@@ -229,12 +254,73 @@ public static class Constants
     //jeep
     public const float ENEMY_JEEP_HEALTH = 30f;
     public const int ENEMY_JEEP_SCORE = 10;
+    public const float ENEMY_JEEP_COLLSION_DAMAGE = 20f;
+
+    #endregion
+
+    #region Projectile Constants
+
+    //heavy projectile shell
+    public const float HEAVY_PROJECTILE_SHELL_DAMAGE = 30f;
+    public const float HEAVY_PROJECTILE_SHELL_COOLDOWN_TIMER = 1f;
+    public const float HEAVY_PROJECTILE_SHELL_LIFETIME = 1f;
+    public const float HEAVY_PROJECTILE_SHELL_SPEED = 10f;
 
     #endregion
 
     #region Item Constants
 
+    //basic attack upgrade
+    public const int PLAYER_ADVANCED_BULLET_UPGRADE_COST = 50;
+    public const float PLAYER_ADVANCED_BULLET_DAMAGE = 15f;
+    public const float PLAYER_ADVANCED_BULLET_LIFETIME = 0.33f;
+    public const float PLAYER_ADVANCED_BULLET_SPEED = 75f;
+    public const float PLAYER_ADVANCED_BULLET_COOLDOWN = 0.05f;
 
+    //cluster bomb
+    public const int CLUSTER_BOMB_COST = 100;
+    public const int CLUSTER_BOMB_COUNT = 8;
+    public const float CLUSTER_BOMB_LIFETIME = 2f;
+    public const float CLUSTER_BOMB_DAMAGE = 75f;
+    public const float CLUSTER_BOMB_COOLDOWN = 7.5f;
+    public const float CLUSTER_BOMB_SPEED = 10f;
+
+    //seeker missiles
+    public const int SEEKER_MISSILES_COST = 100;
+    public const int SEEKER_MISSILES_COUNT = 5;
+    public const float SEEKER_MISSILES_DAMAGE = 75f;
+    public const float SEEKER_MISSILES_SPEED = 10f;
+    public const float SEEKER_MISSILES_LIFETIME = 1.5f;
+    public const float SEEKER_MISSILES_COOLDDOWN = 7.5f;
+
+    //energy beam
+    public const int ENERGY_BEAM_COST = 200;
+    public const int ENERGY_BEAM_DAMAGE = 100;
+    public const float ENERGY_BEAM_LIFETIME = 3f;
+    public const float ENERGY_BEAM_COOLDOWN = 10f;
+
+    //energy shield
+    public const int ENERGY_SHIELD_COST = 200;
+    public const float ENERGY_SHIELD_LIFETIME = 5f;
+    public const float ENERGY_SHIELD_COOLDOWN = 7.5f;
+
+    //decoy
+
+
+    //repair pack
+    public const int REPAIR_PACK_COST = 25;
+    public const float REPAIR_PACK_REPAIR_AMOUNT = 75f;
+
+    //aircraft hull
+    public const int AIRCRAFT_HULL_COST = 50;
+    public const float AIRCRAFT_HULL_BONUS = 25f;
+
+    //flight engineer
+    public const int FLIGHT_ENGINEER_COST = 100;
+    public const float FLIGHT_ENGINEER_REPAIR_RATE = 10f;
+
+    //wingman
+    public const int WINGMAN_COST = 100;
 
     #endregion
 }

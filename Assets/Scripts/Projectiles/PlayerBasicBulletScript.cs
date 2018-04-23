@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class PlayerBasicBulletScript : ProjectilesScript
 {
-    //float bulletLifetime = 0;
-    //float startTime = 0;
-
-
     // Use this for initialization
     protected override void Awake ()
     {
@@ -27,7 +23,7 @@ public class PlayerBasicBulletScript : ProjectilesScript
         bulletVelocity *= Constants.PLAYER_BASIC_BULLET_SPEED;
 
         //initialize the bullet info for the parent
-        Initialize(bulletVelocity, Constants.PLAYER_BASIC_BULLET_ATTACK_LIFETIME);
+        Initialize(bulletVelocity, Constants.PLAYER_BASIC_BULLET_LIFETIME);
 
         //set sprite rotation
         float angle = Mathf.Atan2(bulletVelocity.y, bulletVelocity.x) * Mathf.Rad2Deg;
@@ -77,7 +73,14 @@ public class PlayerBasicBulletScript : ProjectilesScript
                 break;
         }
 
-        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Enemy]) || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyBullet]))
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bomber])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Jeep])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.MotherShip])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Soldier])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Tank])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Zepplin])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyFastRocket])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
         {
             if (collision.gameObject.GetComponent<Rigidbody2D>() != null)
             {
@@ -99,6 +102,10 @@ public class PlayerBasicBulletScript : ProjectilesScript
 
             Destroy(gameObject);
         }
-        
+
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bird]))
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -37,23 +37,23 @@ public class CameraControllerScript : PauseableObject
         //non physics-based editor code
         if (MySceneManager.Instance.CurrentScene == Scenes.LevelEditor)
         {
-            //scrolling controls
-            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
-            {
-                //zoom in
-                if (GetComponent<Camera>().orthographicSize > 1f)
-                {
-                    GetComponent<Camera>().orthographicSize--;
-                }
-            }
-            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
-            {
-                //zoom out
-                if (GetComponent<Camera>().orthographicSize < 30f)
-                {
-                    GetComponent<Camera>().orthographicSize++;
-                }
-            }
+            ////scrolling controls
+            //if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+            //{
+            //    //zoom in
+            //    if (GetComponent<Camera>().orthographicSize > 1f)
+            //    {
+            //        GetComponent<Camera>().orthographicSize--;
+            //    }
+            //}
+            //else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+            //{
+            //    //zoom out
+            //    if (GetComponent<Camera>().orthographicSize < 30f)
+            //    {
+            //        GetComponent<Camera>().orthographicSize++;
+            //    }
+            //}
 
             //camera clamping control
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftBounds, rightBounds), Mathf.Clamp(transform.position.y, bottomBounds, topBounds), transform.position.z);
@@ -114,8 +114,25 @@ public class CameraControllerScript : PauseableObject
                 {
                     uiBlocker = false;
                 }
-            }
 
+                //scrolling controls
+                if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f)
+                {
+                    //zoom in
+                    if (GetComponent<Camera>().orthographicSize > 1f)
+                    {
+                        GetComponent<Camera>().orthographicSize--;
+                    }
+                }
+                else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
+                {
+                    //zoom out
+                    if (GetComponent<Camera>().orthographicSize < 30f)
+                    {
+                        GetComponent<Camera>().orthographicSize++;
+                    }
+                }
+            }
         }
     }
 

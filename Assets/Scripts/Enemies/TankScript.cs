@@ -17,6 +17,9 @@ public class TankScript : PauseableObject
     float maxHealthBarFlash = 0.2f;
     float healthBarFlash = 0f;
 
+    //projectile timer
+    float heavyTimer = Constants.HEAVY_PROJECTILE_SHELL_COOLDOWN_TIMER;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -88,6 +91,49 @@ public class TankScript : PauseableObject
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
             flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerAdvancedBullet]))
+        {
+            health -= Constants.PLAYER_ADVANCED_BULLET_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.ClusterBomb]))
+        {
+            health -= Constants.CLUSTER_BOMB_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyBeam]))
+        {
+            health -= Constants.ENERGY_BEAM_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
+        {
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))
+        {
+            health -= Constants.SEEKER_MISSILES_DAMAGE;
+            flashHealthBar = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
+        {
+            if (heavyTimer >= Constants.HEAVY_PROJECTILE_SHELL_COOLDOWN_TIMER)
+            {
+                GameObject attack = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/HeavyProjectileShell"), new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
+                Vector2 vel = new Vector2((GameManager.Instance.Player.transform.position.x + (GameManager.Instance.Player.GetComponent<Rigidbody2D>().velocity.x)) - transform.position.x, GameManager.Instance.Player.transform.position.y - transform.position.y);/*(Vector2)GameManager.Instance.Player.transform.position - (Vector2)transform.position;*/
+                attack.GetComponent<HeavyProjectileShellScript>().InitializeProjectile(vel);
+
+                heavyTimer = 0f;
+            }
+            else
+            {
+                heavyTimer += Time.deltaTime;
+            }
         }
     }
 }

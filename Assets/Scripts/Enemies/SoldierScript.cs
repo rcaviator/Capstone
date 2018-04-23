@@ -35,13 +35,32 @@ public class SoldierScript : PauseableObject
         //kill self and damage player if player crashed into soldier
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         //else take damage from player bullet
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerAdvancedBullet]))
+        {
+            health -= Constants.PLAYER_ADVANCED_BULLET_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.ClusterBomb]))
+        {
+            health -= Constants.CLUSTER_BOMB_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyBeam]))
+        {
+            health -= Constants.ENERGY_BEAM_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
+        {
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))
+        {
+            health -= Constants.SEEKER_MISSILES_DAMAGE;
         }
     }
 }
