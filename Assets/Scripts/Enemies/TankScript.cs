@@ -109,6 +109,7 @@ public class TankScript : PauseableObject
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
         {
+            GameManager.Instance.Score += Constants.ENEMY_TANK_SCORE;
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))

@@ -30,7 +30,7 @@ public enum ItemType
 }
 
 [Serializable]
-public class Inventory
+public class Inventory //: IEqualityComparer<int>
 {
     #region Fields
 
@@ -138,6 +138,20 @@ public class Inventory
             Debug.Log("View Item Count: Item is not in the inventory dictionary");
             return 0;
         }
+    }
+
+
+    public bool IsEmpty()
+    {
+        foreach (KeyValuePair<ItemType, int> item in MainInventory)
+        {
+            if (item.Value > 0)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>

@@ -77,11 +77,11 @@ public class ClusterBombScript : ProjectilesScript
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyFastRocket]))
         {
-            Destroy(gameObject);
+            
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
         {
-            Destroy(gameObject);
+            
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bird]))
         {
@@ -89,7 +89,7 @@ public class ClusterBombScript : ProjectilesScript
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.HeavyProjectileShell]))
         {
-            Destroy(gameObject);
+            
         }
     }
 }

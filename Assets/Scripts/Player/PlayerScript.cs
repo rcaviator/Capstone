@@ -66,6 +66,10 @@ public class PlayerScript : PauseableObject
     float upLimitation;
     float downLimitation;
 
+    //wrench for regen
+    GameObject wrench;
+    bool spawnWrench = true;
+
     #endregion
 
 
@@ -90,7 +94,7 @@ public class PlayerScript : PauseableObject
         childQuaternion = transform.rotation;
 
         //set health
-        Health = Constants.PLAYER_STARTING_HEALTH;
+        Health = GameManager.Instance.PlayerHealth;
 
         //set healthbars
         normalHealthBar = healthBar.sprite;
@@ -105,6 +109,9 @@ public class PlayerScript : PauseableObject
 
         //-----hack for testing ap bullets-----
         //GameManager.Instance.PlayerInventory.AddItem(ItemType.APBullets, 10);
+
+        wrench = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/Wrench"), Vector3.zero, Quaternion.identity);
+        wrench.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -217,8 +224,10 @@ public class PlayerScript : PauseableObject
                     break;
             }
 
+            #region Health Control
+
             //update health bar
-            healthBar.fillAmount = Health / Constants.PLAYER_STARTING_HEALTH;
+            healthBar.fillAmount = Health / GameManager.Instance.PlayerHealth;
 
             //flash health bar if damaged
             if (flashHealthBar)
@@ -237,11 +246,37 @@ public class PlayerScript : PauseableObject
                 }
             }
 
-            //health control
+            //regen and wrench
+            if (Health < GameManager.Instance.PlayerHealth && GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.FlightEngineer) > 0)
+            {
+                Health += Constants.FLIGHT_ENGINEER_REPAIR_RATE * Time.deltaTime;
+                //spawn wrench
+                if (spawnWrench)
+                {
+                    wrench.SetActive(true);
+                }
+            }
+            else
+            {
+                wrench.SetActive(false);
+            }
+
+            //use repair pack if needed and able
+            if (Health <= 25f && GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.RepairPack) > 0)
+            {
+                Health += Constants.REPAIR_PACK_REPAIR_AMOUNT;
+                GameManager.Instance.PlayerInventory.RemoveItem(ItemType.RepairPack, 1);
+                //play sound
+
+            }
+
+            //kill player if 0 or less
             if (Health <= 0f)
             {
                 MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }
+
+            #endregion
 
             #region Player Pitch Control
 

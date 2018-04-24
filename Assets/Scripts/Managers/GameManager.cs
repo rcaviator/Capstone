@@ -21,6 +21,9 @@ class GameManager
     //the player's inventory
     Inventory playerInventory;
 
+    //the player's health
+    float playerHealth;
+
     #endregion
 
     #region Constructor
@@ -77,10 +80,10 @@ class GameManager
         //create and initialize the dictionary of airports
         Airports = new Dictionary<int, Airport>()
         {
-            { 1, new Airport(Constants.AIRPORT_1_NAME, Constants.AIRPORT_2_NAME, Constants.AIRPORT_1_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_1_WEATHER_BRIEFING) },
-            { 2, new Airport(Constants.AIRPORT_2_NAME, Constants.AIRPORT_3_NAME, Constants.AIRPORT_2_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_2_WEATHER_BRIEFING) },
-            { 3, new Airport(Constants.AIRPORT_3_NAME, Constants.AIRPORT_4_NAME, Constants.AIRPORT_3_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_3_WEATHER_BRIEFING) },
-            { 4, new Airport(Constants.AIRPORT_4_NAME, "Capital City", Constants.AIRPORT_4_MISSION_BRIEFING, Resources.Load<Image>(""), Constants.AIRPORT_4_WEATHER_BRIEFING) },
+            { 1, new Airport(Constants.AIRPORT_1_NAME, Constants.AIRPORT_2_NAME, Constants.AIRPORT_1_MISSION_BRIEFING, Resources.Load<Sprite>("Graphics/UI/Maps/Level1Map"), Constants.AIRPORT_1_WEATHER_BRIEFING) },
+            { 2, new Airport(Constants.AIRPORT_2_NAME, Constants.AIRPORT_3_NAME, Constants.AIRPORT_2_MISSION_BRIEFING, Resources.Load<Sprite>("Graphics/UI/Maps/Level2Map"), Constants.AIRPORT_2_WEATHER_BRIEFING) },
+            { 3, new Airport(Constants.AIRPORT_3_NAME, Constants.AIRPORT_4_NAME, Constants.AIRPORT_3_MISSION_BRIEFING, Resources.Load<Sprite>("Graphics/UI/Maps/Level3Map"), Constants.AIRPORT_3_WEATHER_BRIEFING) },
+            { 4, new Airport(Constants.AIRPORT_4_NAME, "Capital City", Constants.AIRPORT_4_MISSION_BRIEFING, Resources.Load<Sprite>("Graphics/UI/Maps/Level4Map"), Constants.AIRPORT_4_WEATHER_BRIEFING) },
         };
 
         //create the list of pausable objects
@@ -92,6 +95,25 @@ class GameManager
 
         //load player inventory
         PlayerInventory.LoadInventory();
+
+        //testing items, currency, and level editor
+        if (Constants.IS_DEVELOPER_BUILD)
+        {
+            PlayerInventory.AddItem(ItemType.AircraftHull, 1);
+            PlayerInventory.AddItem(ItemType.RepairPack, 1);
+            PlayerInventory.AddItem(ItemType.FlightEngineer, 1);
+
+            Score = 1000;
+
+            FinishedGame = true;
+        }
+
+        //set player health
+        PlayerHealth = Constants.PLAYER_STARTING_HEALTH;
+        for (int i = 0; i < PlayerInventory.ViewItemCount(ItemType.AircraftHull); i++)
+        {
+            PlayerHealth += Constants.AIRCRAFT_HULL_BONUS;
+        }
     }
 
     #endregion
@@ -147,6 +169,14 @@ class GameManager
     /// </summary>
     public int Level
     { get; set; }
+
+    /// <summary>
+    /// Used for saving the score before starting a level
+    /// or restarting a level
+    /// </summary>
+    public int PreScore
+    { get; set; }
+
     /// <summary>
     /// The game score
     /// </summary>
@@ -195,10 +225,22 @@ class GameManager
     public LevelEditorControllerScript EditorController
     { get; set; }
 
+    ///// <summary>
+    ///// Reference to the pre level controller
+    ///// </summary>
+    //public PreLevelMenuControllerScript PreLevelMenuController
+    //{ get; set; }
+
     /// <summary>
     /// Used for displaying an error message in the main menu
     /// </summary>
     public string ErrorMessage
+    { get; set; }
+
+    /// <summary>
+    /// Used for setting the player's health including hull bonuses
+    /// </summary>
+    public float PlayerHealth
     { get; set; }
 
     /// <summary>

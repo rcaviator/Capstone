@@ -197,12 +197,6 @@ class MySceneManager
         //    GameManager.Instance.IsLevelEditor = true;
         //    Debug.Log("level editor scene");
         //}
-
-        //temporary score reset
-        if (CurrentScene == Scenes.MainMenu)
-        {
-            GameManager.Instance.Score = 0;
-        }
     }
 
     /// <summary>

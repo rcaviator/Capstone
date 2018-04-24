@@ -90,6 +90,9 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void Quit()
     {
+        GameManager.Instance.PlayerInventory.SaveInventory();
+        GameManager.Instance.SaveGameData();
+        AudioManager.Instance.SaveAudioSettings();
         Application.Quit();
     }
 

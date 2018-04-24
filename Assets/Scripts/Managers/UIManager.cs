@@ -148,6 +148,36 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for setting the menu title in the prelevel menu
+    /// </summary>
+    public PreLevelMenuTitleTextScript PreLevelMenuTitleText
+    { get; set; }
+
+    /// <summary>
+    /// Used for setting the menu icon in the prelevel menu
+    /// </summary>
+    public PreLevelIconImageScript PreLevelIconImage
+    { get; set; }
+
+    /// <summary>
+    /// Used for setting the stats text in the prelevel menu
+    /// </summary>
+    public PreLevelStatsTextScript PreLevelStats
+    { get; set; }
+
+    /// <summary>
+    /// Used for setting the inventory text in the prelevel menu
+    /// </summary>
+    public PreLevelInventoryTextScript PreLevelInventoryText
+    { get; set; }
+
+    /// <summary>
+    /// Used for setting the money text in the prelevel menu
+    /// </summary>
+    public PreLevelMoneyTextScript PreLevelMoneyText
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

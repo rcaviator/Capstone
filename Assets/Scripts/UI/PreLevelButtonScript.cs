@@ -9,10 +9,82 @@ public class PreLevelButtonScript : ButtonScript
     [SerializeField]
     PreLevelMenus preLevelMenuToGoTo;
 
+    //bools for what the shop buttons do
+    [SerializeField]
+    bool apBulletButton;
+    [SerializeField]
+    bool aircraftHullButton;
+    [SerializeField]
+    bool shieldButton;
+    [SerializeField]
+    bool clusterBombButton;
+    [SerializeField]
+    bool seekerMissilesButton;
+    [SerializeField]
+    bool flightEngineerButton;
+    [SerializeField]
+    bool repairPackButton;
+    
+    //button reference
+    Button button;
+
+    //text reference
+    Text descriptionText;
+
     // Use this for initialization
-    void Start ()
+    void Awake()
     {
-		
+        //set references
+        button = GetComponent<Button>();
+        descriptionText = transform.GetChild(0).GetComponent<Text>();
+
+        //setup what the button is supposed to do
+        if (apBulletButton)
+        {
+            //check if already purchased
+            if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.APBullets) > 0)
+            {
+                button.interactable = false;
+                descriptionText.text = "Advanced Bullets already purchased!";
+            }
+            else
+            {
+                descriptionText.text = "Advanced Bullets: More range, more damage!\nCost: " + Constants.PLAYER_ADVANCED_BULLET_UPGRADE_COST.ToString();
+            }
+        }
+        else if (aircraftHullButton)
+        {
+            descriptionText.text = "Hull Upgrade: Increases max Hull Points!\nCost: " + Constants.AIRCRAFT_HULL_COST;
+        }
+        else if (shieldButton)
+        {
+            descriptionText.text = "Energy Shield: Protects from enemy fire!\nCost: " + Constants.ENERGY_SHIELD_COST;
+        }
+        else if (clusterBombButton)
+        {
+            descriptionText.text = "Cluster Bombs: Shoots bombs in all directions!\nCost: " + Constants.CLUSTER_BOMB_COST;
+        }
+        else if (seekerMissilesButton)
+        {
+            descriptionText.text = "Seeker Missiles: Locks missiles onto enemies!\nCost: " + Constants.SEEKER_MISSILES_COST;
+        }
+        else if (flightEngineerButton)
+        {
+            //check if already purchased
+            if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.FlightEngineer) > 0)
+            {
+                button.interactable = false;
+                descriptionText.text = "Flight Engineer already purchased!";
+            }
+            else
+            {
+                descriptionText.text = "Flight Engineer: Repairs your plane automatically!\nCost: " + Constants.FLIGHT_ENGINEER_COST;
+            }
+        }
+        else if (repairPackButton)
+        {
+            descriptionText.text = "Instantly repairs your plane at low health!\nCost: " + Constants.REPAIR_PACK_COST;
+        }
 	}
 	
 	// Update is called once per frame
@@ -27,5 +99,83 @@ public class PreLevelButtonScript : ButtonScript
     public void OnPreLevelMenuChange()
     {
         UIManager.Instance.PreLevelMenuControl.ChangeMenu(preLevelMenuToGoTo);
+    }
+
+
+    public void PurchaseItem()
+    {
+        if (apBulletButton)
+        {
+            if (GameManager.Instance.Score >= Constants.PLAYER_ADVANCED_BULLET_UPGRADE_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.APBullets, 1);
+                GameManager.Instance.Score -= Constants.PLAYER_ADVANCED_BULLET_UPGRADE_COST;
+                button.interactable = false;
+                descriptionText.text = "Advanced Bullets already purchased!";
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+        else if (aircraftHullButton)
+        {
+            if (GameManager.Instance.Score >= Constants.AIRCRAFT_HULL_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.AircraftHull, 1);
+                GameManager.Instance.Score -= Constants.AIRCRAFT_HULL_COST;
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+        else if (shieldButton)
+        {
+            if (GameManager.Instance.Score >= Constants.ENERGY_SHIELD_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.EnergyShield, 1);
+                GameManager.Instance.Score -= Constants.ENERGY_SHIELD_COST;
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+        else if (clusterBombButton)
+        {
+            if (GameManager.Instance.Score >= Constants.CLUSTER_BOMB_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.ClusterBomb, 1);
+                GameManager.Instance.Score -= Constants.CLUSTER_BOMB_COST;
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+        else if (seekerMissilesButton)
+        {
+            if (GameManager.Instance.Score >= Constants.SEEKER_MISSILES_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.SeekerMissiles, 1);
+                GameManager.Instance.Score -= Constants.SEEKER_MISSILES_COST;
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+        else if (flightEngineerButton)
+        {
+            if (GameManager.Instance.Score >= Constants.FLIGHT_ENGINEER_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.FlightEngineer, 1);
+                GameManager.Instance.Score -= Constants.FLIGHT_ENGINEER_COST;
+                button.interactable = false;
+                descriptionText.text = "Flight Engineer already purchased!";
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+        else if (repairPackButton)
+        {
+            if (GameManager.Instance.Score >= Constants.REPAIR_PACK_COST)
+            {
+                GameManager.Instance.PlayerInventory.AddItem(ItemType.RepairPack, 1);
+                GameManager.Instance.Score -= Constants.REPAIR_PACK_COST;
+                UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+            }
+        }
+    }
+
+
+    public void TakeoffFinallizer()
+    {
+        UIManager.Instance.PreLevelMenuControl.TakeoffFinalizer();
     }
 }

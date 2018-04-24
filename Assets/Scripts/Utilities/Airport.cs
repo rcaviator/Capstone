@@ -23,7 +23,7 @@ public class Airport
     /// <param name="missionBriefing">The mission briefing</param>
     /// <param name="map">Map to the next airport</param>
     /// <param name="weather">Weather briefing</param>
-    public Airport(string name, string nextName, string missionBriefing, Image map, string weather)
+    public Airport(string name, string nextName, string missionBriefing, Sprite map, string weather)
     {
         AirportName = name;
         NextAirportName = nextName;
@@ -57,7 +57,7 @@ public class Airport
     /// <summary>
     /// The map of the flight path to the next airport
     /// </summary>
-    public Image Map
+    public Sprite Map
     { get; private set; }
 
     /// <summary>

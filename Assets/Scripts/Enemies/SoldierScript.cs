@@ -56,6 +56,7 @@ public class SoldierScript : PauseableObject
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
         {
+            GameManager.Instance.Score += Constants.ENEMY_SOLDIER_SCORE;
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))

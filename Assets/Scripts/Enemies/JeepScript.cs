@@ -104,6 +104,8 @@ public class JeepScript : PauseableObject
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
         {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            GameManager.Instance.Score += Constants.ENEMY_JEEP_SCORE;
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))

@@ -137,22 +137,22 @@ public static class Constants
     public const string AIRPORT_1_NAME = "Ira Sapping";
     public const string AIRPORT_1_MISSION_BRIEFING = "Briefing 1";
     //public const Image AIRPORT_1_MAP
-    public const string AIRPORT_1_WEATHER_BRIEFING = "Clear skies, very few clouds at high altitude. Visibility: 10+ miles.";
+    public const string AIRPORT_1_WEATHER_BRIEFING = "Clear skies, very few clouds at high altitude.\nVisibility: 10+ miles.";
 
     public const string AIRPORT_2_NAME = "Dominick Walker";
     public const string AIRPORT_2_MISSION_BRIEFING = "Briefing 2";
     //public const Image AIRPORT_1_MAP
-    public const string AIRPORT_2_WEATHER_BRIEFING = "Partly cloudy with some thunderstorms in the area. Visibility 7 miles.";
+    public const string AIRPORT_2_WEATHER_BRIEFING = "Partly cloudy with some thunderstorms in the area.\nVisibility 7 miles.";
 
     public const string AIRPORT_3_NAME = "Amos Raycraft";
     public const string AIRPORT_3_MISSION_BRIEFING = "Briefing 3";
     //public const Image AIRPORT_1_MAP
-    public const string AIRPORT_3_WEATHER_BRIEFING = "Mostly cloudy with thunderstorms and down drafts in the area. Visibility 5 miles.";
+    public const string AIRPORT_3_WEATHER_BRIEFING = "Mostly cloudy with thunderstorms and down drafts in\nthe area.\nVisibility 5 miles.";
 
     public const string AIRPORT_4_NAME = "Morgan Remmington";
     public const string AIRPORT_4_MISSION_BRIEFING = "Briefing 4";
     //public const Image AIRPORT_1_MAP
-    public const string AIRPORT_4_WEATHER_BRIEFING = "Mixed weather with overcast and scattered thunderstorms and down drafts. Visibility mixed.";
+    public const string AIRPORT_4_WEATHER_BRIEFING = "Mixed weather with overcast and scattered thunderstorms\nand down drafts.\nVisibility mixed.";
 
     #endregion
 
@@ -317,7 +317,8 @@ public static class Constants
 
     //flight engineer
     public const int FLIGHT_ENGINEER_COST = 100;
-    public const float FLIGHT_ENGINEER_REPAIR_RATE = 10f;
+    public const float FLIGHT_ENGINEER_REPAIR_RATE = 5f;
+    public const float FLIGHT_ENGINEER_WRENCH_ROTATION_RATE = 240f;
 
     //wingman
     public const int WINGMAN_COST = 100;

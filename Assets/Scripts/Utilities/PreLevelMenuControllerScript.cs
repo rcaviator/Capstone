@@ -25,6 +25,10 @@ public class PreLevelMenuControllerScript : MonoBehaviour
         //set reference in UI manager
         UIManager.Instance.PreLevelMenuControl = this;
 
+        //instantiate the title canvas
+        GameObject titleCanvas = Instantiate(Resources.Load<GameObject>("Prefabs/UI/PreLevel menu/PreLevelMenuTitleCanvas"), Vector3.zero, Quaternion.identity);
+        titleCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
         //load the prefabs into the prefab dictionary uiDictPrefabs
         uiDictPrefabs = new Dictionary<PreLevelMenus, GameObject>()
         {
@@ -78,5 +82,45 @@ public class PreLevelMenuControllerScript : MonoBehaviour
 
         //enable the menu to change to
         uiDict[newMenu].SetActive(true);
+
+        //update the title text and image
+        switch (newMenu)
+        {
+            case PreLevelMenus.None:
+                break;
+            case PreLevelMenus.Overview:
+                UIManager.Instance.PreLevelMenuTitleText.ChangeTitleText(GameManager.Instance.Airports[GameManager.Instance.Level].AirportName);
+                UIManager.Instance.PreLevelIconImage.ChangeTitleIconImage(Resources.Load<Sprite>("Graphics/UI/SteampunkGUI/png/buttons/Yes (3)"));
+                break;
+            case PreLevelMenus.Shop:
+                UIManager.Instance.PreLevelMenuTitleText.ChangeTitleText("Airport Shop");
+                UIManager.Instance.PreLevelIconImage.ChangeTitleIconImage(Resources.Load<Sprite>("Graphics/UI/SteampunkGUI/png/buttons/Shop (3)"));
+                break;
+            case PreLevelMenus.WeatherAndMap:
+                UIManager.Instance.PreLevelMenuTitleText.ChangeTitleText("Next Stop:\n" + GameManager.Instance.Airports[GameManager.Instance.Level].NextAirportName);
+                UIManager.Instance.PreLevelIconImage.ChangeTitleIconImage(Resources.Load<Sprite>("Graphics/UI/SteampunkGUI/png/custom/Lightning"));
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Saves the score to prescore and saves the inventory in GM.
+    /// Prevents score farming
+    /// </summary>
+    public void TakeoffFinalizer()
+    {
+        GameManager.Instance.PreScore = GameManager.Instance.Score;
+    }
+
+    /// <summary>
+    /// Saves the players progress if returning to main menu
+    /// </summary>
+    public void MainMenuButton()
+    {
+        GameManager.Instance.PreScore = GameManager.Instance.Score;
+        GameManager.Instance.PlayerInventory.SaveInventory();
+        GameManager.Instance.SaveGameData();
     }
 }

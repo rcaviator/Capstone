@@ -283,6 +283,13 @@ MonoBehaviour:
   buttonSound: 0
   goToScene: 0
   preLevelMenuToGoTo: 3
+  apBulletButton: 0
+  aircraftHullButton: 0
+  shieldButton: 0
+  clusterBombButton: 0
+  seekerMissilesButton: 0
+  flightEngineerButton: 0
+  repairPackButton: 0
 --- !u!114 &114208621223801422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -539,6 +546,13 @@ MonoBehaviour:
   buttonSound: 0
   goToScene: 2
   preLevelMenuToGoTo: 0
+  apBulletButton: 0
+  aircraftHullButton: 0
+  shieldButton: 0
+  clusterBombButton: 0
+  seekerMissilesButton: 0
+  flightEngineerButton: 0
+  repairPackButton: 0
 --- !u!114 &114496199917503252
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -580,6 +594,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 114438595445853980}
         m_MethodName: OnChangeSceneClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: MainMenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -690,6 +715,13 @@ MonoBehaviour:
   buttonSound: 0
   goToScene: 0
   preLevelMenuToGoTo: 1
+  apBulletButton: 0
+  aircraftHullButton: 0
+  shieldButton: 0
+  clusterBombButton: 0
+  seekerMissilesButton: 0
+  flightEngineerButton: 0
+  repairPackButton: 0
 --- !u!114 &114852590132453234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -758,6 +790,13 @@ MonoBehaviour:
   buttonSound: 0
   goToScene: 0
   preLevelMenuToGoTo: 2
+  apBulletButton: 0
+  aircraftHullButton: 0
+  shieldButton: 0
+  clusterBombButton: 0
+  seekerMissilesButton: 0
+  flightEngineerButton: 0
+  repairPackButton: 0
 --- !u!222 &222136280797232586
 CanvasRenderer:
   m_ObjectHideFlags: 1

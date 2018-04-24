@@ -9,10 +9,29 @@ public class MainMenuButtonScript : ButtonScript
     [SerializeField]
     MainMenus mainMenuToGoTo;
 
+    //check if this button is either continue or level editor
+    [SerializeField]
+    bool continueButton;
+    [SerializeField]
+    bool levelEditorButton;
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-		
+        if (continueButton)
+        {
+            if (GameManager.Instance.PlayerInventory.IsEmpty())
+            {
+                GetComponent<Button>().interactable = false;
+            }
+        }
+        else if (levelEditorButton)
+        {
+            if (!GameManager.Instance.FinishedGame)
+            {
+                GetComponent<Button>().interactable = false;
+            }
+        }
 	}
 
     // Update is called once per frame
