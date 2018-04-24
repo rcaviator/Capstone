@@ -229,7 +229,13 @@ public static class Constants
     public const float ENEMY_ZEPPLIN_COLLISION_DAMAGE = 20f;
 
     //mothership
-    public const float ENEMY_MOTHERSHIP_HEALTH = 20000f;
+    public const float ENEMY_MOTHERSHIP_HEALTH = 2500f;
+    public const float ENEMY_MOTHERSHIP_HORIZONTAL_ACCERATION = 5f;
+    public const float ENEMY_MOTHERSHIP_MAX_HORIZONTAL_SPEED = CAMERA_SPEED;
+    public const float ENEMY_MOTHERSHIP_SPAWN_ZEPPLIN_TIMER = 5f;
+    public const float ENEMY_MOTHERSHIP_SLOW_MISSILE_COOLDOWN_TIMER = 3f;
+    public const float ENEMY_MOTHERSHIP_FAST_MISSILE_COOLDOWN_TIMER = 2f;
+    public const float ENEMY_MOTHERSHIP_HEAVY_SHELL_COOLDOWN_TIMER = 2f;
 
     //bomber
     public const float ENEMY_BOMBER_HEALTH = 70f;

@@ -11,6 +11,7 @@ public class LevelCompleteControllerScript : MonoBehaviour
     {
         //player won level, update prescore
         GameManager.Instance.PreScore = GameManager.Instance.Score;
+        GameManager.Instance.Level++;
 	}
 
     public void MainMenuButton()

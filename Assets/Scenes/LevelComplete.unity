@@ -319,7 +319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonSound: 0
-  goToScene: 0
+  goToScene: 4
 --- !u!114 &421978822
 MonoBehaviour:
   m_ObjectHideFlags: 0

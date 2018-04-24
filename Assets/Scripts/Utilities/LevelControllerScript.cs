@@ -195,6 +195,12 @@ public class LevelControllerScript : MonoBehaviour
                         case Constants.ObjectIDs.WeatherHazard1:
                             spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1"), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
+                        case Constants.ObjectIDs.WeatherHazard2:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard2"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.WeatherHazard3:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard3"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
 
                         //environment - other
                         case Constants.ObjectIDs.Bird:

@@ -49,6 +49,8 @@ public class CustomGrid : MonoBehaviour
 
             //environment - weather
             { "WeatherHazard1(Clone)", Constants.ObjectIDs.WeatherHazard1 },
+            { "WeatherHazard2(Clone)", Constants.ObjectIDs.WeatherHazard2 },
+            { "WeatherHazard3(Clone)", Constants.ObjectIDs.WeatherHazard3 },
 
             //environment - other
             { "Bird(Clone)", Constants.ObjectIDs.Bird },
@@ -589,6 +591,12 @@ public class CustomGrid : MonoBehaviour
                             //environment - weather
                             case Constants.ObjectIDs.WeatherHazard1:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1");
+                                break;
+                            case Constants.ObjectIDs.WeatherHazard2:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard2");
+                                break;
+                            case Constants.ObjectIDs.WeatherHazard3:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard3");
                                 break;
 
                             //environment - other

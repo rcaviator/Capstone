@@ -103,6 +103,8 @@ class GameManager
             PlayerInventory.AddItem(ItemType.RepairPack, 1);
             PlayerInventory.AddItem(ItemType.FlightEngineer, 1);
 
+            Level = 4;
+
             Score = 1000;
 
             FinishedGame = true;
@@ -241,6 +243,12 @@ class GameManager
     /// Used for setting the player's health including hull bonuses
     /// </summary>
     public float PlayerHealth
+    { get; set; }
+
+    /// <summary>
+    /// Used for getting the boss
+    /// </summary>
+    public MotherShipScript Boss
     { get; set; }
 
     /// <summary>
