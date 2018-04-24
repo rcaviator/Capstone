@@ -11,11 +11,12 @@ public class ScoreTextScript : MonoBehaviour
 	void Start ()
     {
         scoreText = GetComponent<Text>();
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        scoreText.text = "Score: " + GameManager.Instance.Score.ToString();
+    }
+
+
+    private void Update()
     {
         scoreText.text = "Score: " + GameManager.Instance.Score.ToString();
-	}
+    }
 }

@@ -11,26 +11,18 @@ public class EndLevelTriggerScript : MonoBehaviour
     {
         GameManager.Instance.EndTrigger = this;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //set player mode and remove applicable objects
-
-        if (collision.tag == "Player")
+        if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             if (firstPlayerEnter)
             {
                 firstPlayerEnter = false;
-                //Destroy(GameManager.Instance.Reticle.gameObject);
-                //MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
-                //GameManager.Instance.Player.State = PlayerScript.PlayerState.AutoPilotLanding;
                 GameManager.Instance.Player.PrepareForLanding();
+                UIManager.Instance.StatusPanel.EnableAndSetStatus(Constants.STATUS_LEVEL_FINISHED_MESSAGE);
             }
         }
     }

@@ -12,11 +12,6 @@ public class LevelControllerScript : MonoBehaviour
         //initialize level generation
         //get level info
         int currentLevel = GameManager.Instance.Level;
-        //testing purposes
-        currentLevel = 1;
-        //GameManager.Instance.ErrorMessage = "Error in loading module first module. Reinstall the game or contact the developer to fix this.";
-        //MySceneManager.Instance.ChangeScene(Scenes.MainMenu);
-        //return;
 
         //game object to hold module objects and positioning
         GameObject moduleParent;
@@ -199,6 +194,12 @@ public class LevelControllerScript : MonoBehaviour
                         //environment - weather
                         case Constants.ObjectIDs.WeatherHazard1:
                             spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.WeatherHazard2:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard2"), new Vector3(x, y, 0f), Quaternion.identity);
+                            break;
+                        case Constants.ObjectIDs.WeatherHazard3:
+                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard3"), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         //environment - other

@@ -9,10 +9,29 @@ public class MainMenuButtonScript : ButtonScript
     [SerializeField]
     MainMenus mainMenuToGoTo;
 
+    //check if this button is either continue or level editor
+    [SerializeField]
+    bool continueButton;
+    [SerializeField]
+    bool levelEditorButton;
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-		
+        if (continueButton)
+        {
+            if (GameManager.Instance.PlayerInventory.IsEmpty())
+            {
+                GetComponent<Button>().interactable = false;
+            }
+        }
+        else if (levelEditorButton)
+        {
+            if (!GameManager.Instance.FinishedGame)
+            {
+                GetComponent<Button>().interactable = false;
+            }
+        }
 	}
 
     // Update is called once per frame
@@ -27,5 +46,21 @@ public class MainMenuButtonScript : ButtonScript
     public void OnMainMenuChange()
     {
         UIManager.Instance.MainMenuControl.ChangeMenu(mainMenuToGoTo);
+    }
+
+    /// <summary>
+    /// Used on New Game button
+    /// </summary>
+    public void CheckNewGame()
+    {
+        if (GameManager.Instance.Level > Constants.GAME_DEFAULT_LEVEL)
+        {
+            GameObject prompt = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Main menu/NewGameCanvas"), Vector3.zero, Quaternion.identity);
+            prompt.GetComponent<Canvas>().worldCamera = Camera.main;
+        }
+        else
+        {
+            MySceneManager.Instance.ChangeScene(Scenes.Tutorial);
+        }
     }
 }

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class PlayerBasicBulletScript : ProjectilesScript
 {
-    //float bulletLifetime = 0;
-    //float startTime = 0;
-
-
     // Use this for initialization
     protected override void Awake ()
     {
@@ -22,19 +18,17 @@ public class PlayerBasicBulletScript : ProjectilesScript
     /// <param name="bulletVelocity">the velocity vector</param>
     public void InitializePlayerBasicProjectile(Vector2 bulletVelocity)
     {
-        ////create new vectory with velocity to the mouse plus camera velocity
-        //Vector2 velocity = GameManager.Instance.Reticle.transform.position - transform.position;
-        //velocity.Normalize();
-        //velocity *= Constants.PLAYER_BASIC_BULLET_ATTACK_LIFETIME;
+        //prep vector
         bulletVelocity.Normalize();
         bulletVelocity *= Constants.PLAYER_BASIC_BULLET_SPEED;
 
-        Initialize(bulletVelocity, Constants.PLAYER_BASIC_BULLET_ATTACK_LIFETIME);
+        //initialize the bullet info for the parent
+        Initialize(bulletVelocity, Constants.PLAYER_BASIC_BULLET_LIFETIME);
 
+        //set sprite rotation
         float angle = Mathf.Atan2(bulletVelocity.y, bulletVelocity.x) * Mathf.Rad2Deg;
         Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = q;
-        //AudioManager.Instance.PlayGamePlaySoundEffect(GamePlaySoundEffect.EnemyProjectile);
     }
 
     // Update is called once per frame
@@ -79,7 +73,14 @@ public class PlayerBasicBulletScript : ProjectilesScript
                 break;
         }
 
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bomber])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Jeep])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.MotherShip])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Soldier])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Tank])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Zepplin])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyFastRocket])
+            || collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
         {
             if (collision.gameObject.GetComponent<Rigidbody2D>() != null)
             {
@@ -101,6 +102,10 @@ public class PlayerBasicBulletScript : ProjectilesScript
 
             Destroy(gameObject);
         }
-        
+
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bird]))
+        {
+            Destroy(gameObject);
+        }
     }
 }

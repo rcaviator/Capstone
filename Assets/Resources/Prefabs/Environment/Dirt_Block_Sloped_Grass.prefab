@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212602936053835878}
   - component: {fileID: 60437326264000362}
   - component: {fileID: 50203538440690164}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Dirt_Block_Sloped_Grass
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

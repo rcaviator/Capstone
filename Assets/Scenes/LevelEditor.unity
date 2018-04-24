@@ -1960,7 +1960,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &338305488
 MonoBehaviour:
@@ -1983,7 +1983,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 01e733c242d48e44ab2a2b231f2c3658, type: 3}
-    m_FontSize: 75
+    m_FontSize: 65
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 5
@@ -1992,9 +1992,9 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Module Saved!
+  m_Text: Message
 --- !u!222 &338305489
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7782,6 +7782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15c04a21057b9f4e96f7a67dd1f34a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notificationText: {fileID: 338305488}
 --- !u!65 &1840547521
 BoxCollider:
   m_ObjectHideFlags: 0

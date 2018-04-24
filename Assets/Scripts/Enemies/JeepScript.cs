@@ -76,15 +76,41 @@ public class JeepScript : PauseableObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //kill self and damage player if player crashed into jeep
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
             Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         //else take damage from player bullet
-        else if (collision.gameObject.tag == "PlayerBullet")
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
         {
             health -= Constants.PLAYER_BASIC_BULLET_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerAdvancedBullet]))
+        {
+            health -= Constants.PLAYER_ADVANCED_BULLET_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.ClusterBomb]))
+        {
+            health -= Constants.CLUSTER_BOMB_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyBeam]))
+        {
+            health -= Constants.ENERGY_BEAM_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            GameManager.Instance.Score += Constants.ENEMY_JEEP_SCORE;
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))
+        {
+            health -= Constants.SEEKER_MISSILES_DAMAGE;
             flashHealthBar = true;
         }
     }

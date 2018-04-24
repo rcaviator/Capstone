@@ -12,6 +12,24 @@ TagManager:
   - EnemyBullet
   - WeatherHazard
   - Environment
+  - Bomber
+  - Jeep
+  - MotherShip
+  - Soldier
+  - Tank
+  - Zepplin
+  - EnemyFastRocket
+  - EnemySlowRocket
+  - Bird
+  - HeavyProjectileShell
+  - WeatherHazard2
+  - WeatherHazard3
+  - ClusterBomb
+  - EnergyBeam
+  - EnergyShield
+  - SeekerMissile
+  - Decoy
+  - PlayerAdvancedBullet
   layers:
   - Default
   - TransparentFX

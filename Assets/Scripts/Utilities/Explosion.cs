@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Explosion : PauseableObject
 {
-    //float lifeTimer = 0f;
-    //Animator anim;
-
 	// Use this for initialization
 	protected override void Awake ()
     {
         base.Awake();
-        //anim = GetComponent<Animator>();
 
+        //play a random sound effect
         int rand = Random.Range(0, 5);
         switch (rand)
         {
@@ -42,9 +39,13 @@ public class Explosion : PauseableObject
 	// Update is called once per frame
 	void Update ()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+        if (!GameManager.Instance.Paused)
         {
-            Destroy(gameObject);
+            //destroy self after animation ends
+            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
+            {
+                Destroy(gameObject);
+            }
         }
 	}
 }

@@ -39,7 +39,7 @@ public class ProjectilesScript : PauseableObject
         //put collision logic on each bullet
 
         //all bullets will die on ground collision
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
         {
             //Instantiate(explosion, transform.position, Quaternion.identity);
             int rand = Random.Range(0, 2);

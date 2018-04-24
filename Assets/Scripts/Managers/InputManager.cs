@@ -17,6 +17,9 @@ public enum PlayerAction
     Interact, PauseGame, ViewInventory,
     MoveHorizontal, MoveVertical,
     FirePrimary, FireSecondary,
+
+    //item functions
+    Button1, Button2, Button3, Button4, Button5,
 }
 
 /// <summary>
@@ -60,48 +63,48 @@ class InputManager
     private InputManager()
     {
         //xbox controller input
-        if (Input.GetJoystickNames().Length > 0)
-        {
-            Debug.Log(Input.GetJoystickNames()[0]);
+        //if (Input.GetJoystickNames().Length > 0)
+        //{
+        //    Debug.Log(Input.GetJoystickNames()[0]);
 
-            ControllerConnected = true;
+        //    ControllerConnected = true;
 
-            //initialize xbox dictionary
-            xboxController = new Dictionary<PlayerAction, CustomInput>()
-            {
-                //leave PlayerAction.None out
-                //{ PlayerAction.PauseGame, new CustomInput("Xbox_Start_Button", InputType.Button) },
-                //{ PlayerAction.ViewInventory, new CustomInput("Xbox_B_Button", InputType.Button) },
-                //{ PlayerAction.MoveHorizontal, new CustomInput("Xbox_Left_Joystick_Horizontal", InputType.Axis) },
-                //{ PlayerAction.MoveVertical, new CustomInput("Xbox_Left_Joystick_Vertical", InputType.Axis) },
-                //{ PlayerAction.Jump, new CustomInput("Xbox_A_Button", InputType.Button) },
-                //{ PlayerAction.Interact, new CustomInput("Xbox_X_Button", InputType.Button) },
-                //{ PlayerAction.FirePrimary, new CustomInput("Xbox_Right_Trigger", InputType.Axis) },
-                //{ PlayerAction.FireSecondary, new CustomInput("Xbox_Left_Trigger", InputType.Axis) },
-            };
+        //    //initialize xbox dictionary
+        //    xboxController = new Dictionary<PlayerAction, CustomInput>()
+        //    {
+        //        //leave PlayerAction.None out
+        //        //{ PlayerAction.PauseGame, new CustomInput("Xbox_Start_Button", InputType.Button) },
+        //        //{ PlayerAction.ViewInventory, new CustomInput("Xbox_B_Button", InputType.Button) },
+        //        //{ PlayerAction.MoveHorizontal, new CustomInput("Xbox_Left_Joystick_Horizontal", InputType.Axis) },
+        //        //{ PlayerAction.MoveVertical, new CustomInput("Xbox_Left_Joystick_Vertical", InputType.Axis) },
+        //        //{ PlayerAction.Jump, new CustomInput("Xbox_A_Button", InputType.Button) },
+        //        //{ PlayerAction.Interact, new CustomInput("Xbox_X_Button", InputType.Button) },
+        //        //{ PlayerAction.FirePrimary, new CustomInput("Xbox_Right_Trigger", InputType.Axis) },
+        //        //{ PlayerAction.FireSecondary, new CustomInput("Xbox_Left_Trigger", InputType.Axis) },
+        //    };
 
-            //set xbox to current settings
-            currentSettings = xboxController;
+        //    //set xbox to current settings
+        //    currentSettings = xboxController;
 
-            //setup xbox key string dictionary
-            xboxKeyStrings = new Dictionary<PlayerAction, string>()
-            {
-                //leave PlayerAction.None out
-                //{ PlayerAction.PauseGame, "Start Button" },
-                //{ PlayerAction.ViewInventory, "B Button" },
-                //{ PlayerAction.MoveHorizontal, "Left Joystick Horizontal" },
-                //{ PlayerAction.MoveVertical, "Left Joystick Vertical" },
-                //{ PlayerAction.Jump, "A Button" },
-                //{ PlayerAction.Interact, "X Button" },
-                //{ PlayerAction.FirePrimary, "Right Trigger" },
-                //{ PlayerAction.FireSecondary, "Left Trigger" },
-            };
+        //    //setup xbox key string dictionary
+        //    xboxKeyStrings = new Dictionary<PlayerAction, string>()
+        //    {
+        //        //leave PlayerAction.None out
+        //        //{ PlayerAction.PauseGame, "Start Button" },
+        //        //{ PlayerAction.ViewInventory, "B Button" },
+        //        //{ PlayerAction.MoveHorizontal, "Left Joystick Horizontal" },
+        //        //{ PlayerAction.MoveVertical, "Left Joystick Vertical" },
+        //        //{ PlayerAction.Jump, "A Button" },
+        //        //{ PlayerAction.Interact, "X Button" },
+        //        //{ PlayerAction.FirePrimary, "Right Trigger" },
+        //        //{ PlayerAction.FireSecondary, "Left Trigger" },
+        //    };
 
-            //set xbox keys to current keys
-            currentKeyStrings = xboxKeyStrings;
-        }
+        //    //set xbox keys to current keys
+        //    currentKeyStrings = xboxKeyStrings;
+        //}
         //keyboard input
-        else
+        //else
         {
             //keyboard and mouse
             wasdSettings = new Dictionary<PlayerAction, CustomInput>()
@@ -115,6 +118,13 @@ class InputManager
                 { PlayerAction.Interact, new CustomInput(KeyCode.E) },
                 { PlayerAction.FirePrimary, new CustomInput("0", InputType.MouseButton) },
                 { PlayerAction.FireSecondary, new CustomInput("1", InputType.MouseButton) },
+
+                //item functions
+                { PlayerAction.Button1, new CustomInput(KeyCode.Alpha1) },
+                { PlayerAction.Button2, new CustomInput(KeyCode.Alpha2) },
+                { PlayerAction.Button3, new CustomInput(KeyCode.Alpha3) },
+                { PlayerAction.Button4, new CustomInput(KeyCode.Alpha4) },
+                { PlayerAction.Button5, new CustomInput(KeyCode.Alpha5) },
             };
 
             ijklSettings = new Dictionary<PlayerAction, CustomInput>()

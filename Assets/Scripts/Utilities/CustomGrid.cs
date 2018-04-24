@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-//using System.IO.Directory;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -16,6 +15,9 @@ public class CustomGrid : MonoBehaviour
 
     //list for game objects
     List<GameObject> gameObjects = new List<GameObject>();
+
+    //list for game objects to capacity
+    //List<GameObject> capGameObjects = new List<GameObject>();
 
     private void Awake()
     {
@@ -47,6 +49,8 @@ public class CustomGrid : MonoBehaviour
 
             //environment - weather
             { "WeatherHazard1(Clone)", Constants.ObjectIDs.WeatherHazard1 },
+            { "WeatherHazard2(Clone)", Constants.ObjectIDs.WeatherHazard2 },
+            { "WeatherHazard3(Clone)", Constants.ObjectIDs.WeatherHazard3 },
 
             //environment - other
             { "Bird(Clone)", Constants.ObjectIDs.Bird },
@@ -377,10 +381,6 @@ public class CustomGrid : MonoBehaviour
             gameObjects.Remove(GridPoints[x, y].CellObject);
             GridPoints[x, y].CellObject = null;
         }
-        //else
-        //{
-        //    Debug.Log("RemoveGameObjectInGrid: Target cell is already empty at " + GridPoints[index].GridLocation);
-        //}
     }
 
     /// <summary>
@@ -435,6 +435,14 @@ public class CustomGrid : MonoBehaviour
         //set file path
         string file = Application.dataPath + "/Modules" + "/Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
 
+        //check if the grid is not empty
+        if (gameObjects.Count <= 0)
+        {
+            //send error message to user and abort saving
+            UIManager.Instance.SaveNotification.ShowErrorNotification();
+            return;
+        }
+
         //override the file
         if (File.Exists(file))
         {
@@ -474,6 +482,9 @@ public class CustomGrid : MonoBehaviour
                 }
             }
         }
+
+        //show saved notification
+        UIManager.Instance.SaveNotification.ShowNotification();
     }
 
 
@@ -580,6 +591,12 @@ public class CustomGrid : MonoBehaviour
                             //environment - weather
                             case Constants.ObjectIDs.WeatherHazard1:
                                 GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1");
+                                break;
+                            case Constants.ObjectIDs.WeatherHazard2:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard2");
+                                break;
+                            case Constants.ObjectIDs.WeatherHazard3:
+                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard3");
                                 break;
 
                             //environment - other
