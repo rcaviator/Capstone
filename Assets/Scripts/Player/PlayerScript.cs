@@ -271,10 +271,10 @@ public class PlayerScript : PauseableObject
             }
 
             //kill player if 0 or less
-            if (Health <= 0f)
-            {
-                MySceneManager.Instance.ChangeScene(Scenes.Defeat);
-            }
+            //if (Health <= 0f)
+            //{
+            //    MySceneManager.Instance.ChangeScene(Scenes.Defeat);
+            //}
 
             #endregion
 
@@ -461,7 +461,9 @@ public class PlayerScript : PauseableObject
                     break;
 
                 case PlayerState.Mayday:
-
+                    //make the player fall out of the sky
+                    currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed - Constants.PLAYER_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.PLAYER_MAX_VERTICAL_SPEED, Constants.PLAYER_MAX_VERTICAL_SPEED);
+                    rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
                     break;
 
                 default:
@@ -575,6 +577,27 @@ public class PlayerScript : PauseableObject
             else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
             {
                 AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
+                //MySceneManager.Instance.ChangeScene(Scenes.Defeat);
+                Health = 0f;
+            }
+
+            //set last collision object incase of death in next update
+            int index = collision.gameObject.name.IndexOf("(Clone)");
+            GameManager.Instance.DeathObjectName = (index < 0) ? collision.gameObject.name : collision.gameObject.name.Remove(index, "(Clone)".Length);
+            GameManager.Instance.DeathObjectSprite = collision.gameObject.GetComponent<SpriteRenderer>().sprite;
+            //Debug.Log(GameManager.Instance.DeathObjectName);
+
+            if (Health <= 0 && GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.RepairPack) <= 0)
+            {
+                anim.Play("BiPlane_Flip");
+                State = PlayerState.Mayday;
+            }
+        }
+        //handle changing scenes on mayday state
+        else if (State == PlayerState.Mayday)
+        {
+            if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
+            {
                 MySceneManager.Instance.ChangeScene(Scenes.Defeat);
             }
         }

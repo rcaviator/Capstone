@@ -87,7 +87,7 @@ public static class Constants
     #region Game Constants
 
     //global
-    public const bool IS_DEVELOPER_BUILD = true;
+    public const bool IS_DEVELOPER_BUILD = false;
 
     //scenes
     public const string SCENE_NAME_LEVELEDITOR = "LevelEditor";
@@ -159,7 +159,7 @@ public static class Constants
     #region Player Constants
 
     //player
-    public const float PLAYER_STARTING_HEALTH = 100f;
+    public const float PLAYER_STARTING_HEALTH = 200f;//200f;
     public const float PLAYER_SCREEN_MOVEMENT_SPEED = 50f;
     public const float PLAYER_HORIZONTAL_ACCELERATION = 20f;
     public const float PLAYER_MAX_HORIZONTAL_SPEED = 100f;
@@ -229,7 +229,7 @@ public static class Constants
     public const float ENEMY_ZEPPLIN_COLLISION_DAMAGE = 20f;
 
     //mothership
-    public const float ENEMY_MOTHERSHIP_HEALTH = 2500f;
+    public const float ENEMY_MOTHERSHIP_HEALTH = 3500f;
     public const float ENEMY_MOTHERSHIP_HORIZONTAL_ACCERATION = 5f;
     public const float ENEMY_MOTHERSHIP_MAX_HORIZONTAL_SPEED = CAMERA_SPEED;
     public const float ENEMY_MOTHERSHIP_SPAWN_ZEPPLIN_TIMER = 5f;
@@ -314,12 +314,14 @@ public static class Constants
 
 
     //repair pack
-    public const int REPAIR_PACK_COST = 25;
+    public const int REPAIR_PACK_COST = 50;
     public const float REPAIR_PACK_REPAIR_AMOUNT = 75f;
+    public const int REPAIR_PACK_CAP = 3;
 
     //aircraft hull
-    public const int AIRCRAFT_HULL_COST = 50;
-    public const float AIRCRAFT_HULL_BONUS = 25f;
+    public const int AIRCRAFT_HULL_BONUS_COST = 50;
+    public const float AIRCRAFT_HULL_BONUS = 50f;
+    public const int AIRCRAFT_HULL_BONUS_CAP = 4;
 
     //flight engineer
     public const int FLIGHT_ENGINEER_COST = 100;

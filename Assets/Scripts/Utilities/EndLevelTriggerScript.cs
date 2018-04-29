@@ -20,9 +20,13 @@ public class EndLevelTriggerScript : MonoBehaviour
         {
             if (firstPlayerEnter)
             {
-                firstPlayerEnter = false;
-                GameManager.Instance.Player.PrepareForLanding();
-                UIManager.Instance.StatusPanel.EnableAndSetStatus(Constants.STATUS_LEVEL_FINISHED_MESSAGE);
+                //check if the player did not just fly defeated into the finish line
+                if (GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
+                {
+                    firstPlayerEnter = false;
+                    GameManager.Instance.Player.PrepareForLanding();
+                    UIManager.Instance.StatusPanel.EnableAndSetStatus(Constants.STATUS_LEVEL_FINISHED_MESSAGE);
+                }
             }
         }
     }

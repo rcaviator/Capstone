@@ -109,7 +109,7 @@ class GameManager
 
             FinishedGame = true;
         }
-
+        //Level = 2;
         //set player health
         PlayerHealth = Constants.PLAYER_STARTING_HEALTH;
         for (int i = 0; i < PlayerInventory.ViewItemCount(ItemType.AircraftHull); i++)
@@ -158,6 +158,18 @@ class GameManager
     /// The accessor for the player
     /// </summary>
     public PlayerScript Player
+    { get; set; }
+
+    /// <summary>
+    /// Used as the name for what object killed the player
+    /// </summary>
+    public string DeathObjectName
+    { get; set; }
+
+    /// <summary>
+    /// Used as the image for what object killed the player
+    /// </summary>
+    public Sprite DeathObjectSprite
     { get; set; }
 
     /// <summary>
