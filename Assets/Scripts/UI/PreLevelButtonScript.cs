@@ -54,7 +54,16 @@ public class PreLevelButtonScript : ButtonScript
         }
         else if (aircraftHullButton)
         {
-            descriptionText.text = "Hull Upgrade: Increases max Hull Points!\nCost: " + Constants.AIRCRAFT_HULL_COST;
+            //disable button if at cap
+            if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.AircraftHull) >= Constants.AIRCRAFT_HULL_BONUS_CAP)
+            {
+                button.interactable = false;
+                descriptionText.text = "At Maximum Bonus Health Cap!";
+            }
+            else
+            {
+                descriptionText.text = "Hull Upgrade: Increases max Hull Points!\nCost: " + Constants.AIRCRAFT_HULL_BONUS_COST;
+            }
         }
         else if (shieldButton)
         {
@@ -83,7 +92,16 @@ public class PreLevelButtonScript : ButtonScript
         }
         else if (repairPackButton)
         {
-            descriptionText.text = "Instantly repairs your plane at low health!\nCost: " + Constants.REPAIR_PACK_COST;
+            //disable button if at cap
+            if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.RepairPack) >= Constants.REPAIR_PACK_CAP)
+            {
+                button.interactable = false;
+                descriptionText.text = "At Maximum Repair Pack Cap!";
+            }
+            else
+            {
+                descriptionText.text = "Instantly repairs your plane at low health!\nCost: " + Constants.REPAIR_PACK_COST;
+            }
         }
 	}
 	
@@ -98,6 +116,7 @@ public class PreLevelButtonScript : ButtonScript
 
     public void OnPreLevelMenuChange()
     {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
         UIManager.Instance.PreLevelMenuControl.ChangeMenu(preLevelMenuToGoTo);
     }
 
@@ -117,11 +136,18 @@ public class PreLevelButtonScript : ButtonScript
         }
         else if (aircraftHullButton)
         {
-            if (GameManager.Instance.Score >= Constants.AIRCRAFT_HULL_COST)
+            if (GameManager.Instance.Score >= Constants.AIRCRAFT_HULL_BONUS_COST)
             {
                 GameManager.Instance.PlayerInventory.AddItem(ItemType.AircraftHull, 1);
-                GameManager.Instance.Score -= Constants.AIRCRAFT_HULL_COST;
+                GameManager.Instance.Score -= Constants.AIRCRAFT_HULL_BONUS_COST;
                 UIManager.Instance.PreLevelMoneyText.SetMoneyText();
+
+                //disable button if at cap
+                if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.AircraftHull) >= Constants.AIRCRAFT_HULL_BONUS_CAP)
+                {
+                    button.interactable = false;
+                    descriptionText.text = "At Maximum Bonus Health Cap!";
+                }
             }
         }
         else if (shieldButton)
@@ -170,12 +196,22 @@ public class PreLevelButtonScript : ButtonScript
                 GameManager.Instance.Score -= Constants.REPAIR_PACK_COST;
                 UIManager.Instance.PreLevelMoneyText.SetMoneyText();
             }
+
+            //disable button if at cap
+            if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.RepairPack) >= Constants.REPAIR_PACK_CAP)
+            {
+                button.interactable = false;
+                descriptionText.text = "At Maximum Repair Pack Cap!";
+            }
         }
+
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
     }
 
 
     public void TakeoffFinallizer()
     {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
         UIManager.Instance.PreLevelMenuControl.TakeoffFinalizer();
     }
 }

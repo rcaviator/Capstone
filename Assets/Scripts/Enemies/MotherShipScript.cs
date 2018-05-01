@@ -186,6 +186,8 @@ public class MotherShipScript : PauseableObject
         //boss hit target before player could destroy it, lose game
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LevelEnd]))
         {
+            GameManager.Instance.DeathObjectName = "The empire's superweapon reaching the capital!";
+            GameManager.Instance.DeathObjectSprite = GetComponent<SpriteRenderer>().sprite;
             MySceneManager.Instance.ChangeScene(Scenes.Defeat);
         }
 

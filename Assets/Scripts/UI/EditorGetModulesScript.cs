@@ -49,7 +49,7 @@ public class EditorGetModulesScript : MonoBehaviour
             {
                 if (!showHiddenModules)
                 {
-                    Debug.Log("found hidden module");
+                    //Debug.Log("found hidden module");
                     continue;
                 }
             }

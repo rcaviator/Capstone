@@ -20,16 +20,13 @@ public class TankScript : PauseableObject
     //projectile timer
     float heavyTimer = Constants.HEAVY_PROJECTILE_SHELL_COOLDOWN_TIMER;
 
+    //gravity toggle
+    bool hitGround = false;
+
     // Use this for initialization
     protected override void Awake()
     {
         base.Awake();
-
-        //check scene and stop gravity
-        if (MySceneManager.Instance.CurrentScene == Scenes.LevelEditor)
-        {
-            rBody.gravityScale = 0f;
-        }
 
         //resets camera for canvas component
         transform.GetChild(0).GetComponent<Canvas>().worldCamera = Camera.main;
@@ -45,6 +42,19 @@ public class TankScript : PauseableObject
         //process if not paused
         if (!GameManager.Instance.Paused)
         {
+            //place the object on the ground in the game scene
+            if (MySceneManager.Instance.CurrentScene == Scenes.GameLevel)
+            {
+                if (!hitGround)
+                {
+                    rBody.velocity = new Vector2(0, Physics2D.gravity.y);
+                }
+                else
+                {
+                    rBody.velocity = Vector2.zero;
+                }
+            }
+
             //update health bar
             healthBar.fillAmount = health / Constants.ENEMY_TANK_HEALTH;
 
@@ -75,6 +85,12 @@ public class TankScript : PauseableObject
         }
     }
 
+
+    public void ModifyHealth(float amount)
+    {
+        health -= amount;
+        //flashHealthBar = true;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -116,6 +132,16 @@ public class TankScript : PauseableObject
         {
             health -= Constants.SEEKER_MISSILES_DAMAGE;
             flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
+        {
+            health -= Constants.WEATHER_HAZARD_2_LIGHTING_DAMAGE;
+            flashHealthBar = true;
+        }
+        //setup on ground
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
+        {
+            hitGround = true;
         }
     }
 

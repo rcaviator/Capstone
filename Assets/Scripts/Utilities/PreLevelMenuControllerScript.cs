@@ -107,11 +107,13 @@ public class PreLevelMenuControllerScript : MonoBehaviour
 
     /// <summary>
     /// Saves the score to prescore and saves the inventory in GM.
-    /// Prevents score farming
+    /// Prevents score farming.
+    /// Saves the inventory dictionary for if level fails.
     /// </summary>
     public void TakeoffFinalizer()
     {
         GameManager.Instance.PreScore = GameManager.Instance.Score;
+        GameManager.Instance.PlayerInventory.SetFallBackInventory();
     }
 
     /// <summary>

@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 3
   goToScene: 0
 --- !u!114 &114669929858666536
 MonoBehaviour:

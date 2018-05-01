@@ -178,6 +178,12 @@ class UIManager
     { get; set; }
 
     /// <summary>
+    /// Used for button referencing in the tutorial menu
+    /// </summary>
+    public TutorialCanvasScript Tutorial
+    { get; set; }
+
+    /// <summary>
     /// Gets the current menu set in use
     /// </summary>
     public MenuSet CurrentMenuSet

@@ -44,6 +44,9 @@ public class BomberScript : PauseableObject
     GameObject childCanvas;
     Quaternion childQuaternion;
 
+    //boolean for mayday after defeated
+    bool maydayState = false;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -100,32 +103,41 @@ public class BomberScript : PauseableObject
         //process if not paused
         if (!GameManager.Instance.Paused)
         {
-            //update health bar
-            healthBar.fillAmount = health / Constants.ENEMY_BOMBER_HEALTH;
-
-            //flash health bar if damaged
-            if (flashHealthBar)
+            //check if the bomber is alive
+            if (!maydayState)
             {
-                healthBarFlash += Time.deltaTime;
+                //update health bar
+                healthBar.fillAmount = health / Constants.ENEMY_BOMBER_HEALTH;
 
-                if (healthBarFlash <= maxHealthBarFlash)
+                //flash health bar if damaged
+                if (flashHealthBar)
                 {
-                    healthBar.sprite = damagedHealthBar;
+                    healthBarFlash += Time.deltaTime;
+
+                    if (healthBarFlash <= maxHealthBarFlash)
+                    {
+                        healthBar.sprite = damagedHealthBar;
+                    }
+                    else
+                    {
+                        healthBar.sprite = normalHealthBar;
+                        healthBarFlash = 0f;
+                        flashHealthBar = false;
+                    }
                 }
-                else
+
+                //death from 0 health
+                if (health <= 0f)
                 {
-                    healthBar.sprite = normalHealthBar;
-                    healthBarFlash = 0f;
-                    flashHealthBar = false;
+                    //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+                    GameManager.Instance.Score += Constants.ENEMY_BOMBER_SCORE;
+                    //Destroy(gameObject);
+                    maydayState = true;
                 }
             }
-
-            //death from 0 health
-            if (health <= 0f)
+            else
             {
-                Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
-                GameManager.Instance.Score += Constants.ENEMY_BOMBER_SCORE;
-                Destroy(gameObject);
+                anim.Play("Bomber_Flip");
             }
 
             //pitch control
@@ -149,115 +161,142 @@ public class BomberScript : PauseableObject
         {
             if (chasePlayer)
             {
-                //follow the camera's relative velocity
-                if (GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
+                //check if the bomber is alive
+                if (!maydayState)
                 {
-                    rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
-                }
-                else
-                {
-                    rBody.velocity = new Vector2(currentHorizontalSpeed + Constants.CAMERA_SPEED, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
-                }
-
-                //if the player is out of range horizontally, accelerate to catch up. player must be in manual mode to avoid enemy landings at finish line
-                if ((GameManager.Instance.Player.transform.position.x - transform.position.x > Constants.ENEMY_BOMBER_PLAYER_DISTANCE_THRESHOLD) && GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
-                {
-                    //horizontal
-                    currentHorizontalSpeed = Mathf.Clamp(currentHorizontalSpeed + Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime, -Constants.ENEMY_BOMBER_MAX_HORIZONTAL_SPEED, Constants.ENEMY_BOMBER_MAX_HORIZONTAL_SPEED);
-                    rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
-                }
-                //else stabilize horizontal and follow the player
-                else
-                {
-                    //set horizontal down to 0
-                    //check if its not 0
-                    if (currentHorizontalSpeed != 0f)
+                    //follow the camera's relative velocity
+                    if (GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
                     {
-                        //check if its less than 0
-                        if (currentHorizontalSpeed < 0f)
-                        {
-                            //check if we just need to set it to 0
-                            if (currentHorizontalSpeed > -0.1f)
-                            {
-                                currentHorizontalSpeed = 0f;
-                            }
-                            //add decceleration
-                            else
-                            {
-                                currentHorizontalSpeed += Constants.ENEMY_BOMBER_MAX_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime;
-                            }
-                        }
-                        //check if its greater
-                        else if (currentHorizontalSpeed > 0f)
-                        {
-                            //check if we just need to set it to 0
-                            if (currentHorizontalSpeed < 0.1f)
-                            {
-                                currentHorizontalSpeed = 0f;
-                            }
-                            //add decceleration
-                            else
-                            {
-                                currentHorizontalSpeed -= Constants.ENEMY_BOMBER_MAX_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime;
-                            }
-                        }
-                    }  
-                }
-
-                //get vertical spacing closed
-                //above and decend
-                if ((transform.position.y > GameManager.Instance.Player.transform.position.y && (transform.position.y - GameManager.Instance.Player.transform.position.y > Constants.ENEMY_BOMBER_VERTICAL_SPACING)) && GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
-                {
-                    currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed - Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED, Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED);
-                    rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
-                }
-                //below and climb
-                else if ((transform.position.y < GameManager.Instance.Player.transform.position.y && (GameManager.Instance.Player.transform.position.y - transform.position.y > 3)) && GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
-                {
-                    currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed + Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED, Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED);
-                    rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
-                }
-                //else stabilize vertical
-                else
-                {
-                    //set vertical down to 0
-                    //check if its not 0
-                    if (currentVerticalSpeed != 0f)
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    else
                     {
-                        //check if its less than 0
-                        if (currentVerticalSpeed < 0f)
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + Constants.CAMERA_SPEED, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+
+                    //if the player is out of range horizontally, accelerate to catch up. player must be in manual mode to avoid enemy landings at finish line
+                    if ((GameManager.Instance.Player.transform.position.x - transform.position.x > Constants.ENEMY_BOMBER_PLAYER_DISTANCE_THRESHOLD) && GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
+                    {
+                        //horizontal
+                        currentHorizontalSpeed = Mathf.Clamp(currentHorizontalSpeed + Constants.PLAYER_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime, -Constants.ENEMY_BOMBER_MAX_HORIZONTAL_SPEED, Constants.ENEMY_BOMBER_MAX_HORIZONTAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    //else stabilize horizontal and follow the player
+                    else
+                    {
+                        //set horizontal down to 0
+                        //check if its not 0
+                        if (currentHorizontalSpeed != 0f)
                         {
-                            //check if we just need to set it to 0
-                            if (currentVerticalSpeed > -0.1f)
+                            //check if its less than 0
+                            if (currentHorizontalSpeed < 0f)
                             {
-                                currentVerticalSpeed = 0f;
+                                //check if we just need to set it to 0
+                                if (currentHorizontalSpeed > -0.1f)
+                                {
+                                    currentHorizontalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentHorizontalSpeed += Constants.ENEMY_BOMBER_MAX_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
                             }
-                            //add decceleration
-                            else
+                            //check if its greater
+                            else if (currentHorizontalSpeed > 0f)
                             {
-                                currentVerticalSpeed += Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.fixedDeltaTime;
-                            }
-                        }
-                        //check if its greater
-                        else if (currentVerticalSpeed > 0f)
-                        {
-                            //check if we just need to set it to 0
-                            if (currentVerticalSpeed < 0.1f)
-                            {
-                                currentVerticalSpeed = 0f;
-                            }
-                            //add decceleration
-                            else
-                            {
-                                currentVerticalSpeed -= Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.fixedDeltaTime;
+                                //check if we just need to set it to 0
+                                if (currentHorizontalSpeed < 0.1f)
+                                {
+                                    currentHorizontalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentHorizontalSpeed -= Constants.ENEMY_BOMBER_MAX_HORIZONTAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
                             }
                         }
                     }
+
+                    //get vertical spacing closed
+                    //above and decend
+                    if ((transform.position.y > GameManager.Instance.Player.transform.position.y && (transform.position.y - GameManager.Instance.Player.transform.position.y > Constants.ENEMY_BOMBER_VERTICAL_SPACING)) && GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
+                    {
+                        currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed - Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED, Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    //below and climb
+                    else if ((transform.position.y < GameManager.Instance.Player.transform.position.y && (GameManager.Instance.Player.transform.position.y - transform.position.y > 3)) && GameManager.Instance.Player.State == PlayerScript.PlayerState.Manual)
+                    {
+                        currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed + Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED, Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED);
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
+                    }
+                    //else stabilize vertical
+                    else
+                    {
+                        //set vertical down to 0
+                        //check if its not 0
+                        if (currentVerticalSpeed != 0f)
+                        {
+                            //check if its less than 0
+                            if (currentVerticalSpeed < 0f)
+                            {
+                                //check if we just need to set it to 0
+                                if (currentVerticalSpeed > -0.1f)
+                                {
+                                    currentVerticalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentVerticalSpeed += Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
+                            }
+                            //check if its greater
+                            else if (currentVerticalSpeed > 0f)
+                            {
+                                //check if we just need to set it to 0
+                                if (currentVerticalSpeed < 0.1f)
+                                {
+                                    currentVerticalSpeed = 0f;
+                                }
+                                //add decceleration
+                                else
+                                {
+                                    currentVerticalSpeed -= Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.fixedDeltaTime;
+                                }
+                            }
+                        }
+                    }
+
+                    //downdraft effect
+                    if (Downdraft)
+                    {
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x + Physics2D.gravity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y + (Physics2D.gravity.y / 2));
+                    }
+                }
+                else
+                {
+                    //make the bomber fall out of the sky
+                    currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed - Constants.ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION * Time.deltaTime, -Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED, Constants.ENEMY_BOMBER_MAX_VERTICAL_SPEED);
+                    rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y);
                 }
             }
         }
     }
 
+    /// <summary>
+    /// Used for toggling the downdraft effect
+    /// </summary>
+    public bool Downdraft
+    { get; set; }
+
+    public void ModifyHealth(float amount)
+    {
+        health -= amount;
+        //flashHealthBar = true;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -310,6 +349,11 @@ public class BomberScript : PauseableObject
             Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
+        {
+            health -= Constants.WEATHER_HAZARD_2_LIGHTING_DAMAGE;
+            flashHealthBar = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -328,7 +372,7 @@ public class BomberScript : PauseableObject
     {
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            if (chasePlayer)
+            if (chasePlayer && !maydayState)
             {
                 if (GameManager.Instance.Player.transform.position.x - transform.position.x <= Constants.ENEMY_BOMBER_PLAYER_DISTANCE_THRESHOLD)
                 {

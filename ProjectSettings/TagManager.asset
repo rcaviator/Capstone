@@ -30,6 +30,7 @@ TagManager:
   - SeekerMissile
   - Decoy
   - PlayerAdvancedBullet
+  - LightningBolt
   layers:
   - Default
   - TransparentFX

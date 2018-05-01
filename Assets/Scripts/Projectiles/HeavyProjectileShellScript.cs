@@ -10,9 +10,9 @@ public class HeavyProjectileShellScript : ProjectilesScript
     {
         base.Awake();
 
-        //AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
+        AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.GunFire2);
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+        //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
     }
 
 

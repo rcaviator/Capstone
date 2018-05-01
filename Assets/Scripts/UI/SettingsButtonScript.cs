@@ -37,6 +37,8 @@ public class SettingsButtonScript : ButtonScript
 
         //save the settings
         AudioManager.Instance.SaveAudioSettings();
+
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
     }
 
     /// <summary>
@@ -56,5 +58,7 @@ public class SettingsButtonScript : ButtonScript
 
         //save the settings
         AudioManager.Instance.SaveAudioSettings();
+
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
     }
 }

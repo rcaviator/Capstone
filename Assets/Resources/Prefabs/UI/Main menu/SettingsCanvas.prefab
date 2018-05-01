@@ -493,7 +493,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -595,9 +595,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 3
   goToScene: 0
   mainMenuToGoTo: 1
+  continueButton: 0
+  levelEditorButton: 0
 --- !u!114 &114243305624244464
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -665,7 +667,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -776,7 +778,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -950,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff040bd60f4f434c96069938c91a55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   musicVolumeSlider: {fileID: 114316787733602488}
   sfxVolumeSlider: {fileID: 114360741526969858}
@@ -1306,9 +1308,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 6
   goToScene: 0
   mainMenuToGoTo: 1
+  continueButton: 0
+  levelEditorButton: 0
 --- !u!114 &114973494954491912
 MonoBehaviour:
   m_ObjectHideFlags: 1

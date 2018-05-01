@@ -46,6 +46,11 @@ public class EnemySlowRocketScript : ProjectilesScript
         base.Initialize(velocity, bulletTimer);
     }
 
+    public void ModifyHealth(float amount)
+    {
+        health -= amount;
+        //flashHealthBar = true;
+    }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
@@ -80,6 +85,10 @@ public class EnemySlowRocketScript : ProjectilesScript
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))
         {
             health -= Constants.SEEKER_MISSILES_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
+        {
+            health -= Constants.WEATHER_HAZARD_2_LIGHTING_DAMAGE;
         }
     }
 }

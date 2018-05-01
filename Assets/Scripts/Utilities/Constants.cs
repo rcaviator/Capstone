@@ -80,6 +80,7 @@ public static class Constants
         SeekerMissile,
         Decoy,
         PlayerAdvancedBullet,
+        LightningBolt,
     };
 
     #endregion
@@ -87,7 +88,8 @@ public static class Constants
     #region Game Constants
 
     //global
-    public const bool IS_DEVELOPER_BUILD = true;
+    public const bool IS_DEVELOPER_BUILD = false;
+    public const bool USING_RELEASE_ASSETS = true;
 
     //scenes
     public const string SCENE_NAME_LEVELEDITOR = "LevelEditor";
@@ -135,22 +137,42 @@ public static class Constants
 
     //airport text
     public const string AIRPORT_1_NAME = "Ira Sapping";
-    public const string AIRPORT_1_MISSION_BRIEFING = "Briefing 1";
+    public const string AIRPORT_1_MISSION_BRIEFING = "Alright listen up lieutenant! " +
+        "Only three scouts from the patrol survived to bring us disturbing news. " + 
+        "The Empire has developed a new flying superweapon capable of destroying entier cities! " + 
+        "Now normally we would contact HQ up in the north and start planning a counter attack, " + 
+        "but the Empire knows we have intel on their weapon and has destroyed the communications network " + 
+        "in this region, so we need you to fly this intel to HQ personally. Be warned, the Empire " + 
+        "will try to stop you, so expect resistance. Dismissed pilot!";
     //public const Image AIRPORT_1_MAP
     public const string AIRPORT_1_WEATHER_BRIEFING = "Clear skies, very few clouds at high altitude.\nVisibility: 10+ miles.";
 
     public const string AIRPORT_2_NAME = "Dominick Walker";
-    public const string AIRPORT_2_MISSION_BRIEFING = "Briefing 2";
+    public const string AIRPORT_2_MISSION_BRIEFING = "We have intel on enemy ground activity building up on the border. " + 
+        "It would seem they are preparing for an offensive on our millitary bases in that region. " + 
+        "With the intel you have provided, this would explain the enemy movements. " +
+        "They may be planning a diversion. " +
+        "We have been trying to restore communications to HQ, lieutenant, but the repairs will take " + 
+        "longer than we have time for, so you get out there and deliver this intel!";
     //public const Image AIRPORT_1_MAP
     public const string AIRPORT_2_WEATHER_BRIEFING = "Partly cloudy with some thunderstorms in the area.\nVisibility 7 miles.";
 
     public const string AIRPORT_3_NAME = "Amos Raycraft";
-    public const string AIRPORT_3_MISSION_BRIEFING = "Briefing 3";
+    public const string AIRPORT_3_MISSION_BRIEFING = "There are several reports coming to us of enemy engagements " + 
+        "at the border and our forces are tempting to hold them off. What you bring to us " + 
+        "shows this is a diversion to pull our units away from the capital while this superweapon " + 
+        "moves against the capital. We detected an EMP burst several minutes ago that knocked out " + 
+        "our communication array and we have been on high alert since. There will be enemy forces " + 
+        "headed our way soon, you best get this intel over to HQ as soon as possible. Dissmissed!";
     //public const Image AIRPORT_1_MAP
     public const string AIRPORT_3_WEATHER_BRIEFING = "Mostly cloudy with thunderstorms and down drafts in\nthe area.\nVisibility 5 miles.";
 
     public const string AIRPORT_4_NAME = "Morgan Remmington";
-    public const string AIRPORT_4_MISSION_BRIEFING = "Briefing 4";
+    public const string AIRPORT_4_MISSION_BRIEFING = "That EMP burst you said Amos Raycraft experienced was also " + 
+        "experienced here. That was one hell of an EMP blast, and this intel matches up with that ship being where the EMP originated. " + 
+        "As such, we also have no communications to HQ, but - What was that Private? Detecting a massive ship on radar? - " + 
+        "Change in plan Lieutenant, you are not going to HQ, we need you to stop that ship before it gets to the capital!" +
+        "we have very little forces defending the capital, so we need you up in the air immediately! God speed!";
     //public const Image AIRPORT_1_MAP
     public const string AIRPORT_4_WEATHER_BRIEFING = "Mixed weather with overcast and scattered thunderstorms\nand down drafts.\nVisibility mixed.";
 
@@ -159,7 +181,7 @@ public static class Constants
     #region Player Constants
 
     //player
-    public const float PLAYER_STARTING_HEALTH = 100f;
+    public const float PLAYER_STARTING_HEALTH = 200f;//200f;
     public const float PLAYER_SCREEN_MOVEMENT_SPEED = 50f;
     public const float PLAYER_HORIZONTAL_ACCELERATION = 20f;
     public const float PLAYER_MAX_HORIZONTAL_SPEED = 100f;
@@ -192,6 +214,8 @@ public static class Constants
     //weather hazard 2
     public const float WEATHER_HAZARD_2_LIGHTNING_TIMER = 2f;
     public const float WEATHER_HAZARD_2_LIGHTING_DAMAGE = 10f;
+    public const float LIGHTNING_LIFETIME = 0.5f;
+    public const float LIGHTNING_FLICKER_TIMER = 0.1f;
 
     //weather hazard 3
     public const float WEATHER_HAZARD_3_DOWNDRAFT_FORCE = 1f;
@@ -229,7 +253,7 @@ public static class Constants
     public const float ENEMY_ZEPPLIN_COLLISION_DAMAGE = 20f;
 
     //mothership
-    public const float ENEMY_MOTHERSHIP_HEALTH = 2500f;
+    public const float ENEMY_MOTHERSHIP_HEALTH = 3500f;
     public const float ENEMY_MOTHERSHIP_HORIZONTAL_ACCERATION = 5f;
     public const float ENEMY_MOTHERSHIP_MAX_HORIZONTAL_SPEED = CAMERA_SPEED;
     public const float ENEMY_MOTHERSHIP_SPAWN_ZEPPLIN_TIMER = 5f;
@@ -242,7 +266,7 @@ public static class Constants
     public const int ENEMY_BOMBER_SCORE = 30;
     public const float ENEMY_BOMBER_COLLISION_DAMAGE = 20f;
     public const float ENEMY_BOMBER_MAX_HORIZONTAL_SPEED = 7f;
-    public const float ENEMY_BOMBER_MAX_VERTICAL_SPEED = 7f;
+    public const float ENEMY_BOMBER_MAX_VERTICAL_SPEED = 10f;
     public const float ENEMY_BOMBER_MAX_HORIZONTAL_ACCELERATION = 10f;
     public const float ENEMY_BOMBER_MAX_VERTICAL_ACCELERATION = 10f;
     public const float ENEMY_BOMBER_PLAYER_DISTANCE_THRESHOLD = 15f;
@@ -314,12 +338,14 @@ public static class Constants
 
 
     //repair pack
-    public const int REPAIR_PACK_COST = 25;
+    public const int REPAIR_PACK_COST = 50;
     public const float REPAIR_PACK_REPAIR_AMOUNT = 75f;
+    public const int REPAIR_PACK_CAP = 3;
 
     //aircraft hull
-    public const int AIRCRAFT_HULL_COST = 50;
-    public const float AIRCRAFT_HULL_BONUS = 25f;
+    public const int AIRCRAFT_HULL_BONUS_COST = 50;
+    public const float AIRCRAFT_HULL_BONUS = 50f;
+    public const int AIRCRAFT_HULL_BONUS_CAP = 4;
 
     //flight engineer
     public const int FLIGHT_ENGINEER_COST = 100;

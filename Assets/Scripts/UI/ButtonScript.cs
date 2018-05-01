@@ -8,7 +8,7 @@ public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 {
     //sound for the button
     [SerializeField]
-    UISoundEffect buttonSound;
+    protected UISoundEffect buttonSound;
 
     //scene to go to if applicable. leave on None if n/a
     [SerializeField]

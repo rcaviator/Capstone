@@ -63,6 +63,12 @@ public class BirdScript : PauseableObject
         }
     }
 
+    public void ModifyHealth(float amount)
+    {
+        health -= amount;
+        //flashHealthBar = true;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
@@ -108,6 +114,10 @@ public class BirdScript : PauseableObject
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
         {
             health -= Constants.ENEMY_SLOW_ROCKET_DAMAGE;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
+        {
+            health -= Constants.WEATHER_HAZARD_2_LIGHTING_DAMAGE;
         }
     }
 

@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1365c749155eed449975e3293e6f280e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 2
 --- !u!114 &842800413
 MonoBehaviour:
@@ -754,7 +754,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -80}
-  m_SizeDelta: {x: 1200, y: 300}
+  m_SizeDelta: {x: 1400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1519071529
 MonoBehaviour:
@@ -786,12 +786,14 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 'Victory! You have Saved the Republic Capital from destruction and saved
     thousands of people!
 
-    You have unlocked the Level Editor from the main menu!'
+    You have unlocked the Level Editor from the main menu!
+
+    You can alter the levels and play your own custom levels!'
 --- !u!222 &1519071530
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -65,6 +65,12 @@ public class Inventory //: IEqualityComparer<int>
     Dictionary<ItemType, int> MainInventory
     { get; set; }
 
+    /// <summary>
+    /// Used to save the main inventory before starting a level
+    /// </summary>
+    Dictionary<ItemType, int> PreviousInventory
+    { get; set; }
+
     #endregion
 
     #region Methods
@@ -74,10 +80,30 @@ public class Inventory //: IEqualityComparer<int>
     /// </summary>
     public void ResetInventory()
     {
-        foreach (KeyValuePair<ItemType, int> item in MainInventory)
+        List<ItemType> keys = new List<ItemType>(MainInventory.Keys);
+
+        foreach (var dicKey in keys)
         {
-            MainInventory[item.Key] = 0;
+            MainInventory[dicKey] = 0;
         }
+
+        GameManager.Instance.PlayerHealth = Constants.PLAYER_STARTING_HEALTH;
+    }
+
+    /// <summary>
+    /// Saves the current inventory for retrieving after a level defeat.
+    /// </summary>
+    public void SetFallBackInventory()
+    {
+        PreviousInventory = MainInventory;
+    }
+
+    /// <summary>
+    /// Sets the main inventory back to what it was before starting the level.
+    /// </summary>
+    public void UseFallBackInventory()
+    {
+        MainInventory = PreviousInventory;
     }
 
     /// <summary>

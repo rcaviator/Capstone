@@ -25,6 +25,14 @@ public class PauseMenuButtonScript : ButtonScript
 
     public void OnPauseMenuChange()
     {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
         UIManager.Instance.PauseMenu.OnPanelChange(pauseMenuToGoTo);
+    }
+
+    public void QuitGame()
+    {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
+        GameManager.Instance.Score = GameManager.Instance.PreScore;
+        GameManager.Instance.PlayerInventory.UseFallBackInventory();
     }
 }

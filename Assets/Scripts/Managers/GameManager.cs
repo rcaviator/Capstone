@@ -75,6 +75,7 @@ class GameManager
             { Constants.Tags.SeekerMissile, "SeekerMissile" },
             { Constants.Tags.Decoy, "Decoy" },
             { Constants.Tags.PlayerAdvancedBullet, "PlayerAdvancedBullet" },
+            { Constants.Tags.LightningBolt, "LightningBolt" },
         };
 
         //create and initialize the dictionary of airports
@@ -109,7 +110,7 @@ class GameManager
 
             FinishedGame = true;
         }
-
+        //Level = 4;
         //set player health
         PlayerHealth = Constants.PLAYER_STARTING_HEALTH;
         for (int i = 0; i < PlayerInventory.ViewItemCount(ItemType.AircraftHull); i++)
@@ -158,6 +159,18 @@ class GameManager
     /// The accessor for the player
     /// </summary>
     public PlayerScript Player
+    { get; set; }
+
+    /// <summary>
+    /// Used as the name for what object killed the player
+    /// </summary>
+    public string DeathObjectName
+    { get; set; }
+
+    /// <summary>
+    /// Used as the image for what object killed the player
+    /// </summary>
+    public Sprite DeathObjectSprite
     { get; set; }
 
     /// <summary>
@@ -243,6 +256,12 @@ class GameManager
     /// Used for setting the player's health including hull bonuses
     /// </summary>
     public float PlayerHealth
+    { get; set; }
+
+    /// <summary>
+    /// Used for referencing the energy shield of the player
+    /// </summary>
+    public EnergyShieldScript Shield
     { get; set; }
 
     /// <summary>
