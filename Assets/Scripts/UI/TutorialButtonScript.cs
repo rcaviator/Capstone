@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class TutorialButtonScript : ButtonScript
 {
+    //menu associated with button
+    [SerializeField]
+    TutorialMenu tutorialMenu;
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +18,14 @@ public class TutorialButtonScript : ButtonScript
     protected override void Update()
     {
         base.Update();
+    }
 
-
+    /// <summary>
+    /// Changes the tutorial menu by calling the tutorial canvas script
+    /// </summary>
+    public void OnTutorialMenuChange()
+    {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
+        UIManager.Instance.Tutorial.ChangeTutorialMenu(tutorialMenu);
     }
 }

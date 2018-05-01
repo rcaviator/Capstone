@@ -24,6 +24,10 @@ public class LevelEditorControllerScript : MonoBehaviour
     //the main grid
     CustomGrid grid;
 
+    //the previous and next grids
+    CustomGrid previousGrid;
+    CustomGrid nextGrid;
+
     //the module level apearance
     int moduleLevel;
 
@@ -40,9 +44,13 @@ public class LevelEditorControllerScript : MonoBehaviour
         GameManager.Instance.EditorController = this;
         GameManager.Instance.IsLevelEditor = true;
 
-        //create grid
-        grid = GetComponent<CustomGrid>();
-        grid.Initialize();
+        //create main grid
+        grid = new CustomGrid();
+        grid.Initialize(GetComponent<LineRenderer>());
+
+        //create previous and next grids
+        previousGrid = new CustomGrid();
+        nextGrid = new CustomGrid();
     }
 
     // Update is called once per frame
@@ -196,6 +204,64 @@ public class LevelEditorControllerScript : MonoBehaviour
 
         grid.LoadModule(fileName);
         setupMenu.SetActive(false);
+
+        //call up the other grids
+        LoadPreviousModule(moduleLevel, moduleNumber - 1);
+        LoadNextModule(moduleLevel, moduleNumber + 1);
+    }
+
+    private void LoadPreviousModule(int level, int number)
+    {
+        //validate numbers
+        if (number > 0)
+        {
+            //prep grid
+            previousGrid.ClearGrid();
+
+            //file path string
+            string file = "Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
+
+            //load previous module
+            previousGrid.LoadPreviousModule(file);
+        }
+        else if (number == 0)
+        {
+            //prep grid
+            previousGrid.ClearGrid();
+
+            //file path string
+            string file = "Level_00_Module_00.mod";
+
+            //load first module
+            previousGrid.LoadPreviousModule(file);
+        }
+    }
+
+    private void LoadNextModule(int level, int number)
+    {
+        //validate numbers
+        if (number < 9)
+        {
+            //prep grid
+            nextGrid.ClearGrid();
+
+            //file path string
+            string file = "Level_" + level.ToString("D2") + "_Module_" + number.ToString("D2") + ".mod";
+
+            //load next module
+            nextGrid.LoadNextModule(file);
+        }
+        else if (number == 9)
+        {
+            //prep grid
+            nextGrid.ClearGrid();
+
+            //file path string
+            string file = "Level_00_Module_01.mod";
+
+            //load end module
+            nextGrid.LoadNextModule(file);
+        }
     }
 
     /// <summary>

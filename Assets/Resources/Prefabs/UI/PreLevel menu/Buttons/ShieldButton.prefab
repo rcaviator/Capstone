@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 5
   goToScene: 0
   preLevelMenuToGoTo: 0
   apBulletButton: 0

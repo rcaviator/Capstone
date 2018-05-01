@@ -595,7 +595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 3
   goToScene: 0
   mainMenuToGoTo: 1
   continueButton: 0
@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff040bd60f4f434c96069938c91a55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   musicVolumeSlider: {fileID: 114316787733602488}
   sfxVolumeSlider: {fileID: 114360741526969858}
@@ -1308,7 +1308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 6
   goToScene: 0
   mainMenuToGoTo: 1
   continueButton: 0

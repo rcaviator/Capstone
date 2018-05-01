@@ -733,6 +733,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 114653937964194990}
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114090732837370418
@@ -1049,7 +1060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff040bd60f4f434c96069938c91a55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   musicVolumeSlider: {fileID: 114562117826941286}
   sfxVolumeSlider: {fileID: 114782348670255500}
@@ -1098,7 +1109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a35b1e43fba54d45acaedc079880691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   pauseMenuToGoTo: 1
 --- !u!114 &114310245055443584
@@ -1525,7 +1536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a35b1e43fba54d45acaedc079880691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 3
   goToScene: 2
   pauseMenuToGoTo: 0
 --- !u!114 &114662502881117154
@@ -1785,7 +1796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a35b1e43fba54d45acaedc079880691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   pauseMenuToGoTo: 2
 --- !u!114 &114842326934834264
@@ -1799,7 +1810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a35b1e43fba54d45acaedc079880691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 3
   goToScene: 0
   pauseMenuToGoTo: 1
 --- !u!114 &114853507926275576
@@ -1981,7 +1992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a35b1e43fba54d45acaedc079880691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 6
   goToScene: 0
   pauseMenuToGoTo: 0
 --- !u!114 &114979947853719690

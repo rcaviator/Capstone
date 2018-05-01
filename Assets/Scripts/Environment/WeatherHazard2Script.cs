@@ -10,6 +10,9 @@ public class WeatherHazard2Script : PauseableObject
     //lightning timer
     float timer = Constants.WEATHER_HAZARD_2_LIGHTNING_TIMER;
 
+    //boolean for playing thunder if player is in range
+    bool playerInRange = false;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -24,22 +27,44 @@ public class WeatherHazard2Script : PauseableObject
         //process if not paused
         if (!GameManager.Instance.Paused)
         {
-            //if theres any targets in range
-            if (targets.Count > 0)
-            {
-                //if the timer is ready
-                if (timer >= Constants.WEATHER_HAZARD_2_LIGHTNING_TIMER)
+            //strike targets if in game level
+            if (MySceneManager.Instance.CurrentScene == Scenes.GameLevel)
+            {   
+                //if the timer is ready and there are targets
+                if (timer >= Constants.WEATHER_HAZARD_2_LIGHTNING_TIMER && targets.Count > 0)
                 {
-                    //remove null entries, objects were destroyed elsewhere
+                    //remove null entries and inactive bomber targets
                     targets.RemoveAll(item => item == null);
+                    targets.RemoveAll(item => item.GetComponent<SpriteRenderer>().enabled == false);
 
-                    //select a random target
-                    int randTarget = Random.Range(0, targets.Count);
+                    //check if count is still greater than 0 after target cleanup
+                    if (targets.Count > 0)
+                    {
+                        //select a random target
+                        int randTarget = Random.Range(0, targets.Count);
 
-                    //target aquired
-                    Debug.Log("Fire lighting on " + targets[randTarget].name);
+                        //target aquired, create lightning bolt
+                        GameObject lightning = Instantiate(Resources.Load<GameObject>("Prefabs/Effects/LightningBolt"), transform.position, Quaternion.identity);
 
-                    timer = 0f;
+                        //face and angle the target
+                        Vector3 centerPos = (transform.position + targets[randTarget].transform.position) / 2f;
+                        lightning.transform.position = centerPos;
+                        Vector3 direction = targets[randTarget].transform.position - transform.position;
+                        direction = Vector3.Normalize(direction);
+                        lightning.transform.right = direction;
+                        Vector3 scale = Vector3.one;
+                        scale.x = Vector3.Distance(transform.position, targets[randTarget].transform.position);
+                        lightning.transform.localScale = scale;
+
+                        if (playerInRange)
+                        {
+                            //play thunder sound
+                            AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Thunder);
+                        }
+
+                        //reset timer
+                        timer = 0f;
+                    }
                 }
                 else
                 {
@@ -52,9 +77,27 @@ public class WeatherHazard2Script : PauseableObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!targets.Contains(collision.gameObject))
+        //enter only applicable objects into the list
+        if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bomber]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Jeep]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Soldier]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Tank]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Zepplin]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Bird]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemyFastRocket]) ||
+            collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnemySlowRocket]))
         {
-            targets.Add(collision.gameObject);
+            if (!targets.Contains(collision.gameObject))
+            {
+                targets.Add(collision.gameObject);
+
+                //toggle sound boolean if player is in range
+                if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
+                {
+                    playerInRange = true;
+                }
+            }
         }
     }
 
@@ -63,6 +106,12 @@ public class WeatherHazard2Script : PauseableObject
         if (targets.Contains(collision.gameObject))
         {
             targets.Remove(collision.gameObject);
+
+            //toggle sound boolean if player is in range
+            if (collision.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
+            {
+                playerInRange = false;
+            }
         }
     }
 }

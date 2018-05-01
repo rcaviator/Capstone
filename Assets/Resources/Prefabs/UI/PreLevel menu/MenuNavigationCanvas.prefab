@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 4
   goToScene: 0
   preLevelMenuToGoTo: 3
   apBulletButton: 0
@@ -543,7 +543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 3
   goToScene: 2
   preLevelMenuToGoTo: 0
   apBulletButton: 0
@@ -712,7 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 4
   goToScene: 0
   preLevelMenuToGoTo: 1
   apBulletButton: 0
@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5121635fe6a12f04b904e859c1841fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 4
   goToScene: 0
   preLevelMenuToGoTo: 2
   apBulletButton: 0

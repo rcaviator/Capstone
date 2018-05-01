@@ -289,18 +289,22 @@ public class PlayerScript : PauseableObject
 
             #region Player Clamp Control
 
-            //test for out of bounds and reseting the velocity
-            if (transform.position.x < leftLimitation || transform.position.x > rightLimitation)
+            if (State != PlayerState.Mayday)
             {
-                currentHorizontalSpeed = 0f;
-            }
-            if (transform.position.y < downLimitation || transform.position.y > upLimitation)
-            {
-                currentVerticalSpeed = 0f;
+                //test for out of bounds and reseting the velocity
+                if (transform.position.x < leftLimitation || transform.position.x > rightLimitation)
+                {
+                    currentHorizontalSpeed = 0f;
+                }
+                if (transform.position.y < downLimitation || transform.position.y > upLimitation)
+                {
+                    currentVerticalSpeed = 0f;
+                }
+
+                //clamp player to screen
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftLimitation, rightLimitation), Mathf.Clamp(transform.position.y, downLimitation, upLimitation));
             }
 
-            //clamp player to screen
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftLimitation, rightLimitation), Mathf.Clamp(transform.position.y, downLimitation, upLimitation));
 
             #endregion
 
@@ -425,7 +429,7 @@ public class PlayerScript : PauseableObject
                     {
                         //set vertical down to 0
                         //check if its not 0
-                        if (currentVerticalSpeed != 0f)
+                        if (currentVerticalSpeed != 0f && !Downdraft)
                         {
                             //check if its less than 0
                             if (currentVerticalSpeed < 0f)
@@ -458,6 +462,12 @@ public class PlayerScript : PauseableObject
                         }
                     }
 
+                    //downdraft effect
+                    if (Downdraft)
+                    {
+                        rBody.velocity = new Vector2(currentHorizontalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.x + Physics2D.gravity.x, currentVerticalSpeed + GameManager.Instance.PlayerCamera.GetComponent<Rigidbody2D>().velocity.y + (Physics2D.gravity.y * 0.75f));
+                    }
+
                     break;
 
                 case PlayerState.Mayday:
@@ -488,6 +498,11 @@ public class PlayerScript : PauseableObject
     public bool InputPlayerShoot
     { get; set; }
 
+    /// <summary>
+    /// Used for toggling downdraft effect
+    /// </summary>
+    public bool Downdraft
+    { get; set; }
 
     public void PrepareForLanding()
     {
@@ -496,6 +511,8 @@ public class PlayerScript : PauseableObject
 
         landingDecentRate = landingHeight / timeUntilLanding;
         //reset velocity for next update
+        currentHorizontalSpeed = 0f;
+        currentVerticalSpeed = 0f;
         rBody.velocity = new Vector2(0, 0);
         State = PlayerState.AutoPilotLanding;
     }
@@ -514,6 +531,13 @@ public class PlayerScript : PauseableObject
             Vector2 vel = (Vector2)(GameManager.Instance.Reticle.transform.position - transform.position);
             basic.GetComponent<PlayerBasicBulletScript>().InitializePlayerBasicProjectile(vel);
         }
+    }
+
+
+    public void ModifyHealth(float amount)
+    {
+        Health -= amount;
+        flashHealthBar = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -579,6 +603,12 @@ public class PlayerScript : PauseableObject
                 AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
                 //MySceneManager.Instance.ChangeScene(Scenes.Defeat);
                 Health = 0f;
+            }
+            //lightning bolt
+            else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
+            {
+                Health -= Constants.WEATHER_HAZARD_2_LIGHTING_DAMAGE;
+                flashHealthBar = true;
             }
 
             //set last collision object incase of death in next update

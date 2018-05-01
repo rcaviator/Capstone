@@ -30,10 +30,10 @@ public enum UISoundEffect
     None,
 
     //menus
-    MenuButtonFocused, MenuForward, MenuBackward,
+    MenuButtonFocused, MenuForward, MenuBackward, MenuSwitch,
 
     //items and other
-
+    BuyItem, StartGame,
 }
 
 /// <summary>
@@ -68,10 +68,10 @@ public enum GameSoundEffect
 
 
     //items
-
+    EnergyShield,
 
     //environment
-
+    Thunder,
 }
 
 /// <summary>
@@ -121,55 +121,111 @@ class AudioManager
     private AudioManager()
     {
         //create and populate the music dictionary
-        musicSoundEffectsDict = new Dictionary<MusicSoundEffect, AudioClip>()
+        if (Constants.USING_RELEASE_ASSETS)
         {
-            //leave MusicSoundEffect.None out
-            { MusicSoundEffect.MainMenu, Resources.Load<AudioClip>("Audio/Music/Victoria 2 Soundtrack - We Have Independence") },
-            { MusicSoundEffect.GameLevel, Resources.Load<AudioClip>("Audio/Music/Cyberden") },
-            { MusicSoundEffect.Tutorial, Resources.Load<AudioClip>("Audio/Music/") },
-            { MusicSoundEffect.PreLevel, Resources.Load<AudioClip>("Audio/Music/Hearts of Iron IV - Luftwaffe Strikers Again") },
-            { MusicSoundEffect.EndLevel, Resources.Load<AudioClip>("Audio/Music/") },
-            { MusicSoundEffect.LevelEditor, Resources.Load<AudioClip>("Audio/Music/") },
-        };
+            musicSoundEffectsDict = new Dictionary<MusicSoundEffect, AudioClip>()
+            { 
+                //leave MusicSoundEffect.None out
+                { MusicSoundEffect.MainMenu, Resources.Load<AudioClip>("Audio/Release Music/Take a Chance") },
+                { MusicSoundEffect.GameLevel, Resources.Load<AudioClip>("Audio/Release Music/Volatile Reaction") },
+                { MusicSoundEffect.Tutorial, Resources.Load<AudioClip>("Audio/Release Music/") },
+                { MusicSoundEffect.PreLevel, Resources.Load<AudioClip>("Audio/Release Music/Undaunted") },
+                { MusicSoundEffect.EndLevel, Resources.Load<AudioClip>("Audio/Release Music/") },
+                { MusicSoundEffect.LevelEditor, Resources.Load<AudioClip>("Audio/Release Music/") },
+            };
+        }
+        else
+        {
+            musicSoundEffectsDict = new Dictionary<MusicSoundEffect, AudioClip>()
+            { 
+                //leave MusicSoundEffect.None out
+                { MusicSoundEffect.MainMenu, Resources.Load<AudioClip>("Audio/Music/Victoria 2 Soundtrack - We Have Independence") },
+                { MusicSoundEffect.GameLevel, Resources.Load<AudioClip>("Audio/Music/Cyberden") },
+                { MusicSoundEffect.Tutorial, Resources.Load<AudioClip>("Audio/Music/") },
+                { MusicSoundEffect.PreLevel, Resources.Load<AudioClip>("Audio/Music/Hearts of Iron IV - Luftwaffe Strikers Again") },
+                { MusicSoundEffect.EndLevel, Resources.Load<AudioClip>("Audio/Music/") },
+                { MusicSoundEffect.LevelEditor, Resources.Load<AudioClip>("Audio/Music/") },
+            };
+        }
 
         //create and populate the game play sound effects dictionary
-        gameSoundEffectsDict = new Dictionary<GameSoundEffect, AudioClip>()
+        if (Constants.USING_RELEASE_ASSETS)
         {
-            //leave GameSoundEffect.None out
-            { GameSoundEffect.Blast1 , Resources.Load<AudioClip>("Audio/Effects/Blast1")},
-            { GameSoundEffect.Blast2 , Resources.Load<AudioClip>("Audio/Effects/Blast2")},
-            { GameSoundEffect.Blast3 , Resources.Load<AudioClip>("Audio/Effects/Blast3")},
-            { GameSoundEffect.Blast4 , Resources.Load<AudioClip>("Audio/Effects/Blast4")},
-            { GameSoundEffect.Blast5 , Resources.Load<AudioClip>("Audio/Effects/Blast5")},
-            { GameSoundEffect.Blast6 , Resources.Load<AudioClip>("Audio/Effects/Blast6")},
-            { GameSoundEffect.BulletGlassImpact , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_glass22_01")},
-            { GameSoundEffect.BulletMetalImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal02_22")},
-            { GameSoundEffect.BulletMetalImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal03_22")},
-            { GameSoundEffect.BulletMetalImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal04_22")},
-            { GameSoundEffect.BulletMetalImpact4 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal05_22")},
-            { GameSoundEffect.BulletMetalImpact5 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal06_me_22")},
-            { GameSoundEffect.BulletStoneImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone01_22")},
-            { GameSoundEffect.BulletStoneImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone02_22")},
-            { GameSoundEffect.BulletStoneImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone22_02")},
-            { GameSoundEffect.BulletWoodImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_01")},
-            { GameSoundEffect.BulletWoodImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_02")},
-            { GameSoundEffect.EnemyBomberEngine, Resources.Load<AudioClip>("Audio/Effects/Bomber sound")},
-            { GameSoundEffect.GunFire1, Resources.Load<AudioClip>("Audio/Effects/gun_fixedgun22_07e")},
-            { GameSoundEffect.GunFire2, Resources.Load<AudioClip>("Audio/Effects/gun_assault_rifle_withbullet22_01")},
-            { GameSoundEffect.GunFire3 , Resources.Load<AudioClip>("Audio/Effects/gun_uzi_withbullet22_01d")},
-            { GameSoundEffect.PlayerAirplaneEngine, Resources.Load<AudioClip>("Audio/Effects/Airplane sound")},
-            { GameSoundEffect.RocketFire1, Resources.Load<AudioClip>("Audio/Effects/gun_rocketlauncher22")},
-            { GameSoundEffect.RocketFire2, Resources.Load<AudioClip>("Audio/Effects/gun_hybrid_rocket01b_22")},
-        };
+            gameSoundEffectsDict = new Dictionary<GameSoundEffect, AudioClip>()
+            {
+                //leave GameSoundEffect.None out
+                { GameSoundEffect.Blast1 , Resources.Load<AudioClip>("Audio/Release Effects/Explosion 1")},
+                { GameSoundEffect.Blast2 , Resources.Load<AudioClip>("Audio/Release Effects/Explosion 2")},
+                { GameSoundEffect.Blast3 , Resources.Load<AudioClip>("Audio/Release Effects/Explosion 3")},
+                { GameSoundEffect.Blast4 , Resources.Load<AudioClip>("Audio/Release Effects/Explosion 4")},
+                { GameSoundEffect.Blast5 , Resources.Load<AudioClip>("Audio/Release Effects/Explosion 5")},
+                { GameSoundEffect.Blast6 , Resources.Load<AudioClip>("Audio/Release Effects/Explosion 6")},
+                { GameSoundEffect.BulletGlassImpact , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_glass22_01")},
+                { GameSoundEffect.BulletMetalImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal02_22")},
+                { GameSoundEffect.BulletMetalImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal03_22")},
+                { GameSoundEffect.BulletMetalImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal04_22")},
+                { GameSoundEffect.BulletMetalImpact4 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal05_22")},
+                { GameSoundEffect.BulletMetalImpact5 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal06_me_22")},
+                { GameSoundEffect.BulletStoneImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone01_22")},
+                { GameSoundEffect.BulletStoneImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone02_22")},
+                { GameSoundEffect.BulletStoneImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone22_02")},
+                { GameSoundEffect.BulletWoodImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_01")},
+                { GameSoundEffect.BulletWoodImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_02")},
+                { GameSoundEffect.EnemyBomberEngine, Resources.Load<AudioClip>("Audio/Effects/Bomber sound")},
+                { GameSoundEffect.GunFire1, Resources.Load<AudioClip>("Audio/Release Effects/Bullet")},
+                { GameSoundEffect.GunFire2, Resources.Load<AudioClip>("Audio/Release Effects/Tank Shell")},
+                { GameSoundEffect.GunFire3 , Resources.Load<AudioClip>("Audio/Effects/")},
+                { GameSoundEffect.PlayerAirplaneEngine, Resources.Load<AudioClip>("Audio/Effects/Airplane sound")},
+                { GameSoundEffect.RocketFire1, Resources.Load<AudioClip>("Audio/Release Effects/Rocket 1")},
+                { GameSoundEffect.RocketFire2, Resources.Load<AudioClip>("Audio/Release Effects/Rocket 2")},
+                { GameSoundEffect.EnergyShield, Resources.Load<AudioClip>("Audio/Effects/Energy Shield") },
+                { GameSoundEffect.Thunder, Resources.Load<AudioClip>("Audio/Effects/Thunder") },
+            };
+        }
+        else
+        {
+            gameSoundEffectsDict = new Dictionary<GameSoundEffect, AudioClip>()
+            {
+                //leave GameSoundEffect.None out
+                { GameSoundEffect.Blast1 , Resources.Load<AudioClip>("Audio/Effects/Blast1")},
+                { GameSoundEffect.Blast2 , Resources.Load<AudioClip>("Audio/Effects/Blast2")},
+                { GameSoundEffect.Blast3 , Resources.Load<AudioClip>("Audio/Effects/Blast3")},
+                { GameSoundEffect.Blast4 , Resources.Load<AudioClip>("Audio/Effects/Blast4")},
+                { GameSoundEffect.Blast5 , Resources.Load<AudioClip>("Audio/Effects/Blast5")},
+                { GameSoundEffect.Blast6 , Resources.Load<AudioClip>("Audio/Effects/Blast6")},
+                { GameSoundEffect.BulletGlassImpact , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_glass22_01")},
+                { GameSoundEffect.BulletMetalImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal02_22")},
+                { GameSoundEffect.BulletMetalImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal03_22")},
+                { GameSoundEffect.BulletMetalImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal04_22")},
+                { GameSoundEffect.BulletMetalImpact4 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal05_22")},
+                { GameSoundEffect.BulletMetalImpact5 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_metal06_me_22")},
+                { GameSoundEffect.BulletStoneImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone01_22")},
+                { GameSoundEffect.BulletStoneImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone02_22")},
+                { GameSoundEffect.BulletStoneImpact3 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_stone22_02")},
+                { GameSoundEffect.BulletWoodImpact1 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_01")},
+                { GameSoundEffect.BulletWoodImpact2 , Resources.Load<AudioClip>("Audio/Effects/bullet_hit_wood22_02")},
+                { GameSoundEffect.EnemyBomberEngine, Resources.Load<AudioClip>("Audio/Effects/Bomber sound")},
+                { GameSoundEffect.GunFire1, Resources.Load<AudioClip>("Audio/Effects/gun_fixedgun22_07e")},
+                { GameSoundEffect.GunFire2, Resources.Load<AudioClip>("Audio/Effects/gun_assault_rifle_withbullet22_01")},
+                { GameSoundEffect.GunFire3 , Resources.Load<AudioClip>("Audio/Effects/gun_uzi_withbullet22_01d")},
+                { GameSoundEffect.PlayerAirplaneEngine, Resources.Load<AudioClip>("Audio/Effects/Airplane sound")},
+                { GameSoundEffect.RocketFire1, Resources.Load<AudioClip>("Audio/Effects/gun_rocketlauncher22")},
+                { GameSoundEffect.RocketFire2, Resources.Load<AudioClip>("Audio/Effects/gun_hybrid_rocket01b_22")},
+                { GameSoundEffect.EnergyShield, Resources.Load<AudioClip>("Audio/Effects/Energy Shield") },
+                { GameSoundEffect.Thunder, Resources.Load<AudioClip>("Audio/Effects/Thunder") },
+            };
+        }
 
         //create and populate the UI dictionary
         uiSoundEffectsDict = new Dictionary<UISoundEffect, AudioClip>()
         {
             //leave UISoundEffect.None out
-            { UISoundEffect.MenuButtonFocused, Resources.Load<AudioClip>("Audio/UI/") },
-            { UISoundEffect.MenuForward, Resources.Load<AudioClip>("Audio/UI/") },
-            { UISoundEffect.MenuBackward, Resources.Load<AudioClip>("Audio/UI/") },
-
+            { UISoundEffect.MenuButtonFocused, Resources.Load<AudioClip>("Audio/UI/Button Focused") },
+            { UISoundEffect.MenuForward, Resources.Load<AudioClip>("Audio/UI/Forward") },
+            { UISoundEffect.MenuBackward, Resources.Load<AudioClip>("Audio/UI/Back") },
+            { UISoundEffect.MenuSwitch, Resources.Load<AudioClip>("Audio/UI/Switch Menu") },
+            { UISoundEffect.BuyItem, Resources.Load<AudioClip>("Audio/UI/Buy Item") },
+            { UISoundEffect.StartGame, Resources.Load<AudioClip>("Audio/UI/Start Game") },
         };
 
         //create audio game object

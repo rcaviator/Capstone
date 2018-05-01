@@ -54,8 +54,12 @@ public class LevelControllerScript : MonoBehaviour
         }
         moduleParent.transform.position = new Vector3(modulePlacement, 0, 0);
 
-        //level loaded, enable player
-        //GameManager.Instance.Player.gameObject.SetActive(true);
+        //create a ground layer below the level for custom module voids
+        for (int i = -Constants.MODULE_LENGTH; i < Constants.MODULE_LENGTH * 11; i++)
+        {
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(i, -5, 0), Quaternion.identity);
+            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(i, -6, 0), Quaternion.identity);
+        }
 	}
 	
 	// Update is called once per frame

@@ -704,7 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 1
   mainMenuToGoTo: 0
   continueButton: 0
@@ -1161,7 +1161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   mainMenuToGoTo: 2
   continueButton: 0
@@ -1229,7 +1229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 6
   goToScene: 4
   mainMenuToGoTo: 0
   continueButton: 1
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 6
   goToScene: 0
   mainMenuToGoTo: 0
   continueButton: 0
@@ -1321,7 +1321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525006b9fd7fad0488448b0744e45766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonSound: 0
+  buttonSound: 2
   goToScene: 0
   mainMenuToGoTo: 3
   continueButton: 0

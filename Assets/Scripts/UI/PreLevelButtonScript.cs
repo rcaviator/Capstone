@@ -116,6 +116,7 @@ public class PreLevelButtonScript : ButtonScript
 
     public void OnPreLevelMenuChange()
     {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
         UIManager.Instance.PreLevelMenuControl.ChangeMenu(preLevelMenuToGoTo);
     }
 
@@ -203,11 +204,14 @@ public class PreLevelButtonScript : ButtonScript
                 descriptionText.text = "At Maximum Repair Pack Cap!";
             }
         }
+
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
     }
 
 
     public void TakeoffFinallizer()
     {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
         UIManager.Instance.PreLevelMenuControl.TakeoffFinalizer();
     }
 }

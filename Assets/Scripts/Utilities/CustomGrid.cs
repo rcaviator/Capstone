@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class CustomGrid : MonoBehaviour
+public class CustomGrid //: MonoBehaviour
 {
     //line renderer component
     LineRenderer gridLines;
@@ -19,11 +19,8 @@ public class CustomGrid : MonoBehaviour
     //list for game objects to capacity
     //List<GameObject> capGameObjects = new List<GameObject>();
 
-    private void Awake()
+    public CustomGrid()
     {
-        //get line reneder reference
-        gridLines = GetComponent<LineRenderer>();
-
         //initialize dictionary
         objectNames = new Dictionary<string, Constants.ObjectIDs>()
         {
@@ -64,34 +61,31 @@ public class CustomGrid : MonoBehaviour
             { "Bomber(Clone)", Constants.ObjectIDs.Bomber },
 
         };
-    }
 
-
-    public void Initialize()
-    {
-        //if line renderer is null for whatever reason
-        if (!gridLines)
-        {
-            gridLines = GetComponent<LineRenderer>();
-        }
-
-        #region Grid Initialization
-
-        //declare the grid and grid draw points arrays
+        //declare the grid
         GridPoints = new CustomGridCell[Constants.LEVEL_EDITOR_GRID_SIZE_X, Constants.LEVEL_EDITOR_GRID_SIZE_Y];
-        DrawGridPoints2DArray = new Vector3[Constants.LEVEL_EDITOR_GRID_SIZE_X + 1, Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1];
-        DrawGridPointsPositionList = new List<Vector3>();
 
         //populate the point array
-        int x = 0;
-        int y = 0;
-        for (y = 0; y < Constants.LEVEL_EDITOR_GRID_SIZE_Y; y++)
+        for (int y = 0; y < Constants.LEVEL_EDITOR_GRID_SIZE_Y; y++)
         {
-            for (x = 0; x < Constants.LEVEL_EDITOR_GRID_SIZE_X; x++)
+            for (int x = 0; x < Constants.LEVEL_EDITOR_GRID_SIZE_X; x++)
             {
                 GridPoints[x, y] = new CustomGridCell(new Vector3(x, y, 0), new Vector2(x, y));
             }
         }
+    }
+
+
+    public void Initialize(LineRenderer line)
+    {
+        //set the line renderer reference. used for drawing the grid
+        gridLines = line;
+
+        #region Grid Initialization
+
+        //declare the grid draw points arrays
+        DrawGridPoints2DArray = new Vector3[Constants.LEVEL_EDITOR_GRID_SIZE_X + 1, Constants.LEVEL_EDITOR_GRID_SIZE_Y + 1];
+        DrawGridPointsPositionList = new List<Vector3>();
 
         #endregion
 
@@ -119,9 +113,9 @@ public class CustomGrid : MonoBehaviour
             DrawGridPoints2DArray[DrawGridPoints2DArray.GetLength(0) - 1, yStep] = new Vector3(DrawGridPoints2DArray.GetLength(0) - 1 - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_X, yStep - Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Y, Constants.LEVEL_EDITOR_GRID_DRAW_OFFSET_Z);
         }
 
-        //reset x and y for drawing
-        x = 0;
-        y = 0;
+        //x and y for drawing
+        int x = 0;
+        int y = 0;
 
         #region X Axis
 
@@ -639,7 +633,6 @@ public class CustomGrid : MonoBehaviour
                     }
                 }
             }
-            
         }
         else
         {
@@ -663,6 +656,32 @@ public class CustomGrid : MonoBehaviour
                     GridPoints[x, y].CellObject = null;
                 }
             }
+        }
+    }
+
+
+    public void LoadPreviousModule(string file)
+    {
+        //load the module
+        LoadModule(file);
+
+        //shift objects over
+        foreach (GameObject item in gameObjects)
+        {
+            item.transform.position = new Vector3(item.transform.position.x - Constants.LEVEL_EDITOR_GRID_SIZE_X, item.transform.position.y, 0f);
+        }
+    }
+
+
+    public void LoadNextModule(string file)
+    {
+        //load the module
+        LoadModule(file);
+
+        //shift objects over
+        foreach (GameObject item in gameObjects)
+        {
+            item.transform.position = new Vector3(item.transform.position.x + Constants.LEVEL_EDITOR_GRID_SIZE_X, item.transform.position.y, 0f);
         }
     }
 

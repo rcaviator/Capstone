@@ -18,11 +18,14 @@ public class EnergyShieldScript : PauseableObject
     {
         base.Awake();
 
+        //set reference
+        GameManager.Instance.Shield = this;
+
         //go to player
         transform.position = GameManager.Instance.Player.transform.position;
 
         //play sound
-
+        AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.EnergyShield);
     }
 
     // Update is called once per frame

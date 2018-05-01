@@ -45,6 +45,7 @@ public class MainMenuButtonScript : ButtonScript
 
     public void OnMainMenuChange()
     {
+        AudioManager.Instance.PlayUISoundEffect(buttonSound);
         UIManager.Instance.MainMenuControl.ChangeMenu(mainMenuToGoTo);
     }
 
@@ -57,9 +58,11 @@ public class MainMenuButtonScript : ButtonScript
         {
             GameObject prompt = Instantiate(Resources.Load<GameObject>("Prefabs/UI/Main menu/NewGameCanvas"), Vector3.zero, Quaternion.identity);
             prompt.GetComponent<Canvas>().worldCamera = Camera.main;
+            AudioManager.Instance.PlayUISoundEffect(buttonSound);
         }
         else
         {
+            AudioManager.Instance.PlayUISoundEffect(buttonSound);
             MySceneManager.Instance.ChangeScene(Scenes.Tutorial);
         }
     }

@@ -70,6 +70,12 @@ public class ZepplinScript : PauseableObject
     }
 
 
+    public void ModifyHealth(float amount)
+    {
+        health -= amount;
+        //flashHealthBar = true;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //kill self and damage player if player crashed into zeplin
@@ -108,6 +114,11 @@ public class ZepplinScript : PauseableObject
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))
         {
             health -= Constants.SEEKER_MISSILES_DAMAGE;
+            flashHealthBar = true;
+        }
+        else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
+        {
+            health -= Constants.WEATHER_HAZARD_2_LIGHTING_DAMAGE;
             flashHealthBar = true;
         }
     }
