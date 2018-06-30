@@ -89,7 +89,7 @@ public static class Constants
 
     //global
     public const bool IS_DEVELOPER_BUILD = false;
-    public const bool USING_RELEASE_ASSETS = true;
+    public const bool USING_RELEASE_ASSETS = false;
 
     //scenes
     public const string SCENE_NAME_LEVELEDITOR = "LevelEditor";

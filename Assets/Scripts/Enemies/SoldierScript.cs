@@ -39,7 +39,7 @@ public class SoldierScript : PauseableObject
             //death from 0 health
             if (health <= 0f)
             {
-                //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+                //Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
                 GameManager.Instance.Score += Constants.ENEMY_SOLDIER_SCORE;
                 Destroy(gameObject);
             }

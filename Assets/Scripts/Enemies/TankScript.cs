@@ -78,7 +78,7 @@ public class TankScript : PauseableObject
             //death from 0 health
             if (health <= 0f)
             {
-                Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+                Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
                 GameManager.Instance.Score += Constants.ENEMY_TANK_SCORE;
                 Destroy(gameObject);
             }
@@ -97,7 +97,7 @@ public class TankScript : PauseableObject
         //end game if player crashes into tank
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            //Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             //Destroy(gameObject);
             AudioManager.Instance.PlayGamePlaySoundEffect(GameSoundEffect.Blast6);
             MySceneManager.Instance.ChangeScene(Scenes.Defeat);
@@ -151,8 +151,8 @@ public class TankScript : PauseableObject
         {
             if (heavyTimer >= Constants.HEAVY_PROJECTILE_SHELL_COOLDOWN_TIMER)
             {
-                GameObject attack = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/HeavyProjectileShell"), new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
-                Vector2 vel = new Vector2((GameManager.Instance.Player.transform.position.x + (GameManager.Instance.Player.GetComponent<Rigidbody2D>().velocity.x)) - transform.position.x, GameManager.Instance.Player.transform.position.y - transform.position.y);/*(Vector2)GameManager.Instance.Player.transform.position - (Vector2)transform.position;*/
+                GameObject attack = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.HeavyProjectileShell), new Vector3(transform.position.x, transform.position.y + 1, transform.position.z), Quaternion.identity);
+                Vector2 vel = new Vector2((GameManager.Instance.Player.transform.position.x + (GameManager.Instance.Player.GetComponent<Rigidbody2D>().velocity.x)) - transform.position.x, GameManager.Instance.Player.transform.position.y - transform.position.y);
                 attack.GetComponent<HeavyProjectileShellScript>().InitializeProjectile(vel);
 
                 heavyTimer = 0f;

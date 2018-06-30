@@ -411,7 +411,7 @@ public class CustomGrid //: MonoBehaviour
                 //check if any cell under the found trigger block can be filled in
                 if (foundTriggerBlockType && !GridPoints[x, y].IsOccupied)
                 {
-                    GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
+                    GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.DirtBlock);
                     gameObjects.Add(GridPoints[x, y].CellObject);
                 }
             }
@@ -536,66 +536,66 @@ public class CustomGrid //: MonoBehaviour
 
                             //utilities
                             case Constants.ObjectIDs.LevelStartPoint:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.LevelStartPoint);
                                 break;
                             case Constants.ObjectIDs.LevelEndPoint:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.LevelEndPoint);
                                 break;
 
                             //environment - blocks
                             case Constants.ObjectIDs.DirtBlock:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.DirtBlock);
                                 break;
                             case Constants.ObjectIDs.DirtBlockGrass:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Grass");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.DirtBlockGrass);
                                 break;
                             case Constants.ObjectIDs.DirtBlockSloped:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.DirtBlockSloped);
                                 break;
                             case Constants.ObjectIDs.DirtBlockSlopedGrass:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped_Grass");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.DirtBlockSlopedGrass);
                                 break;
                             case Constants.ObjectIDs.StoneBlock:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.StoneBlock);
                                 break;
                             case Constants.ObjectIDs.StoneBlockSloped:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.StoneBlockSloped);
                                 break;
                             case Constants.ObjectIDs.StoneBlockConcreteTop:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.StoneBlockConcreteTop);
                                 break;
                             case Constants.ObjectIDs.StoneBlockSlopedConcreteTop:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped_Concrete_Top");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.StoneBlockSlopedConcreteTop);
                                 break;
 
                             //environment - buildings
                             case Constants.ObjectIDs.HangarClose:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarClose");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.HangarClose);
                                 break;
                             case Constants.ObjectIDs.HangarMiddle:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarMiddle");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.HangarMiddle);
                                 break;
                             case Constants.ObjectIDs.HangarFar:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/HangarFar");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.HangarFar);
                                 break;
                             case Constants.ObjectIDs.Tower:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Tower");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Tower);
                                 break;
 
                             //environment - weather
                             case Constants.ObjectIDs.WeatherHazard1:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.WeatherHazard1);
                                 break;
                             case Constants.ObjectIDs.WeatherHazard2:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard2");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.WeatherHazard2);
                                 break;
                             case Constants.ObjectIDs.WeatherHazard3:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard3");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.WeatherHazard3);
                                 break;
 
                             //environment - other
                             case Constants.ObjectIDs.Bird:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Environment/Bird");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Bird);
                                 break;
 
                             //allies
@@ -603,22 +603,22 @@ public class CustomGrid //: MonoBehaviour
 
                             //enemies
                             case Constants.ObjectIDs.MotherShip:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/MotherShip");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Mothership);
                                 break;
                             case Constants.ObjectIDs.Zepplin:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Zepplin");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Zepplin);
                                 break;
                             case Constants.ObjectIDs.Tank:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Tank");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Tank);
                                 break;
                             case Constants.ObjectIDs.Soldier:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Soldier");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Soldier);
                                 break;
                             case Constants.ObjectIDs.Jeep:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Jeep");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Jeep);
                                 break;
                             case Constants.ObjectIDs.Bomber:
-                                GridPoints[x, y].CellObject = Resources.Load<GameObject>("Prefabs/Enemies/Bomber");
+                                GridPoints[x, y].CellObject = ResourceManager.Instance.GetPrefab(Prefabs.Bomber);
                                 break;
 
                             default:

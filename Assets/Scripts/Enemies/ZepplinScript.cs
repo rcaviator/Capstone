@@ -62,7 +62,7 @@ public class ZepplinScript : PauseableObject
             //death from 0 health
             if (health <= 0f)
             {
-                Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+                Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
                 GameManager.Instance.Score += Constants.ENEMY_ZEPPLIN_SCORE;
                 Destroy(gameObject);
             }
@@ -81,7 +81,7 @@ public class ZepplinScript : PauseableObject
         //kill self and damage player if player crashed into zeplin
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         //else take damage from player bullet
@@ -107,7 +107,7 @@ public class ZepplinScript : PauseableObject
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             GameManager.Instance.Score += Constants.ENEMY_ZEPPLIN_SCORE;
             Destroy(gameObject);
         }
@@ -130,7 +130,7 @@ public class ZepplinScript : PauseableObject
             //fire slow rocket if ready
             if (slowRocketTimer >= Constants.ENEMY_SLOW_ROCKET_COOLDOWN_TIMER)
             {
-                Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemySlowRocket"), new Vector3(transform.position.x, transform.position.y - 1, 0), Quaternion.identity);
+                Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.EnemySlowRocket), new Vector3(transform.position.x, transform.position.y - 1, 0), Quaternion.identity);
                 slowRocketTimer = 0f;
             }
             else

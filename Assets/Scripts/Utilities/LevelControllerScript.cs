@@ -57,8 +57,8 @@ public class LevelControllerScript : MonoBehaviour
         //create a ground layer below the level for custom module voids
         for (int i = -Constants.MODULE_LENGTH; i < Constants.MODULE_LENGTH * 11; i++)
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(i, -5, 0), Quaternion.identity);
-            Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(i, -6, 0), Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.DirtBlock), new Vector3(i, -5, 0), Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.DirtBlock), new Vector3(i, -6, 0), Quaternion.identity);
         }
 	}
 	
@@ -68,7 +68,7 @@ public class LevelControllerScript : MonoBehaviour
         //pause menu control
         if (InputManager.Instance.GetButtonDown(PlayerAction.PauseGame) && !UIManager.Instance.PauseMenu)
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/UI/Pause menu/PauseMenuCanvas"), Vector3.zero, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.PauseMenuCanvas), Vector3.zero, Quaternion.identity);
         }
         //else if (UIManager.Instance.PauseMenu && InputManager.Instance.GetButtonDown(PlayerAction.PauseGame))
         //{
@@ -149,66 +149,66 @@ public class LevelControllerScript : MonoBehaviour
 
                         //utilities
                         case Constants.ObjectIDs.LevelStartPoint:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Utility/LevelStartPoint"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.LevelStartPoint), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.LevelEndPoint:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Utility/LevelEndPoint"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.LevelEndPoint), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         //environment - blocks
                         case Constants.ObjectIDs.DirtBlock:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.DirtBlock), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.DirtBlockGrass:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Grass"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.DirtBlockGrass), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.DirtBlockSloped:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.DirtBlockSloped), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.DirtBlockSlopedGrass:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Dirt_Block_Sloped_Grass"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.DirtBlockSlopedGrass), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.StoneBlock:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.StoneBlock), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.StoneBlockSloped:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.StoneBlockSloped), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.StoneBlockConcreteTop:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Concrete_Top"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.StoneBlockConcreteTop), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.StoneBlockSlopedConcreteTop:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Stone_Block_Sloped_Concrete_Top"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.StoneBlockSlopedConcreteTop), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         //environment - buildings
                         case Constants.ObjectIDs.HangarClose:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/HangarClose"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.HangarClose), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.HangarMiddle:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/HangarMiddle"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.HangarMiddle), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.HangarFar:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/HangarFar"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.HangarFar), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.Tower:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Tower"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Tower), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         //environment - weather
                         case Constants.ObjectIDs.WeatherHazard1:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard1"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.WeatherHazard1), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.WeatherHazard2:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard2"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.WeatherHazard2), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.WeatherHazard3:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/WeatherHazard3"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.WeatherHazard3), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         //environment - other
                         case Constants.ObjectIDs.Bird:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Environment/Bird"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Bird), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         //allies
@@ -216,22 +216,22 @@ public class LevelControllerScript : MonoBehaviour
 
                         //enemies
                         case Constants.ObjectIDs.MotherShip:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/MotherShip"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Mothership), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.Zepplin:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/Zepplin"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Zepplin), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.Tank:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/Tank"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Tank), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.Soldier:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/Soldier"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Soldier), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.Jeep:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/Jeep"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Jeep), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
                         case Constants.ObjectIDs.Bomber:
-                            spawnObject = Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/Bomber"), new Vector3(x, y, 0f), Quaternion.identity);
+                            spawnObject = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Bomber), new Vector3(x, y, 0f), Quaternion.identity);
                             break;
 
                         default:

@@ -68,7 +68,7 @@ public class MotherShipScript : PauseableObject
                     zepplinTimer = 0f;
 
                     //spawn object
-                    Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/Zepplin"), transform.position, Quaternion.identity);
+                    Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Zepplin), transform.position, Quaternion.identity);
                 }
                 else
                 {
@@ -81,7 +81,7 @@ public class MotherShipScript : PauseableObject
                     fastMissileTimer = 0f;
 
                     //spawn object
-                    Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemyFastRocket"), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+                    Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.EnemyFastRocket), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
                 }
                 else
                 {
@@ -94,7 +94,7 @@ public class MotherShipScript : PauseableObject
                     slowMissileTimer = 0f;
 
                     //spawn object
-                    Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemySlowRocket"), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+                    Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.EnemySlowRocket), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
                 }
                 else
                 {
@@ -107,8 +107,8 @@ public class MotherShipScript : PauseableObject
                     shellTimer = 0f;
 
                     //spawn object
-                    GameObject attack = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/HeavyProjectileShell"), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-                    Vector2 vel = new Vector2((GameManager.Instance.Player.transform.position.x + (GameManager.Instance.Player.GetComponent<Rigidbody2D>().velocity.x)) - transform.position.x, GameManager.Instance.Player.transform.position.y - transform.position.y);/*(Vector2)GameManager.Instance.Player.transform.position - (Vector2)transform.position;*/
+                    GameObject attack = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.HeavyProjectileShell), new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+                    Vector2 vel = new Vector2((GameManager.Instance.Player.transform.position.x + (GameManager.Instance.Player.GetComponent<Rigidbody2D>().velocity.x)) - transform.position.x, GameManager.Instance.Player.transform.position.y - transform.position.y);
                     attack.GetComponent<HeavyProjectileShellScript>().InitializeProjectile(vel);
                 }
                 else
@@ -151,7 +151,7 @@ public class MotherShipScript : PauseableObject
     {
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            //Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             //Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
