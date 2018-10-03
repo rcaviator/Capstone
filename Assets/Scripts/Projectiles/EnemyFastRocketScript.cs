@@ -34,7 +34,7 @@ public class EnemyFastRocketScript : ProjectilesScript
             //health
             if (health <= 0)
             {
-                Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+                Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
                 GameManager.Instance.Score += Constants.ENEMY_FAST_ROCKET_SCORE;
                 Destroy(gameObject);
             }
@@ -59,7 +59,7 @@ public class EnemyFastRocketScript : ProjectilesScript
 
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.PlayerBullet]))
@@ -80,7 +80,7 @@ public class EnemyFastRocketScript : ProjectilesScript
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.SeekerMissile]))

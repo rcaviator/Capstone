@@ -13,5 +13,6 @@ public class Initializer : MonoBehaviour
         AudioManager.Instance.ToString();
         MySceneManager.Instance.ToString();
         InputManager.Instance.ToString();
+        ResourceManager.Instance.ToString();
 	}
 }

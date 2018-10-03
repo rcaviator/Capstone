@@ -43,7 +43,7 @@ public class ClusterBombScript : ProjectilesScript
 
     private void OnDestroy()
     {
-        Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+        Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
     }
 
 

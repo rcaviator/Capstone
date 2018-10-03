@@ -110,7 +110,7 @@ public class PlayerScript : PauseableObject
         //-----hack for testing ap bullets-----
         //GameManager.Instance.PlayerInventory.AddItem(ItemType.APBullets, 10);
 
-        wrench = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/Wrench"), Vector3.zero, Quaternion.identity);
+        wrench = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.Wrench), Vector3.zero, Quaternion.identity);
         wrench.SetActive(false);
     }
 	
@@ -521,13 +521,13 @@ public class PlayerScript : PauseableObject
     {
         if (GameManager.Instance.PlayerInventory.ViewItemCount(ItemType.APBullets) > 0)
         {
-            GameObject advancedBullet = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/PlayerAdvancedBullet"), transform.position, Quaternion.identity);
+            GameObject advancedBullet = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.PlayerAdvancedBullet), transform.position, Quaternion.identity);
             Vector2 vel = (Vector2)(GameManager.Instance.Reticle.transform.position - transform.position);
             advancedBullet.GetComponent<PlayerAdvancedBulletScript>().InitializePlayerAdvancedProjectile(vel);
         }
         else
         {
-            GameObject basic = Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/PlayerBullet"), transform.position, Quaternion.identity);
+            GameObject basic = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.PlayerBullet), transform.position, Quaternion.identity);
             Vector2 vel = (Vector2)(GameManager.Instance.Reticle.transform.position - transform.position);
             basic.GetComponent<PlayerBasicBulletScript>().InitializePlayerBasicProjectile(vel);
         }

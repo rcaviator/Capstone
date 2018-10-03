@@ -44,7 +44,7 @@ public class WeatherHazard2Script : PauseableObject
                         int randTarget = Random.Range(0, targets.Count);
 
                         //target aquired, create lightning bolt
-                        GameObject lightning = Instantiate(Resources.Load<GameObject>("Prefabs/Effects/LightningBolt"), transform.position, Quaternion.identity);
+                        GameObject lightning = Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.LightnightBolt), transform.position, Quaternion.identity);
 
                         //face and angle the target
                         Vector3 centerPos = (transform.position + targets[randTarget].transform.position) / 2f;

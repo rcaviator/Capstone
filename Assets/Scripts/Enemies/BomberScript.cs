@@ -129,9 +129,7 @@ public class BomberScript : PauseableObject
                 //death from 0 health
                 if (health <= 0f)
                 {
-                    //Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
                     GameManager.Instance.Score += Constants.ENEMY_BOMBER_SCORE;
-                    //Destroy(gameObject);
                     maydayState = true;
                 }
             }
@@ -303,7 +301,7 @@ public class BomberScript : PauseableObject
         //kill self and damage player if player crashed into zeplin
         if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Player]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         //else take damage from player bullet
@@ -329,7 +327,7 @@ public class BomberScript : PauseableObject
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.EnergyShield]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             GameManager.Instance.Score += Constants.ENEMY_BOMBER_SCORE;
             Destroy(gameObject);
         }
@@ -346,7 +344,7 @@ public class BomberScript : PauseableObject
         //destroy on ground
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.Ground]))
         {
-            Instantiate(Resources.Load<GameObject>("Prefabs/Effects/ModerateExplosion"), transform.position, Quaternion.identity);
+            Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.ModerateExplosion), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag(GameManager.Instance.GameObjectTags[Constants.Tags.LightningBolt]))
@@ -379,7 +377,7 @@ public class BomberScript : PauseableObject
                     //fire fast rocket if ready
                     if (fastRocketTimer >= Constants.ENEMY_FAST_ROCKET_COOLDOWN_TIMER)
                     {
-                        Instantiate(Resources.Load<GameObject>("Prefabs/Projectiles and Powerups/EnemyFastRocket"), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+                        Instantiate(ResourceManager.Instance.GetPrefab(Prefabs.EnemyFastRocket), new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
                         fastRocketTimer = 0f;
                     }
                     else
